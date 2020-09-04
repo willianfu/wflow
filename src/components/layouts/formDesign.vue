@@ -110,6 +110,7 @@
 		height: calc(100vh - 44px);
 		color: rgba(17, 31, 44, 0.85);
 		ul{
+			margin-left: 20px;
 			display: flex;
 			flex-wrap: wrap;
 			align-items: center;
@@ -190,10 +191,16 @@
 					}
 				}
 				.tip{
+					padding: 35px 20px;
+					border-radius: 10px;
+					border: 1px dashed rgba(25, 31, 37, 0.12);
 					margin-top: 50px;
 					text-align: center;
 					font-size: 14px;
 					color: rgb(122, 122, 122);
+					&:hover{
+						border: 1px dashed @primary;
+					}
 				}
 			}
 		}
