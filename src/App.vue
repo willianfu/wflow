@@ -1,28 +1,46 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+	<div id="app">
+		<transition name="router-fade" mode="out-in">
+			<router-view v-if="!$route.meta.keepAlive"/>
+		</transition>
+	</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+    //import layout from './components/layout'
+    export default {
+        components: {},
+        data() {
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+        },
+        methods: {}
+    }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="less">
+	@import "@/assets/global";
+	
+	body {
+		margin: 0;
+		min-width: 1000px;
+		background-color: #f5f6f6;
+	}
+	ul{
+		padding: 0;
+		margin: 0;
+		li{
+			list-style-type: none;
+		}
+	}
+	
+	::-webkit-scrollbar {
+		width: 4px;
+		height: 4px;
+		background-color: #f8f8f8;
+	}
+	
+	::-webkit-scrollbar-thumb {
+		border-radius: 16px;
+		background-color: #e8e8e8;
+	}
+	
 </style>
