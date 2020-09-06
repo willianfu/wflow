@@ -11,7 +11,6 @@
 				<router-view v-if="!$route.meta.keepAlive"/>
 			</transition>
 		</div>
-		
 	</div>
 </template>
 
