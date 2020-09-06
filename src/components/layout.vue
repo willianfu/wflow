@@ -35,7 +35,12 @@
 <style lang="less" scoped>
 	@import "@/assets/global";
 	.layout-body {
-		height: calc(100vh - 62px);
+		margin-top: 61px;
 	}
-	
+	/deep/ .el-menu{
+		top: 0;
+		z-index: 999;
+		position: fixed;
+		width: 100%;
+	}
 </style>

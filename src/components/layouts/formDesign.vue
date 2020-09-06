@@ -1,75 +1,78 @@
 <template>
-  <div>
-    <el-container>
-      <el-aside>
-        <div class="components-nav">
-          <span>基础控件</span>
-          <span style="border-left: 1px solid #f5f6f6; border-right: 1px solid #f5f6f6;">套件</span>
-          <span>关联控件</span>
-        </div>
-        <div class="components">
-          <ul>
-            <draggable class="drag" :list="components" :options="{sort:false}"
-                       :group="{ name: 'from', pull: 'clone', put: false }">
-              <li v-for="(cp, id) in components" :key="id">
-                <i class="el-icon-picture-outline-round"></i>
-                <span>{{cp.text}}</span>
-              </li>
-            </draggable>
-          </ul>
-        </div>
-      </el-aside>
+  <el-container style="height: calc(100vh - 65px);">
+    <el-aside>
+      <div class="components-nav">
+        <span>基础控件</span>
+        <span style="border-left: 1px solid #f5f6f6; border-right: 1px solid #f5f6f6;">套件</span>
+        <span>关联控件</span>
+      </div>
+      <div class="components">
+        <ul>
+          <draggable class="drag" :list="components" :options="{sort:false}"
+                     :group="{ name: 'from', pull: 'clone', put: false }">
+            <li v-for="(cp, id) in components" :key="id">
+              <i class="el-icon-picture-outline-round"></i>
+              <span>{{cp.text}}</span>
+            </li>
+          </draggable>
+        </ul>
+      </div>
+    </el-aside>
 
-      <el-main class="layout-main">
-        <div class="tool-nav">
-          <div>
-            <el-tooltip class="item" effect="dark" content="撤销" placement="bottom-start">
-              <i class="el-icon-refresh-left"></i>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="恢复" placement="bottom-start">
-              <i class="el-icon-refresh-right"></i>
-            </el-tooltip>
-          </div>
-          <div>
-            <el-tooltip class="item" effect="dark" content="移动端" placement="bottom-start">
-              <i class="el-icon-mobile"></i>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="PC端" placement="bottom-start">
-              <i class="el-icon-monitor"></i>
-            </el-tooltip>
-          </div>
+    <el-main class="layout-main">
+      <div class="tool-nav">
+        <div>
+          <el-tooltip class="item" effect="dark" content="撤销" placement="bottom-start">
+            <i class="el-icon-refresh-left"></i>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="恢复" placement="bottom-start">
+            <i class="el-icon-refresh-right"></i>
+          </el-tooltip>
         </div>
-        <div class="work-form">
-          <div class="mobile">
-            <div class="bd">
-              <div class="form-content">
-                <div class="form">
-                  <div class="tip" v-if="form.length === 0">
-                    👈 请在左侧选择控件并拖至此处
-                  </div>
-                  <draggable class="drag-from" :list="form" group="from"
-                             :options="{animation: 300, chosenClass:'choose',sort:true}"
-                             @start="drag = true, select = null" @end="drag = false">
-
-                    <div v-for="(cp, id) in form" :key="id" class="form-item"
-                         @click="select = id" :style="select === id ?'border-left: 4px solid #F56C6C':''">
-                      <component :is="atom.get(cp.name)"></component>
-                    </div>
-                  </draggable>
+        <div>
+          <el-tooltip class="item" effect="dark" content="移动端" placement="bottom-start">
+            <i :class="{'el-icon-mobile':true, 'select': showMobile}" @click="showMobile = true"></i>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="PC端" placement="bottom-start">
+            <i :class="{'el-icon-monitor':true, 'select': !showMobile}" @click="showMobile = false"></i>
+          </el-tooltip>
+        </div>
+      </div>
+      <div class="work-form">
+        <div :class="{'mobile': showMobile, 'pc': !showMobile}">
+          <div :class="{'bd': showMobile}">
+            <div :class="{'form-content': showMobile}">
+              <div class="form">
+                <div class="tip" v-if="form.length === 0">
+                  👈 请在左侧选择控件并拖至此处
                 </div>
+                <draggable class="drag-from" :list="form" group="from"
+                           :options="{animation: 300, chosenClass:'choose',sort:true}"
+                           @start="drag = true, select = null" @end="drag = false">
+
+                  <div v-for="(cp, id) in form" :key="id" class="form-item"
+                       @click="select = id" :style="select === id ?'border-left: 4px solid #F56C6C':''">
+                    <component :is="atom.get(cp.name)">
+                      <div class="option">
+                        <i class="el-icon-copy-document"></i>
+                        <i class="el-icon-delete"></i>
+                      </div>
+                    </component>
+                  </div>
+                </draggable>
               </div>
             </div>
           </div>
         </div>
-      </el-main>
+      </div>
+    </el-main>
 
-      <el-aside class="layout-param">
-        <div>
-          😀 添加控件后在这里进行编辑
-        </div>
-      </el-aside>
-    </el-container>
-  </div>
+    <el-aside class="layout-param">
+      <div>
+        😀 添加控件后在这里进行编辑
+      </div>
+    </el-aside>
+  </el-container>
 </template>
 
 <script>
@@ -82,15 +85,16 @@
     data() {
       return {
         atom: atom,
+        showMobile: true,
         components: [
-          {text: '单行输入框', name:'input'},
-          {text: '多行输入框', name:'input'},
-          {text: '数字输入框', name:'inputNumber'},
-          {text: '单选框', name:'radio'},
-          {text: '多选框', name:'checkbox'},
-          {text: '日期', name:'datePicker'},
-          {text: '日期区间', name:'timePicker'},
-          {text: '图片', name:'button'},
+          {text: '单行输入框', name: 'input'},
+          {text: '多行输入框', name: 'input'},
+          {text: '数字输入框', name: 'inputNumber'},
+          {text: '单选框', name: 'radio'},
+          {text: '多选框', name: 'checkbox'},
+          {text: '日期', name: 'datePicker'},
+          {text: '日期区间', name: 'timePicker'},
+          {text: '图片', name: 'button'},
           /*{text: '说明文字', name:''},
           {text: '金额', name:''},
           {text: '附件', name:''},
@@ -100,7 +104,7 @@
           {text: '联系人', name:''}*/
         ],
         form: [],
-        select:{},
+        select: {},
         drag: false,
       }
     }
@@ -109,9 +113,11 @@
 
 <style lang="less" scoped>
   @import "@/assets/theme";
-  .choose{
+
+  .choose {
     border: 1px dashed @primary;
   }
+
   .components-nav {
     box-sizing: content-box;
     display: flex;
@@ -146,7 +152,6 @@
     //padding: 0 20px;
     font-size: 12px;
     width: 100%;
-    height: calc(100vh - 44px);
     color: rgba(17, 31, 44, 0.85);
 
     .drag {
@@ -225,7 +230,14 @@
 
     .work-form {
       text-align: center;
-
+      overflow-y: auto;
+      .pc{
+        margin-top: 4%;
+        .drag-from{
+          height: calc(100vh - 190px);
+          background-color: rgb(245, 246, 246);
+        }
+      }
       .mobile {
         margin-left: auto;
         margin-right: auto;
@@ -245,22 +257,45 @@
             padding: 10px 2px;
             border-radius: 14px;
             background-color: #f2f4f5;
-            .drag-from{
+
+            .drag-from {
               width: 100%;
-              height: calc(100vh * 0.75);
+              height: calc(100vh - 190px);
+              min-height: 200px;
+              max-height: 600px;
             }
+
             .form {
               overflow-y: auto;
               width: 100%;
-              height: calc(100vh * 0.8);
               display: inline-block;
               max-height: 640px;
-              .form-item, li{
+
+              .form-item, li {
                 list-style: none;
                 background: #ffffff;
                 padding: 10px 0;
                 margin: 2px 0;
                 cursor: grab;
+              }
+              .option{
+                float: right;
+                border-radius: 10px;
+                background-color: #dedfdf;
+                padding: 5px 5px;
+                i:first-child{
+                  margin-right: 5px;
+                }
+                i{
+                  color: #4b4b4b;
+                  cursor: pointer;
+                  &:first-child:hover{
+                    color: #1890FF;
+                  }
+                  &:first-child:hover{
+                    color: #f56c6c;
+                  }
+                }
               }
             }
           }
@@ -275,6 +310,7 @@
           font-size: 14px;
           color: rgb(122, 122, 122);
           z-index: 9999;
+
           &:hover {
             border: 1px dashed @primary;
           }
@@ -297,5 +333,9 @@
 
   .no-move {
     transition: transform 0s;
+  }
+
+  .select{
+    color: #4b4b4b !important;
   }
 </style>
