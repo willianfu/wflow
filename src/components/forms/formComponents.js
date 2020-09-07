@@ -5,6 +5,7 @@ import ElementUI from "element-ui";
 //设备界面元组件
 const atom = new Map()
 atom.set("switch", ElementUI.Switch) //开关
+atom.set("input", ElementUI.Input) //开关
 atom.set("button", ElementUI.Button) //按钮
 atom.set("radio", ElementUI.Radio) //按钮
 atom.set("checkbox", ElementUI.Checkbox) //滑动条

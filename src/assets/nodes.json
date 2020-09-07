@@ -1,0 +1,40 @@
+[
+  {
+    "type": "root",
+    "condition": "none",
+    "detail": {
+      "name": "发起人",
+      "mode": "or",
+      "user": [
+        {"userId": 555, "userName": "ddd"}
+      ],
+      "authority": ["djiojw","fewfrefre"]
+    },
+    "children": [
+      {
+        "type": "sp",
+        "condition": "none",
+        "detail": {
+          "name": "发起人",
+          "mode": "or",
+          "user": [
+            {"userId": 555, "userName": "ddd"}
+          ],
+          "authority": ["djiojw","fewfrefre"]
+        }
+      },
+      {
+        "type": "sp",
+        "condition": "none",
+        "detail": {
+          "name": "发起人",
+          "mode": "or",
+          "user": [
+            {"userId": 555, "userName": "ddd"}
+          ],
+          "authority": ["djiojw","fewfrefre"]
+        }
+      }
+    ]
+  }
+]

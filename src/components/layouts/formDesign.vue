@@ -9,7 +9,9 @@
       <div class="components">
         <ul>
           <draggable class="drag" :list="components" :options="{sort:false}"
-                     :group="{ name: 'from', pull: 'clone', put: false }">
+                     :group="{ name: 'from', pull: 'clone', put: false }"
+                     @start="isStart = true" @end="isStart = false"
+          >
             <li v-for="(cp, id) in components" :key="id">
               <i class="el-icon-picture-outline-round"></i>
               <span>{{cp.text}}</span>
@@ -43,7 +45,7 @@
           <div :class="{'bd': showMobile}">
             <div :class="{'form-content': showMobile}">
               <div class="form">
-                <div class="tip" v-if="form.length === 0">
+                <div class="tip" v-show="form.length === 0 && !isStart">
                   👈 请在左侧选择控件并拖至此处
                 </div>
                 <draggable class="drag-from" :list="form" group="from"
@@ -52,12 +54,11 @@
 
                   <div v-for="(cp, id) in form" :key="id" class="form-item"
                        @click="select = id" :style="select === id ?'border-left: 4px solid #F56C6C':''">
-                    <component :is="atom.get(cp.name)">
-                      <div class="option">
-                        <i class="el-icon-copy-document"></i>
-                        <i class="el-icon-delete"></i>
-                      </div>
-                    </component>
+                    <form-header :atom="atom.get(cp.name)" :obj="cp"
+                                 @onCopy="copy(cp, id)"
+                                 @onDel="del(id)"
+                    >
+                    </form-header>
                   </div>
                 </draggable>
               </div>
@@ -68,8 +69,11 @@
     </el-main>
 
     <el-aside class="layout-param">
-      <div>
-        😀 添加控件后在这里进行编辑
+      <div class="tool-nav-r" v-if="select !== null && form[select] !== undefined">
+        <span>{{form[select].text}}</span>
+      </div>
+      <div v-show="select === null" class="tip">
+        😀 选中控件后在这里进行编辑
       </div>
     </el-aside>
   </el-container>
@@ -78,13 +82,14 @@
 <script>
   import draggable from "vuedraggable";
   import atom from '../forms/formComponents'
-
+  import formHeader from '../forms/formHeader'
   export default {
     name: "formDesign",
-    components: {draggable},
+    components: {draggable, formHeader},
     data() {
       return {
         atom: atom,
+        isStart: false,
         showMobile: true,
         components: [
           {text: '单行输入框', name: 'input'},
@@ -104,9 +109,17 @@
           {text: '联系人', name:''}*/
         ],
         form: [],
-        select: {},
+        select: null,
         drag: false,
       }
+    },
+    methods:{
+      copy(node, index){
+        this.form.splice(index + 1, 0, Object.assign({}, node))
+      },
+      del(index){
+        this.form.splice(index, 1)
+      },
     }
   }
 </script>
@@ -115,9 +128,8 @@
   @import "@/assets/theme";
 
   .choose {
-    border: 1px dashed @primary;
+    border: 1px dashed @primary !important;
   }
-
   .components-nav {
     box-sizing: content-box;
     display: flex;
@@ -229,13 +241,24 @@
     }
 
     .work-form {
-      text-align: center;
+      margin: 0 auto;
+      height: calc(100% - 38px);
       overflow-y: auto;
+      background: rgb(245, 246, 246);
+      border-left: 1px solid rgb(235, 236, 238);
+      border-right: 1px solid rgb(235, 236, 238);
       .pc{
         margin-top: 4%;
         .drag-from{
           height: calc(100vh - 190px);
           background-color: rgb(245, 246, 246);
+          .form-item, li {
+            cursor: grab;
+            background: #ffffff;
+            padding: 10px;
+            border: 1px solid #ebecee;
+            margin: 5px 0;
+          }
         }
       }
       .mobile {
@@ -254,7 +277,7 @@
           background-color: #ffffff;
 
           .form-content {
-            padding: 10px 2px;
+            padding: 3px 2px;
             border-radius: 14px;
             background-color: #f2f4f5;
 
@@ -272,48 +295,33 @@
               max-height: 640px;
 
               .form-item, li {
+                border: 1px solid #ffffff;
                 list-style: none;
                 background: #ffffff;
-                padding: 10px 0;
-                margin: 2px 0;
+                padding: 10px;
+                margin: 5px 0;
                 cursor: grab;
-              }
-              .option{
-                float: right;
-                border-radius: 10px;
-                background-color: #dedfdf;
-                padding: 5px 5px;
-                i:first-child{
-                  margin-right: 5px;
-                }
-                i{
-                  color: #4b4b4b;
-                  cursor: pointer;
-                  &:first-child:hover{
-                    color: #1890FF;
-                  }
-                  &:first-child:hover{
-                    color: #f56c6c;
-                  }
-                }
               }
             }
           }
         }
-
-        .tip {
-          padding: 35px 20px;
-          border-radius: 10px;
-          border: 1px dashed rgba(25, 31, 37, 0.12);
-          margin-top: 50px;
-          text-align: center;
-          font-size: 14px;
-          color: rgb(122, 122, 122);
-          z-index: 9999;
-
-          &:hover {
-            border: 1px dashed @primary;
-          }
+      }
+      .tip {
+        //float: left;
+        margin: 0 auto;
+        width: 65%;
+        max-width: 400px;
+        padding: 35px 20px;
+        border-radius: 10px;
+        border: 1px dashed rgba(25, 31, 37, 0.12);
+        margin-top: 50px;
+        text-align: center;
+        font-size: 14px;
+        color: rgb(122, 122, 122);
+        z-index: 9999;
+    
+        &:hover {
+          border: 1px dashed @primary;
         }
       }
     }
@@ -321,10 +329,20 @@
   }
 
   .layout-param {
-    margin-top: 150px;
     text-align: center;
     font-size: 14px;
     color: rgb(122, 122, 122);
+    .tool-nav-r {
+      text-align: left;
+      font-size: small;
+      border-left: 1px solid #ebecee;
+      padding: 10px 20px;
+      background: #fafafb;
+      border-bottom: 1px solid #ebecee;
+    }
+    .tip{
+      margin-top: 150px;
+    }
   }
 
   .flip-list-move {

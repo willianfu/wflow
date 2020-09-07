@@ -1,11 +1,13 @@
 <template>
-  <div class="arrow">
-    <el-card shadow="always">
-      <div slot="header" :class="node.type">
-        <span contenteditable="true">{{node.name}}</span>
-        <i class="el-icon-close" v-if="'root' !== node.type"></i>
-      </div>
-    </el-card>
+  <div class="arrow" ref="arrow">
+    <div @click.stop="select">
+      <el-card shadow="always" >
+        <div slot="header" :class="node.type">
+          <span>{{node.name}}</span>
+          <i class="el-icon-close" v-if="'root' !== node.type" @click="delNode"></i>
+        </div>
+      </el-card>
+    </div>
     <div class="line-y">
       <el-popover
           placement="bottom-start"
@@ -13,20 +15,22 @@
           width="350"
           trigger="click">
         <div class="node-select">
-          <div>
+          <div @click="addNode('sp')">
             <i class="el-icon-s-check" style="color:rgb(255, 148, 62);"></i>
             <span>审批人</span>
           </div>
-          <div>
+          <div @click="addNode('cs')">
             <i class="el-icon-s-promotion" style="color:rgb(50, 150, 250);"></i>
             <span>抄送人</span>
           </div>
-          <div>
+          <div @click="addNode('tj')">
             <i class="el-icon-share" style="color:rgb(21, 188, 131);"></i>
             <span>条件分支</span>
           </div>
         </div>
-        <el-button icon="el-icon-plus" ref="bt" slot="reference" type="primary" size="small"  circle></el-button>
+        <el-button icon="el-icon-plus" ref="bt" slot="reference"
+                   type="primary" size="small"  circle>
+        </el-button>
       </el-popover>
     </div>
     <div class="jt"></div>
@@ -43,9 +47,23 @@
       },
       node:{
         type: Object
+      },
+      index:{
+        default: 0,
+        type: Number
       }
     },
     methods: {
+      addNode(type){
+        this.$refs.arrow.click()
+        this.$emit('addNode', type, this.index)
+      },
+      delNode(){
+        this.$emit('delNode')
+      },
+      select(){
+        this.$emit('select', this.node)
+      }
     }
   }
 </script>
@@ -112,14 +130,14 @@
     }
     .line-y {
       position: relative;
-      height: 100%;
+      height: 80px;
       margin: 0 auto;
       width: 0;
       border: 1px solid #a9a9a9;
 
       button {
         position: absolute;
-        top: 30px;
+        top: 18px;
         right: -16px;
 
         &:hover {
