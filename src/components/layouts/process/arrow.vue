@@ -1,11 +1,15 @@
 <template>
   <div class="arrow" ref="arrow">
-    <div @click.stop="select">
+    <div @click.stop="select" v-if="node !== null">
       <el-card shadow="always" >
         <div slot="header" :class="node.type">
           <span>{{node.name}}</span>
-          <i class="el-icon-close" v-if="'root' !== node.type" @click="delNode"></i>
+          <i class="el-icon-close" v-if="'root' !== node.type" @click.stop="delNode"></i>
+          <el-tooltip effect="dark" content="复制条件" placement="top-start">
+            <i class="el-icon-copy-document" v-if="'tj' === node.type"></i>
+          </el-tooltip>
         </div>
+        <span>请设置{{node.name}}</span>
       </el-card>
     </div>
     <div class="line-y">
@@ -46,10 +50,11 @@
         type: Boolean
       },
       node:{
+        default: null,
         type: Object
       },
       index:{
-        default: 0,
+        default: null,
         type: Number
       }
     },
@@ -81,11 +86,13 @@
       .el-card__header {
         color: #ffffff;
         font-size: small;
-        height: 100%;
         width: 100%;
         padding: 0;
       }
-
+      .el-card__body{
+        padding: 10px 20px;
+        font-size: small;
+      }
       .root, .sp, .cs, .tj {
         padding: 5px 10px;
 
@@ -117,8 +124,15 @@
         background-color: #1890ff;
       }
       .tj {
+        font-size: small;
         background-color: #ffffff;
-        color: #4b4b4b;
+        color: rgb(21, 188, 131);
+        i{
+          color: #818181;
+        }
+        i:last-child{
+          margin-right: 10px;
+        }
       }
       &:hover {
         border: 1px solid @primary;

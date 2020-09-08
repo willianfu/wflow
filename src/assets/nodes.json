@@ -1,40 +1,91 @@
-[
-  {
-    "type": "root",
-    "condition": "none",
-    "detail": {
-      "name": "发起人",
-      "mode": "or",
-      "user": [
-        {"userId": 555, "userName": "ddd"}
-      ],
-      "authority": ["djiojw","fewfrefre"]
-    },
-    "children": [
+{
+  "type": "root",
+  "name": "发起人",
+  "detail": {
+    "mode": "or",
+    "user": [
       {
-        "type": "sp",
-        "condition": "none",
-        "detail": {
-          "name": "发起人",
-          "mode": "or",
-          "user": [
-            {"userId": 555, "userName": "ddd"}
-          ],
-          "authority": ["djiojw","fewfrefre"]
+        "userId": 555,
+        "userName": "ddd"
+      }
+    ],
+    "authority": [
+      "djiojw",
+      "fewfrefre"
+    ]
+  },
+  "node": {
+    "type": "cs",
+    "name": "抄送人",
+    "detail": {
+      "user": [
+        {
+          "userId": 555,
+          "userName": "ddd"
+        }
+      ]
+    },
+    "conditions": [
+      {
+        "condition": [
+          {
+            "type": "initiator",
+            "params": [
+              {
+                "symbol": "dept",
+                "target": "部门1, 部门2"
+              },
+              {
+                "symbol": "user",
+                "target": "用户id"
+              },
+              {
+                "symbol": "role",
+                "target": "角色id"
+              }
+            ]
+          },
+          {
+            "type": "form",
+            "params": [
+              {
+                "symbol": "表单id",
+                "target": "表单值"
+              }
+            ]
+          }
+        ],
+        "node": {
+          "type": "sp",
+          "name": "审批人",
+          "detail": {
+            "user": [
+              {
+                "userId": 555,
+                "userName": "ddd"
+              }
+            ]
+          }
         }
       },
       {
-        "type": "sp",
-        "condition": "none",
-        "detail": {
-          "name": "发起人",
-          "mode": "or",
-          "user": [
-            {"userId": 555, "userName": "ddd"}
-          ],
-          "authority": ["djiojw","fewfrefre"]
+        "condition": [
+          {},
+          {}
+        ],
+        "node": {
+          "type": "sp",
+          "name": "审批人",
+          "detail": {
+            "user": [
+              {
+                "userId": 555,
+                "userName": "ddd"
+              }
+            ]
+          }
         }
       }
     ]
   }
-]
+}
