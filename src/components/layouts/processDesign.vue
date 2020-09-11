@@ -6,9 +6,10 @@
 			<el-button icon="el-icon-minus" size="small" @click="scale -= 10" :disabled="scale <= 50" circle></el-button>
 		</div>
 		<div class="design" :style="'transform: scale('+ scale/100 +'); transform-origin: 50% 0px 0px;'">
-			<el-row v-for="(node, id) in nodes" :key="id">
+			<!--<el-row v-for="(node, id) in nodes" :key="id">
 				<arrow :node="ch" :index="id" v-for="(ch, i) in node" :key="i" @addNode="addNode" @delNode="delNode(id)" @select="selectNode"></arrow>
-			</el-row>
+			</el-row>-->
+			<process></process>
 			<el-row>
                 <div class="end">
                   <div></div>
@@ -27,12 +28,12 @@
 </template>
 
 <script>
-    import arrow from "./process/arrow";
+    import process from "./process/processView";
     import tp from "@/assets/approvalTemplate"
 
     export default {
         name: "processDesign",
-        components: {arrow},
+        components: { process},
         data() {
             return {
                 select: {},
@@ -103,7 +104,7 @@
 	
 	.design {
 		margin-top: 100px;
-		
+		overflow: auto;
 		/deep/ .el-row {
 			display: flex;
 			justify-content: center;

@@ -26,6 +26,7 @@ var template={
             ]
         },
         "node": {
+            "type": 'condition',
             "conditions": [
                 {
                     "condition": [
@@ -89,6 +90,4 @@ var template={
 }
 
 
-export default {
-    template
-}
+export default template

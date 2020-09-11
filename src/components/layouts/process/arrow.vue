@@ -61,7 +61,7 @@
     methods: {
       addNode(type){
         this.$refs.arrow.click()
-        this.$emit('addNode', type, this.index)
+        this.$emit('addNode', type, this.node)
       },
       delNode(){
         this.$emit('delNode')
@@ -77,8 +77,9 @@
   @import "@/assets/theme";
   .arrow {
     /deep/ .el-card {
+      margin: 0 auto;
       cursor: pointer;
-      margin: 0 60px;
+    /*  margin: 0 60px;*/
       height: 77px;
       font-size: medium;
       width: 220px;
