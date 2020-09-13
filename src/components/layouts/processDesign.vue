@@ -5,7 +5,7 @@
 			<span>{{scale}}%</span>
 			<el-button icon="el-icon-minus" size="small" @click="scale -= 10" :disabled="scale <= 50" circle></el-button>
 		</div>
-		<div class="design" :style="'transform: scale('+ scale/100 +'); transform-origin: 50% 0px 0px;'">
+		<div class="design" :style="'transform: scale('+ scale/100 +'); transform-origin: 50% 0px 0px; width: 100%;'">
 			<!--<el-row v-for="(node, id) in nodes" :key="id">
 				<arrow :node="ch" :index="id" v-for="(ch, i) in node" :key="i" @addNode="addNode" @delNode="delNode(id)" @select="selectNode"></arrow>
 			</el-row>-->
@@ -104,7 +104,7 @@
 	
 	.design {
 		margin-top: 100px;
-		overflow: auto;
+		//overflow: auto;
 		/deep/ .el-row {
 			display: flex;
 			justify-content: center;

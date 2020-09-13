@@ -1,6 +1,6 @@
 <template>
-  <div class="arrow" ref="arrow">
-    <div @click.stop="select" v-if="node !== null">
+  <div :class="{'arrow': true, 'borderTop': !showCard(node)}" ref="arrow" >
+    <div @click.stop="select" v-if="showCard(node)">
       <el-card shadow="always" >
         <div slot="header" :class="node.type">
           <span>{{node.name}}</span>
@@ -37,7 +37,9 @@
         </el-button>
       </el-popover>
     </div>
-    <div class="jt"></div>
+    <div class="jt" v-if="!showArrow(node)"></div>
+    <div class="add-tj" v-if="showAddTjBtn(node)" @click="addCd">添加条件</div>
+
   </div>
 </template>
 
@@ -63,11 +65,27 @@
         this.$refs.arrow.click()
         this.$emit('addNode', type, this.node)
       },
+      addCd(){
+        this.$emit('addCd', this.node)
+      },
       delNode(){
         this.$emit('delNode')
       },
       select(){
         this.$emit('select', this.node)
+      },
+      showCard(node){
+        return node !== null
+          && (node.type === 'root'
+            || node.type === 'sp'
+            || node.type === 'cs'
+            || node.type === 'tj')
+      },
+      showArrow(node){
+        return node.node === undefined
+      },
+      showAddTjBtn(node){
+        return node.node !== undefined && node.node.conditions !== undefined
       }
     }
   }
@@ -75,6 +93,29 @@
 
 <style lang="less" scoped>
   @import "@/assets/theme";
+
+  .borderTop{
+    border-top: 1px solid #a9a9a9;
+  }
+  .arrow{
+    position: relative;
+    .add-tj{
+      cursor: pointer;
+      font-size: small;
+      border-radius: 14px;
+      padding: 8px 10px;
+      color: rgb(21, 188, 131);
+      width: 54px;
+      left: calc(50% - 36px);
+      bottom: -15px;
+      background-color: #ffffff;
+      position: absolute;
+      box-shadow: 0 0 8px 2px #e5e5e5;
+      &:hover{
+        box-shadow: 0 0 8px 2px #d6d6d6;
+      }
+    }
+  }
   .arrow {
     /deep/ .el-card {
       margin: 0 auto;
