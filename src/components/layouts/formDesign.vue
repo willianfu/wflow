@@ -92,13 +92,13 @@
         isStart: false,
         showMobile: true,
         components: [
-          {text: '单行输入框', name: 'input'},
-          {text: '多行输入框', name: 'input'},
-          {text: '数字输入框', name: 'inputNumber'},
-          {text: '单选框', name: 'radio'},
-          {text: '多选框', name: 'checkbox'},
-          {text: '日期', name: 'datePicker'},
-          {text: '日期区间', name: 'timePicker'},
+          {text: '单行输入框', name: 'jInput', props:{type: 'text'}},
+          {text: '多行输入框', name: 'jInput', props:{type: 'textarea'}},
+          {text: '数字输入框', name: 'jInput', props:{type: 'number'}},
+          {text: '单选框', name: 'jSelect', props:{type: 'single'}},
+          {text: '多选框', name: 'jSelect', props:{type: 'more'}},
+          {text: '日期', name: 'jDateTime', props:{type: 'dateTime'}},
+          {text: '日期区间', name: 'jDateTime', props:{type: 'dateTimeRange'}},
           {text: '图片', name: 'button'},
           /*{text: '说明文字', name:''},
           {text: '金额', name:''},
@@ -108,9 +108,13 @@
           {text: '部门', name:''},
           {text: '联系人', name:''}*/
         ],
-        form: [],
         select: null,
         drag: false,
+      }
+    },
+    computed:{
+      form(){
+        return this.$store.state.form;
       }
     },
     methods:{

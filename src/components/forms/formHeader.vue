@@ -5,18 +5,17 @@
 			<i class="el-icon-copy-document" @click="copy"></i>
 			<i class="el-icon-delete" @click="del"></i>
 		</div>
-		<component :is="atom" :disabled="true"></component>
+		<base-component :atom="obj"></base-component>
 	</div>
 </template>
 
 <script>
+		import baseComponent from './component'
 
     export default {
         name: "formHeader",
+				components:{baseComponent},
         props: {
-            atom: {
-                default: {}
-            },
             obj: {
                 type: Object
             }
