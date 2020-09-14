@@ -102,6 +102,16 @@
 <style lang="less" scoped>
 	@import "@/assets/theme";
 	
+	::-webkit-scrollbar {
+		width: 8px;
+		height: 8px;
+		background-color: #e1e1e1;
+	}
+	
+	::-webkit-scrollbar-thumb {
+		border-radius: 16px;
+		background-color: #99999a;
+	}
 	.design {
 		margin-top: 100px;
 		//overflow: auto;
@@ -109,7 +119,7 @@
 			display: flex;
 			justify-content: center;
 			.end{
-              div:first-child{
+              /*div:first-child{
                 margin: 0 auto;
                 border-radius: 50%;
                 border: 5px solid #a9a9a9;
@@ -121,7 +131,7 @@
                 margin: 0 auto;
                 width: 0;
                 border: 1px solid #a9a9a9;
-              }
+              }*/
               .end-node {
                 margin-bottom: 20px;
                 border-radius: 15px;

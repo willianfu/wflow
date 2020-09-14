@@ -32,15 +32,4 @@
 		}
 	}
 	
-	::-webkit-scrollbar {
-		width: 4px;
-		height: 4px;
-		background-color: #f8f8f8;
-	}
-	
-	::-webkit-scrollbar-thumb {
-		border-radius: 16px;
-		background-color: #e8e8e8;
-	}
-	
 </style>

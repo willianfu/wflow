@@ -3,7 +3,10 @@
     <div @click.stop="select" v-if="showCard(node)">
       <el-card shadow="always" >
         <div slot="header" :class="node.type">
-          <span>{{node.name}}</span>
+          <span>
+            <i :class="{'el-icon-s-check': node.type === 'sp', 'el-icon-s-promotion': node.type === 'cs'}"></i>
+            {{node.name}}
+          </span>
           <i class="el-icon-close" v-if="'root' !== node.type" @click.stop="delNode"></i>
           <el-tooltip effect="dark" content="复制条件" placement="top-start">
             <i class="el-icon-copy-document" v-if="'tj' === node.type"></i>
@@ -37,7 +40,7 @@
         </el-button>
       </el-popover>
     </div>
-    <div class="jt" v-if="!showArrow(node)"></div>
+    <div class="jt" v-if="showArrow(node)"></div>
     <div class="add-tj" v-if="showAddTjBtn(node)" @click="addCd">添加条件</div>
 
   </div>
@@ -75,14 +78,14 @@
         this.$emit('select', this.node)
       },
       showCard(node){
-        return node !== null
+        return (node !== null && node !== undefined)
           && (node.type === 'root'
             || node.type === 'sp'
             || node.type === 'cs'
             || node.type === 'tj')
       },
       showArrow(node){
-        return node.node === undefined
+        return false && node;//node.node === undefined
       },
       showAddTjBtn(node){
         return node.node !== undefined && node.node.conditions !== undefined
@@ -93,10 +96,7 @@
 
 <style lang="less" scoped>
   @import "@/assets/theme";
-
-  .borderTop{
-    border-top: 1px solid #a9a9a9;
-  }
+  
   .arrow{
     position: relative;
     .add-tj{
@@ -107,7 +107,7 @@
       color: rgb(21, 188, 131);
       width: 54px;
       left: calc(50% - 36px);
-      bottom: -15px;
+      bottom: -30px;
       background-color: #ffffff;
       position: absolute;
       box-shadow: 0 0 8px 2px #e5e5e5;
@@ -116,7 +116,21 @@
       }
     }
   }
+  .arrow::before{
+    content: "";
+    z-index: -999;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 2px;
+    height: 100%;
+    background-color: #CACACA;
+  }
   .arrow {
+    padding: 30px 50px;
     /deep/ .el-card {
       margin: 0 auto;
       cursor: pointer;
@@ -144,7 +158,7 @@
           }
         }
 
-        i {
+        .el-icon-close, .el-icon-copy-document{
           display: none;
           float: right;
           margin-top: 2px;
@@ -178,8 +192,8 @@
       }
       &:hover {
         border: 1px solid @primary;
-
-        i {
+  
+        .el-icon-close, .el-icon-copy-document {
           display: inline;
         }
       }
@@ -189,7 +203,7 @@
       height: 80px;
       margin: 0 auto;
       width: 0;
-      border: 1px solid #a9a9a9;
+      //border: 1px solid #a9a9a9;
 
       button {
         position: absolute;
