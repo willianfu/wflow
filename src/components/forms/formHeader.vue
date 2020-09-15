@@ -1,6 +1,6 @@
 <template>
 	<div class="form-header">
-		<p><span>*</span>{{obj.text}}</p>
+		<p><span v-if="obj.valid">*</span>{{obj.text}}</p>
 		<div class="option">
 			<i class="el-icon-copy-document" @click="copy"></i>
 			<i class="el-icon-delete" @click="del"></i>

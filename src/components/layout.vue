@@ -11,6 +11,13 @@
         <el-button size="mini" @click="preview"><i class="el-icon-view"></i>预览</el-button>
         <el-button size="mini" type="primary" @click="publish"><i class="el-icon-s-promotion"></i>发布</el-button>
       </div>
+      <div class="back">
+        <el-button @click="exit" size="medium" icon="el-icon-arrow-left" circle></el-button>
+        <span>
+          <i :class="setup.icon" :style="'background:' + setup.background"></i>
+          <span>{{setup.name}}</span>
+        </span>
+      </div>
     </div>
 
     <el-dialog title="请使用手机扫码预览" :visible.sync="viewCode" width="300px" :close-on-click-modal="false" center>
@@ -33,6 +40,11 @@
         viewCode: false,
       };
     },
+    computed:{
+      setup() {
+        return this.$store.state.baseSetup;
+      }
+    },
     mounted() {
 			this.activeIndex = this.$route.path
     },
@@ -51,6 +63,15 @@
       },
       preview() {
         this.viewCode = true;
+      },
+      exit(){
+        this.$confirm('未发布的内容将不会被保存，是否直接退出 ?', '提示', {
+          confirmButtonText: '退出',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          window.location.reload()
+        })
       },
       to(path) {
         this.$router.push(path);
@@ -87,6 +108,24 @@
       button {
         border-radius: 15px;
       }
+    }
+  
+    .back{
+      z-index: 1000;
+      position: fixed;
+      top: 10px;
+      left: 20px;
+      font-size: small;
+      span{
+        i{
+          border-radius: 10px;
+          padding: 7.8px;
+          font-size: 20px;
+          color: #ffffff;
+          margin: 0 10px;
+        }
+      }
+      
     }
   }
 </style>

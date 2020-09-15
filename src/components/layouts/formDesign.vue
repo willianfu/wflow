@@ -13,7 +13,7 @@
                      @start="isStart = true" @end="isStart = false"
           >
             <li v-for="(cp, id) in components" :key="id">
-              <i class="el-icon-picture-outline-round"></i>
+              <i :class="cp.icon"></i>
               <span>{{cp.text}}</span>
             </li>
           </draggable>
@@ -70,6 +70,7 @@
 
     <el-aside class="layout-param">
       <div class="tool-nav-r" v-if="select !== null && form[select] !== undefined">
+        <i :class="form[select].icon" style="margin-right: 5px; font-size: medium"></i>
         <span>{{form[select].text}}</span>
       </div>
       <div v-show="select === null" class="tip">
@@ -92,14 +93,18 @@
         isStart: false,
         showMobile: true,
         components: [
-          {text: '单行输入框', name: 'jInput', props:{type: 'text'}},
-          {text: '多行输入框', name: 'jInput', props:{type: 'textarea'}},
-          {text: '数字输入框', name: 'jInput', props:{type: 'number'}},
-          {text: '单选框', name: 'jSelect', props:{type: 'single'}},
-          {text: '多选框', name: 'jSelect', props:{type: 'more'}},
-          {text: '日期', name: 'jDateTime', props:{type: 'dateTime'}},
-          {text: '日期区间', name: 'jDateTime', props:{type: 'dateTimeRange'}},
-          {text: '图片', name: 'button'},
+          {text: '单行输入框', name: 'jInput', icon: 'el-icon-edit', valid: false, props:{type: 'text'}},
+          {text: '多行输入框', name: 'jInput', icon: 'el-icon-edit-outline', valid: false, props:{type: 'textarea'}},
+          {text: '数字输入框', name: 'jInput', icon: 'el-icon-more-outline', valid: false, props:{type: 'number'}},
+          {text: '单选框', name: 'jSelect', icon: 'el-icon-menu', valid: false, props:{type: 'single'}},
+          {text: '多选框', name: 'jSelect', icon: 'el-icon-s-grid', valid: false, props:{type: 'more'}},
+          {text: '日期', name: 'jDateTime', icon: 'el-icon-date', valid: false, props:{type: 'dateTime'}},
+          {text: '日期区间', name: 'jDateTime', icon: 'el-icon-c-scale-to-original', valid: false, props:{type: 'dateTimeRange'}},
+          {text: '上传图片', name: 'jFile', icon: 'el-icon-picture-outline', valid: false, props:{type: 'image'}},
+          {text: '上传附件', name: 'jFile', icon: 'el-icon-upload', valid: false, props:{type: 'file'}},
+          {text: '说明文字', name: 'explain', icon: 'el-icon-warning-outline', valid: false, props:{type: ''}},
+          {text: '人员', name: 'user', icon: 'el-icon-user', valid: false, props:{type: ''}},
+          {text: '部门', name: 'dept', icon: 'el-icon-takeaway-box', valid: false, props:{type: ''}},
           /*{text: '说明文字', name:''},
           {text: '金额', name:''},
           {text: '附件', name:''},
