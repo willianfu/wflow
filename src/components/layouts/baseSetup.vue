@@ -43,12 +43,16 @@
 				<el-input v-model="setup.whoViewData" size="medium"></el-input>
 			</el-form-item>
 		</el-form>
+		<org-picker></org-picker>
 	</div>
 </template>
 
 <script>
+	import orgPicker from '@/components/common/organizationPicker'
+
   export default {
     name: "baseSetup",
+		components:{orgPicker},
     data() {
       return {
         showIconSelect: false,
