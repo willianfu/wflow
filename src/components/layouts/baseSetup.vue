@@ -26,24 +26,31 @@
 				<el-input v-model="setup.name" size="medium"></el-input>
 			</el-form-item>
 			<el-form-item label="所在分组">
-				<el-select v-model="setup.group" placeholder="请选择分组" size="medium">
-				</el-select>
+				<el-select v-model="setup.group" placeholder="请选择分组" size="medium"></el-select>
 			</el-form-item>
 			<el-form-item label="表单说明">
 				<el-input placeholder="请输入表单说明" v-model="setup.remark" type="textarea" show-word-limit :autosize="{ minRows: 2, maxRows: 5}" maxlength="500"
 				></el-input>
 			</el-form-item>
 			<el-form-item label="谁可以发起提交">
-				<el-input v-model="setup.whoCommit" size="medium"></el-input>
+				<el-select v-model="setup.whoCommit" @click.native="whoCommit"
+				           class="select-u" placeholder="请选择可以发起提交的人员"
+				           size="medium" clearable multiple>
+					<el-option v-for="wc in setup.whoCommit" :label="wc.name" :value="wc"></el-option>
+				</el-select>
 			</el-form-item>
 			<el-form-item label="谁可以编辑此表单模板">
-				<el-input v-model="setup.whoEdit" size="medium"></el-input>
+				<el-select v-model="setup.whoEdit" @click.native="whoEdit"
+				           class="select-u" placeholder="请选择可以编辑此表单模板的人员"
+				           size="medium" clearable multiple></el-select>
 			</el-form-item>
 			<el-form-item label="谁可以查看并导出数据">
-				<el-input v-model="setup.whoViewData" size="medium"></el-input>
+				<el-select v-model="setup.whoViewData" @click.native="whoViewData"
+				           class="select-u" placeholder="请选择可以查看并导出数据的人员"
+				           size="medium" clearable multiple></el-select>
 			</el-form-item>
 		</el-form>
-		<org-picker></org-picker>
+		<org-picker :show="showUserSelect" @close="closeSelect" @selected="selected"></org-picker>
 	</div>
 </template>
 
@@ -55,6 +62,8 @@
 		components:{orgPicker},
     data() {
       return {
+        nowUserSelect: null,
+        showUserSelect: false,
         showIconSelect: false,
         colors: [
           '#ff4500',
@@ -95,11 +104,36 @@
       setup() {
         return this.$store.state.baseSetup;
       }
-    }
+    },
+	  methods:{
+      closeSelect(){
+        this.showUserSelect = false
+        //this.nowUserSelect = null
+      },
+      selected(select){
+        this.showUserSelect = false
+        this.setup[this.nowUserSelect] = select
+      },
+      whoCommit(){
+        this.nowUserSelect = 'whoCommit'
+        this.showUserSelect = true
+      },
+      whoEdit(){
+        this.nowUserSelect = 'whoEdit'
+        this.showUserSelect = true
+      },
+      whoViewData(){
+        this.nowUserSelect = 'whoViewData'
+        this.showUserSelect = true
+      }
+	  }
   }
 </script>
 
 <style lang="less" scoped>
+	/deep/ .el-select-dropdown {
+		display: none;
+	}
 	
 	.icon-select {
 		i {
@@ -111,6 +145,9 @@
 				box-shadow: 0 0 10px 2px #C2C2C2;
 			}
 		}
+	}
+	/deep/ .select-u{
+		width: 100%;
 	}
 	
 	.base-setup {
