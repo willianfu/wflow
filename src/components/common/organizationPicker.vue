@@ -1,57 +1,57 @@
 <template>
-	<el-dialog
-					:title="title" :destroy-on-close="true"
-					:close-on-click-modal="false"
-					:visible.sync="show" :before-close="close"
-					width="700px" center>
-		<div class="picker">
-			<div style="float:left;">
-				<p>选择</p>
-				<div class="box">
-					<div >
-						<el-input v-if="type !== 'dept'" placeholder="搜索人员" prefix-icon="el-icon-search" size="medium"
-						          v-model="search" :maxlength="50" clearable>
-						</el-input>
-						<el-breadcrumb separator-class="el-icon-arrow-right" style="overflow-x: hidden">
-							<el-breadcrumb-item>通讯录</el-breadcrumb-item>
-							<el-breadcrumb-item style="color:#38adff;" v-for="(node, index) in navNodes" :key="index">
-								{{node.name}}
-							</el-breadcrumb-item>
-						</el-breadcrumb>
-						<el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-						<span style="margin-left: 20px; cursor: pointer; color:#38adff;" @click="beforeNode">上一级</span>
-					</div>
-					<div style="margin-top: 8px; width: 100%;">
-						<div style="margin-top: 8px; overflow-y: auto; height: calc(100% - 90px);">
-							<div v-for="(node, index) in nodes" :key="index" class="line"
-							     :style="node.type === 'user' && type === 'dept' ? 'display: none':''" @click="selectChange(node)">
-								<el-checkbox v-model="node.selected"></el-checkbox>
-								<span style="margin-left: 10px">
+  <el-dialog
+      :title="title" :destroy-on-close="true"
+      :close-on-click-modal="false"
+      :visible.sync="show" :before-close="close"
+      width="700px" center>
+    <div class="picker">
+      <div style="float:left;">
+        <p>选择</p>
+        <div class="box">
+          <div>
+            <el-input v-if="type !== 'dept'" placeholder="搜索人员" prefix-icon="el-icon-search" size="medium"
+                      v-model="search" :maxlength="50" clearable>
+            </el-input>
+            <el-breadcrumb separator-class="el-icon-arrow-right" style="overflow-x: hidden">
+              <el-breadcrumb-item>通讯录</el-breadcrumb-item>
+              <el-breadcrumb-item style="color:#38adff;" v-for="(node, index) in navNodes" :key="index">
+                {{node.name}}
+              </el-breadcrumb-item>
+            </el-breadcrumb>
+            <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+            <span style="margin-left: 20px; cursor: pointer; color:#38adff;" @click="beforeNode">上一级</span>
+          </div>
+          <div style="margin-top: 8px; width: 100%;">
+            <div style="margin-top: 8px; overflow-y: auto; height: calc(100% - 90px);">
+              <div v-for="(node, index) in nodes" :key="index" class="line"
+                   :style="node.type === 'user' && type === 'dept' ? 'display: none':''" @click="selectChange(node)">
+                <el-checkbox v-model="node.selected"></el-checkbox>
+                <span style="margin-left: 10px">
                     <i class="el-icon-folder-opened" v-if="node.type === 'dept'"></i>
                     <div class="avt" :style="'background: ' + getAvatarColor()"
                          v-else-if="node.avatar === undefined || node.avatar === ''">
                       {{node.name.length > 2 ? node.name.substring(1,3) : node.name}}
                     </div>
 										<img :src="node.avatar" style="border-radius: 50%; display:inline-block;" width="35" height="35"
-										     v-else/>
+                         v-else/>
                     <span style="margin-left: 10px">{{node.name}}</span>
                     <span :class="{'next-dept-disable': node.selected, 'next-dept': !node.selected,}"
                           v-if="node.type === 'dept'" @click.stop="nextNode(node)">
                       <i class="el-icon-coin"></i>下级
                     </span>
                   </span>
-							</div>
-						</div>
-					</div>
-				
-				</div>
-			</div>
-			
-			<div style="float:right;">
-				<p>已选</p>
-				<div class="box">
-					<div style="overflow-x: hidden; overflow-y: auto; height:100%">
-						<div v-for="(node, index) in select" :key="index" class="line">
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div style="float:right;">
+        <p>已选</p>
+        <div class="box">
+          <div style="overflow-x: hidden; overflow-y: auto; height:100%">
+            <div v-for="(node, index) in select" :key="index" class="line">
                 <span style="margin-left: 10px">
                     <i class="el-icon-folder-opened" v-if="node.type === 'dept'"></i>
                      <div class="avt" :style="'background: ' + getAvatarColor()"
@@ -64,16 +64,16 @@
                       <i class="el-icon-close" @click="noSelected(index)"></i>
                     </span>
                   </span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<span slot="footer" class="dialog-footer">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span slot="footer" class="dialog-footer">
       <el-button @click="close" size="small">取 消</el-button>
       <el-button type="primary" @click="selectOk" size="small">确 定</el-button>
     </span>
-	</el-dialog>
+  </el-dialog>
 
 </template>
 
@@ -224,14 +224,14 @@
         this.navNodes.push(node)
         this.getOrgList()
       },
-      beforeNode(){
-        if (this.navNodes.length === 0){
+      beforeNode() {
+        if (this.navNodes.length === 0) {
           this.$message.warning("已经是最上一级喽");
-	        return;
+          return;
         }
-        if (this.navNodes.length < 2){
+        if (this.navNodes.length < 2) {
           this.nowDeptId = null
-        }else {
+        } else {
           this.nowDeptId = this.navNodes[this.navNodes.length - 2].id
         }
         this.navNodes.splice(this.navNodes.length - 1, 1);
@@ -242,7 +242,7 @@
         this.nodes.forEach(nd => nd.selected = false)
       },
       selectOk() {
-        this.$emit('selected', Object.assign({}, this.select))
+        this.$emit('selected', Object.assign([], this.select))
         this.recover()
       },
       close() {
@@ -268,90 +268,90 @@
 </script>
 
 <style lang="less" scoped>
-	/deep/ .el-dialog {
-		border-radius: 13px;
-		overflow: hidden;
-		
-		.el-dialog__header {
-			background: #f7f7f7;
-		}
-		
-		.el-dialog__body {
-			padding-top: 0;
-		}
-		
-		.el-dialog__footer {
-			margin-top: 450px;
-		}
-	}
-	
-	.line {
-		width: 290px;
-		height: 35px;
-		line-height: 35px;
-		
-		&:hover {
-			background: #e9e9ea;
-		}
-		
-		.avt {
-			width: 33px;
-			height: 33px;
-			text-align: center;
-			display: inline-block;
-			font-size: 5px;
-			border-radius: 50%;
-			color: #ffffff;
-		}
-		
-		i:first-child {
-			font-size: large;
-		}
-		
-		.next-dept {
-			cursor: pointer;
-			float: right;
-			color: #38adff;
-		}
-		
-		.next-dept-disable {
-			//pointer-events: none;
-			cursor: not-allowed;
-			float: right;
-			color: #cccccd;
-		}
-	}
-	
-	.picker {
-		p {
-			font-size: larger;
-		}
-		
-		/deep/ .box {
-			overflow-y: auto;
-			overflow-x: hidden;
-			padding: 10px;
-			height: 400px;
-			width: 290px;
-			border-radius: 5px;
-			border: 1px solid #d4d4d5;
-			background: #f7f7f7;
-			
-			.el-breadcrumb {
-				margin: 10px 0;
-			}
-		}
-	}
-	
-	::-webkit-scrollbar {
-		float: right;
-		width: 4px;
-		height: 4px;
-		background-color: #f8f8f8;
-	}
-	
-	::-webkit-scrollbar-thumb {
-		border-radius: 16px;
-		background-color: #e8e8e8;
-	}
+  /deep/ .el-dialog {
+    border-radius: 13px;
+    overflow: hidden;
+
+    .el-dialog__header {
+      background: #f7f7f7;
+    }
+
+    .el-dialog__body {
+      padding-top: 0;
+    }
+
+    .el-dialog__footer {
+      margin-top: 450px;
+    }
+  }
+
+  .line {
+    width: 290px;
+    height: 35px;
+    line-height: 35px;
+
+    &:hover {
+      background: #e9e9ea;
+    }
+
+    .avt {
+      width: 33px;
+      height: 33px;
+      text-align: center;
+      display: inline-block;
+      font-size: 5px;
+      border-radius: 50%;
+      color: #ffffff;
+    }
+
+    i:first-child {
+      font-size: large;
+    }
+
+    .next-dept {
+      cursor: pointer;
+      float: right;
+      color: #38adff;
+    }
+
+    .next-dept-disable {
+      //pointer-events: none;
+      cursor: not-allowed;
+      float: right;
+      color: #cccccd;
+    }
+  }
+
+  .picker {
+    p {
+      font-size: larger;
+    }
+
+    /deep/ .box {
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 10px;
+      height: 400px;
+      width: 290px;
+      border-radius: 5px;
+      border: 1px solid #d4d4d5;
+      background: #f7f7f7;
+
+      .el-breadcrumb {
+        margin: 10px 0;
+      }
+    }
+  }
+
+  ::-webkit-scrollbar {
+    float: right;
+    width: 4px;
+    height: 4px;
+    background-color: #f8f8f8;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 16px;
+    background-color: #e8e8e8;
+  }
 </style>

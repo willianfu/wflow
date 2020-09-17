@@ -60,8 +60,14 @@ export default new Vuex.Store({
       name:'新的审批',
       group:'',
       remark:'',
-      whoCommit:'',
-      whoEdit:'',
+      whoCommit:{
+        names:[],
+        values:[]
+      },
+      whoEdit:{
+        names:[],
+        values:[]
+      },
       whoViewData:''
     },
     //表单设计
@@ -74,8 +80,14 @@ export default new Vuex.Store({
     process: process
   },
   mutations: {
-    setUser(state, user){
-      state.user = user
+    setwhoCommit(state, val){
+      state.baseSetup.whoCommit = val
+    },
+    setwhoEdit(state, val){
+      state.baseSetup.whoEdit = val
+    },
+    setwhoViewData(state, val){
+      state.baseSetup.whoViewData = val
     },
   },
   getters:{

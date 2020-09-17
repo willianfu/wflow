@@ -14,7 +14,7 @@
       return {}
     },
     mounted() {
-      this.$router.push("/layout/baseSetup")
+      this.$router.push("/formListPanel")
     },
     methods: {}
   }

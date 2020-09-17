@@ -7,6 +7,11 @@ const router = new Router({
     base: __dirname, //这个很重要
     routes:[
         {
+            path: "/formListPanel",
+            name: "formListPanel",
+            component: () => import("@/components/formListPanel.vue"),
+        },
+        {
             path: "/layout",
             name: "layout",
             component: () => import("@/components/layout.vue"),
