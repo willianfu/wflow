@@ -8,13 +8,18 @@
 			<div style="float:left;">
 				<p>选择</p>
 				<div class="box">
-					<div>
-						<el-input v-if="type !== 'dept'" placeholder="搜索人员" prefix-icon="el-icon-search" size="medium" v-model="search" :maxlength="50" clearable>
+					<div >
+						<el-input v-if="type !== 'dept'" placeholder="搜索人员" prefix-icon="el-icon-search" size="medium"
+						          v-model="search" :maxlength="50" clearable>
 						</el-input>
-						<el-breadcrumb separator-class="el-icon-arrow-right">
-							<el-breadcrumb-item v-for="(node, index) in navNodes" :key="index">{{node.name}}</el-breadcrumb-item>
+						<el-breadcrumb separator-class="el-icon-arrow-right" style="overflow-x: hidden">
+							<el-breadcrumb-item>通讯录</el-breadcrumb-item>
+							<el-breadcrumb-item style="color:#38adff;" v-for="(node, index) in navNodes" :key="index">
+								{{node.name}}
+							</el-breadcrumb-item>
 						</el-breadcrumb>
 						<el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+						<span style="margin-left: 20px; cursor: pointer; color:#38adff;" @click="beforeNode">上一级</span>
 					</div>
 					<div style="margin-top: 8px; width: 100%;">
 						<div style="margin-top: 8px; overflow-y: auto; height: calc(100% - 90px);">
@@ -27,7 +32,8 @@
                          v-else-if="node.avatar === undefined || node.avatar === ''">
                       {{node.name.length > 2 ? node.name.substring(1,3) : node.name}}
                     </div>
-										<img :src="node.avatar" style="border-radius: 50%; display:inline-block;" width="35" height="35" v-else/>
+										<img :src="node.avatar" style="border-radius: 50%; display:inline-block;" width="35" height="35"
+										     v-else/>
                     <span style="margin-left: 10px">{{node.name}}</span>
                     <span :class="{'next-dept-disable': node.selected, 'next-dept': !node.selected,}"
                           v-if="node.type === 'dept'" @click.stop="nextNode(node)">
@@ -72,6 +78,8 @@
 </template>
 
 <script>
+  import {getOrgTree} from '@/api/common'
+
   export default {
     name: "organizationPicker",
     props: {
@@ -94,8 +102,10 @@
     data() {
       return {
         checkAll: false,
+        nowDeptId: null,
         isIndeterminate: false,
         navNodes: [],
+        navNodePointer: null,
         nodes: [
           {
             id: '325435',
@@ -142,19 +152,27 @@
         ]
       }
     },
-	  mounted(){
-      this.getOrgList()
-      this.select = []
-	  },
+    mounted() {
+    },
     methods: {
-      getOrgList(){
-      
+      getOrgList() {
+        getOrgTree({deptId: this.nowDeptId, type: this.type}).then(rsp => {
+          this.nodes = rsp.data
+          this.nodes.forEach(node => {
+            for (let i = 0; i < this.select.length; i++) {
+              if (this.select[i].id === node.id) {
+                node.selected = true;
+                break;
+              }
+            }
+          })
+        }).catch(err => this.$message.error(err.response.data))
       },
       selectChange(node) {
         if (node.selected) {
           this.checkAll = false;
           for (let i = 0; i < this.select.length; i++) {
-            if (this.select[i] === node) {
+            if (this.select[i].id === node.id) {
               this.select.splice(i, 1);
               break;
             }
@@ -171,7 +189,7 @@
       },
       noSelected(index) {
         for (let i = 0; i < this.nodes.length; i++) {
-          if (this.nodes[i] === this.select[index]) {
+          if (this.nodes[i].id === this.select[index].id) {
             this.nodes[i].selected = false;
             this.checkAll = false;
             break;
@@ -189,7 +207,7 @@
           } else {
             node.selected = false;
             for (let i = 0; i < this.select.length; i++) {
-              if (this.select[i] === node) {
+              if (this.select[i].id === node.id) {
                 this.select.splice(i, 1);
                 break;
               }
@@ -202,20 +220,49 @@
         return this.avatarColor[0]
       },
       nextNode(node) {
-        console.log(node)
+        this.nowDeptId = node.id
+        this.navNodes.push(node)
+        this.getOrgList()
       },
-	    recover(){
+      beforeNode(){
+        if (this.navNodes.length === 0){
+          this.$message.warning("已经是最上一级喽");
+	        return;
+        }
+        if (this.navNodes.length < 2){
+          this.nowDeptId = null
+        }else {
+          this.nowDeptId = this.navNodes[this.navNodes.length - 2].id
+        }
+        this.navNodes.splice(this.navNodes.length - 1, 1);
+        this.getOrgList()
+      },
+      recover() {
         this.select = []
-		    this.nodes.forEach(nd => nd.selected = false)
-	    },
-	    selectOk(){
-		    this.$emit('selected', Object.assign({}, this.select))
+        this.nodes.forEach(nd => nd.selected = false)
+      },
+      selectOk() {
+        this.$emit('selected', Object.assign({}, this.select))
         this.recover()
-	    },
-	    close(){
+      },
+      close() {
         this.$emit('close')
         this.recover()
-	    }
+      },
+      init() {
+        this.checkAll = false;
+        this.nowDeptId = null;
+        this.navNodes = [];
+        this.navNodePointer = null;
+      }
+    },
+    watch: {
+      show() {
+        if (this.show) {
+          this.init()
+          this.getOrgList()
+        }
+      }
     }
   }
 </script>
