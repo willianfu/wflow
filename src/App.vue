@@ -27,7 +27,7 @@
 		min-width: 1000px;
 		background-color: #f5f6f6;
 	}
-	
+	body,html {margin:0; height:100%;}
 	ul {
 		padding: 0;
 		margin: 0;

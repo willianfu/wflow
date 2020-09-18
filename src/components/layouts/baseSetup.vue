@@ -42,28 +42,28 @@
         ></el-input>
       </el-form-item>
       <el-form-item label="谁可以发起提交">
-        <el-select v-model="setup.whoCommit" @click.native="whoCommit" value-key="name"
+        <el-select v-model="setup.whoCommit" @click.native="selectUser('whoCommit')" value-key="name"
                    class="select-u" placeholder="请选择可以发起提交的人员"
                    size="medium" clearable multiple>
           <el-option v-for="(wc, index) in setup.whoCommit" :label="wc.name" :key="index" :value="wc"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="谁可以编辑此表单模板">
-        <el-select v-model="setup.whoEdit" @click.native="whoEdit" value-key="name"
+        <el-select v-model="setup.whoEdit" @click.native="selectUser('whoEdit')" value-key="name"
                    class="select-u" placeholder="请选择可以编辑此表单模板的人员"
                    size="medium" clearable multiple>
           <el-option v-for="(wc, index) in setup.whoEdit" :label="wc.name" :key="index" :value="wc"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="谁可以查看并导出数据">
-        <el-select v-model="setup.whoViewData" @click.native="whoViewData" value-key="name"
+        <el-select v-model="setup.whoViewData" @click.native="selectUser('whoViewData')" value-key="name"
                    class="select-u" placeholder="请选择可以查看并导出数据的人员"
                    size="medium" clearable multiple>
           <el-option v-for="(wc, index) in setup.whoViewData" :label="wc.name" :key="index" :value="wc"></el-option>
         </el-select>
       </el-form-item>
     </el-form>
-    <org-picker :show="showUserSelect" @close="closeSelect" @selected="selected"></org-picker>
+    <org-picker :show="showUserSelect" @close="closeSelect" :selected="select" @selectOver="selected"></org-picker>
   </div>
 </template>
 
@@ -78,6 +78,7 @@
         nowUserSelect: null,
         showUserSelect: false,
         showIconSelect: false,
+	      select: [],
         newGroup: '',
         fromGroup: ['哈哈', '嘿嘿'],
         colors: [
@@ -137,18 +138,11 @@
         this.$store.commit("set" + this.nowUserSelect, select);
         //this.setup[this.nowUserSelect] = select
       },
-      whoCommit() {
-        this.nowUserSelect = 'whoCommit'
+	    selectUser(key){
+        this.select = this.setup[key]
+        this.nowUserSelect = key
         this.showUserSelect = true
-      },
-      whoEdit() {
-        this.nowUserSelect = 'whoEdit'
-        this.showUserSelect = true
-      },
-      whoViewData() {
-        this.nowUserSelect = 'whoViewData'
-        this.showUserSelect = true
-      }
+	    },
     }
   }
 </script>

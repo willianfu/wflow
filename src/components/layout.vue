@@ -85,7 +85,7 @@
 </script>
 <style lang="less" scoped>
   @import "@/assets/global";
-
+  
   /deep/ .header {
     .el-menu {
       top: 0;

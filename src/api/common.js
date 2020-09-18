@@ -10,6 +10,15 @@ export function getOrgTree(param) {
   })
 }
 
+// 搜索人员
+export function getUserByName(param) {
+  return request({
+    url: 'org/tree/user/search',
+    method: 'get',
+    params: param
+  })
+}
+
 export default {
-  getOrgTree
+  getOrgTree, getUserByName
 }

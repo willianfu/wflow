@@ -10,6 +10,7 @@ const router = new Router({
             path: "/formListPanel",
             name: "formListPanel",
             component: () => import("@/components/formListPanel.vue"),
+            meta:{title:'表单列表'}
         },
         {
             path: "/layout",
@@ -20,25 +21,36 @@ const router = new Router({
                     path: "baseSetup",
                     name: "baseSetup",
                     component: () => import("@/components/layouts/baseSetup.vue"),
+                    meta:{title:'基础设置'}
                 },
                 {
                     path: "formDesign",
                     name: "formDesign",
                     component: () => import("@/components/layouts/formDesign.vue"),
+                    meta:{title:'表单设计器'}
                 },
                 {
                     path: "processDesign",
                     name: "processDesign",
                     component: () => import("@/components/layouts/processDesign.vue"),
+                    meta:{title:'流程设计器'}
                 },
                 {
                     path: "seniorSetup",
                     name: "seniorSetup",
                     component: () => import("@/components/layouts/seniorSetup.vue"),
+                    meta:{title:'高级设置'}
                 }
             ]
         },
     ]
+})
+
+router.beforeEach((to, from, next) => {
+    if (to.meta.title){
+        document.title = to.meta.title
+    }
+    next();
 })
 
 export default router;
