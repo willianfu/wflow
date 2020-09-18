@@ -4,16 +4,18 @@
 
 在线体验地址： http://47.100.202.245:83
 
- **表单布局设计器** 
+ **工作流表单管理，支持分组和单组表单拖拽排序** 
 
-![表单布局设计器](https://images.gitee.com/uploads/images/2020/0907/180034_a3945922_4928216.png "屏幕截图.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0918/161955_1243e4a2_4928216.gif "GIF.gif")
+
+ **表单基本设置** 
+
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0918/162224_edbc90a3_4928216.gif "GIF.gif")
+
+ **表单布局设计器**
+
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0918/162343_673f5056_4928216.gif "GIF.gif")
  
-**拖拽组件，排序** 
+ **流程设计器，任意审批流程编辑** 
 
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0907/180328_46ec92c9_4928216.png "屏幕截图.png")
-
- **流程设计器** 
-
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0907/180451_31e3710a_4928216.png "屏幕截图.png")
-
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0907/180510_34faad18_4928216.png "屏幕截图.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0918/162801_c96e6c07_4928216.gif "GIF.gif")
