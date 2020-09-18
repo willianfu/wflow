@@ -2,6 +2,8 @@
 
 由 Vue + ElementUI搭建，仿钉钉风格
 
+在线体验地址： http://47.100.202.245:83
+
  **表单布局设计器** 
 
 ![表单布局设计器](https://images.gitee.com/uploads/images/2020/0907/180034_a3945922_4928216.png "屏幕截图.png")
