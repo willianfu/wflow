@@ -14,7 +14,13 @@
       return {}
     },
     mounted() {
-      this.$router.push("/formListPanel")
+      let beforeUrl = sessionStorage.getItem('router-path')
+      if(beforeUrl === undefined || beforeUrl === ''){
+        this.$router.push("/workPanel")
+      }else {
+        this.$router.push(beforeUrl)
+      }
+
     },
     methods: {}
   }
@@ -24,7 +30,7 @@
 	
 	body {
 		margin: 0;
-		min-width: 1000px;
+		min-width: 500px;
 		background-color: #f5f6f6;
 	}
 	body,html {margin:0; height:100%;}

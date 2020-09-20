@@ -10,7 +10,7 @@
         <ul>
           <draggable class="drag" :list="components" :options="{sort:false}"
                      :group="{ name: 'from', pull: 'clone', put: false }"
-                     @start="isStart = true" @end="isStart = false"
+                     @start="isStart = true" @end="isStart = false" :clone="clone"
           >
             <li v-for="(cp, id) in components" :key="id">
               <i :class="cp.icon"></i>
@@ -73,8 +73,11 @@
         <i :class="form[select].icon" style="margin-right: 5px; font-size: medium"></i>
         <span>{{form[select].text}}</span>
       </div>
-      <div v-show="select === null" class="tip">
+      <div v-if="select === null" class="tip">
         😀 选中控件后在这里进行编辑
+      </div>
+      <div style="text-align:left; padding: 10px" v-else>
+        <atom-config :atom="form[select]"></atom-config>
       </div>
     </el-aside>
   </el-container>
@@ -84,9 +87,11 @@
   import draggable from "vuedraggable";
   import atom from '../forms/formComponents'
   import formHeader from '../forms/formHeader'
+  import atomConfig from '../forms/atomConfig'
+
   export default {
     name: "formDesign",
-    components: {draggable, formHeader},
+    components: {draggable, formHeader, atomConfig},
     data() {
       return {
         atom: atom,
@@ -97,14 +102,14 @@
           {text: '多行输入框', name: 'jInput', icon: 'el-icon-edit-outline', valid: false, props:{type: 'textarea'}},
           {text: '数字输入框', name: 'jInput', icon: 'el-icon-more-outline', valid: false, props:{type: 'number'}},
           {text: '单选框', name: 'jSelect', icon: 'el-icon-menu', valid: false, props:{type: 'single'}},
-          {text: '多选框', name: 'jSelect', icon: 'el-icon-s-grid', valid: false, props:{type: 'more'}},
+          {text: '多选框', name: 'jSelect', icon: 'el-icon-s-grid', valid: false, props:{type: 'more', options:['选项']}},
           {text: '日期', name: 'jDateTime', icon: 'el-icon-date', valid: false, props:{type: 'dateTime'}},
           {text: '日期区间', name: 'jDateTime', icon: 'el-icon-c-scale-to-original', valid: false, props:{type: 'dateTimeRange'}},
           {text: '上传图片', name: 'jFile', icon: 'el-icon-picture-outline', valid: false, props:{type: 'image'}},
           {text: '上传附件', name: 'jFile', icon: 'el-icon-upload', valid: false, props:{type: 'file'}},
-          {text: '说明文字', name: 'explain', icon: 'el-icon-warning-outline', valid: false, props:{type: ''}},
-          {text: '人员', name: 'user', icon: 'el-icon-user', valid: false, props:{type: ''}},
-          {text: '部门', name: 'dept', icon: 'el-icon-takeaway-box', valid: false, props:{type: ''}},
+          {text: '说明文字', name: 'explain', icon: 'el-icon-warning-outline', valid: false, props:{remark:'请输入说明内容'}},
+          {text: '人员', name: 'orgSelect', icon: 'el-icon-user', valid: false, props:{type: 'user'}},
+          {text: '部门', name: 'orgSelect', icon: 'el-icon-takeaway-box', valid: false, props:{type: 'dept'}},
           /*{text: '说明文字', name:''},
           {text: '金额', name:''},
           {text: '附件', name:''},
@@ -129,6 +134,9 @@
       del(index){
         this.form.splice(index, 1)
       },
+      clone(obj){
+        return JSON.parse(JSON.stringify(obj));
+      }
     }
   }
 </script>

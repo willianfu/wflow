@@ -4,6 +4,7 @@
   import jDateTime from './atoms/jDateTime'
   import jSelect from './atoms/jSelect'
   import jFile from './atoms/jFile'
+  import explain from './atoms/explain'
 
   export default {
     name: "component",
@@ -12,7 +13,7 @@
         type: Object
       }
     },
-    components:{jInput, jSelect, jDateTime, jFile},
+    components:{jInput, jSelect, jDateTime, jFile, explain},
     render(h) {
       return h(this.atom.name, {
         props: this.atom.props

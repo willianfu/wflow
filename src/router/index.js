@@ -7,6 +7,18 @@ const router = new Router({
     base: __dirname, //这个很重要
     routes:[
         {
+            path: "/workPanel",
+            name: "workPanel",
+            component: () => import("@/components/workPanel.vue"),
+            meta:{title:'工作面板'}
+        },
+        {
+            path: "/workSpace",
+            name: "workSpace",
+            component: () => import("@/components/workSpace.vue"),
+            meta:{title:'表单列表'}
+        },
+        {
             path: "/formListPanel",
             name: "formListPanel",
             component: () => import("@/components/formListPanel.vue"),
@@ -51,6 +63,7 @@ router.beforeEach((to, from, next) => {
         document.title = to.meta.title
     }
     next();
+    sessionStorage.setItem('router-path', to.path)
 })
 
 export default router;
