@@ -8,10 +8,11 @@
     </el-form-item>
 
       <el-form-item label="配置选项" prop="placeholder" v-if="showMoreSelect">
-        <draggable :list="form" group="option" handler=".el-icon-rank" :options="{animation: 300, sort: true}">
+        <draggable :list="atom.props.options" group="option" handler=".el-icon-rank" :options="{animation: 300, sort: true}">
           <div v-for="(op, index) in atom.props.options" :key="index" class="options">
             <i class="el-icon-rank"></i>
-            <el-input v-model="atom.props.options[index]" size="medium" style="width: 260px; float:right;" placeholder="请输入提示为文字">
+            <el-input v-model="atom.props.options[index]" size="medium" style="width: 260px; float:right;"
+                      placeholder="请输入提示为文字" clearable>
               <el-button icon="el-icon-delete" slot="append" type="danger" size="medium"
                          @click="atom.props.options.splice(index, 1)"></el-button>
             </el-input>
@@ -31,7 +32,15 @@
         <el-color-picker v-model="atom.props.color" :predefine="colors"></el-color-picker>
       </el-form-item>
     </div>
-
+  
+    <div v-if="showOrgSelect">
+      <el-form-item label="选择方式" prop="single">
+        <el-switch v-model="atom.props.single" active-text="多选部门"
+        inactive-text="单选部门" size="medium" v-if="atom.props.type === 'dept'"></el-switch>
+        <el-switch v-model="atom.props.single" active-text="多选人员" inactive-text="单选人员" size="medium" v-else></el-switch>
+      </el-form-item>
+    </div>
+    
     <el-form-item label="必填" prop="valid">
       <el-switch v-model="atom.valid" size="medium"></el-switch>
     </el-form-item>
@@ -75,6 +84,9 @@
       },
       showMoreSelect(){
         return this.atom.name === 'jSelect' && this.atom.props.type === 'more'
+      },
+      showOrgSelect(){
+        return this.atom.name === 'orgSelect'
       }
     },
     methods: {}

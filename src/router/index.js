@@ -7,6 +7,10 @@ const router = new Router({
     base: __dirname, //这个很重要
     routes:[
         {
+            path: '/',
+            redirect: '/workPanel' // 路由重定向
+        },
+        {
             path: "/workPanel",
             name: "workPanel",
             component: () => import("@/components/workPanel.vue"),

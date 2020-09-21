@@ -5,10 +5,10 @@ Vue.use(Vuex)
 var process = {
   type: 'root',
   name: '发起人',
-  id: 1,
+  id: '787489674',
   node: {
     type: 'sp',
-    id: 2,
+    id: '45864864',
     name: '审批人',
     node: {
       conditions: [
@@ -18,10 +18,11 @@ var process = {
               name: "条件1"
             }
           ],
+          id: '5645455',
           name: "条件1",
           node: {
             name: '审批人',
-            id: 3,
+            id: '896789',
             type: 'sp',
           }
         }, {
@@ -30,20 +31,22 @@ var process = {
               name: "条件2"
             }
           ],
+          id: '49689778',
           name: "条件2",
           node: {
             name: '审批人',
-            id: 4,
+            id: '4586786',
             type: 'sp',
           }
         }
       ],
+      id: '5645645',
       type: 'condition',
       node: {
         type: 'empty',
         node: {
           name: '抄送人',
-          id: 4,
+          id: '54874878',
           type: 'cs',
         }
       }

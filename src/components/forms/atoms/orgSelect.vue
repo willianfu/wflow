@@ -1,5 +1,5 @@
 <template>
-  
+	<el-select :placeholder="placeholder" disabled size="medium" value=""></el-select>
 </template>
 
 <script>
@@ -13,6 +13,10 @@
       single:{
         default: false,
         type: Boolean
+      },
+      placeholder:{
+        default: '请选择',
+        type: String
       }
     }
   }

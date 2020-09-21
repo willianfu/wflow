@@ -72,7 +72,7 @@
         this.$emit('addCd', this.node)
       },
       delNode(){
-        this.$emit('delNode')
+        this.$emit('delNode', this.node)
       },
       select(){
         this.$emit('select', this.node)

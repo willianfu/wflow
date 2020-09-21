@@ -38,7 +38,8 @@
             'class': {clear: true},
             on: {
               addNode: this.addNode,
-              addCd: this.addCd
+              addCd: this.addCd,
+              delNode: this.delNode
             },
           }, []))
           return [h('div', {'class': {c: true}}, dom)]
@@ -50,7 +51,9 @@
             c.unshift(h('arrow', {
               props: {node: cd},
               on: {
-                addNode: this.addNode
+                addNode: this.addNode,
+                addCd: this.addCd,
+                delNode: this.delNode
               },
             }, []))
             return h('div', {'class': {bd: true}}, c)
@@ -69,6 +72,36 @@
           return []
         }
       },
+	    searchParentNode(nodeList, node, nodes){
+        if (node.type === 'tj' && node.id === nodes.id){
+					return true;
+        } else if (nodes.node === undefined){
+          return null;
+        } else if (nodes.node.id === node.id) {
+          return nodes;
+        } else if (nodes.node.type === 'condition'){
+          for (let item of nodes.node.conditions){
+            let result = this.searchParentNode(nodeList, node, item)
+            if (result === true){
+              return nodes
+            }else if (result !== null){
+              return item;
+            }
+          }
+          return this.searchParentNode(nodeList, node, nodes.node);
+        }else{
+          return this.searchParentNode(nodeList, node, nodes.node)
+        }
+	    },
+      getParentNode(node){
+        let nodeResults = [];
+        let rs = this.searchParentNode(nodeResults, node, this.dom)
+        if (rs !== null){
+          return rs;
+        }
+        this.$message.warning('糟糕，没有找到需要删除的节点')
+	      return null;
+      },
       addCd(node) {
         node.node.conditions.push({
             condition: [
@@ -76,6 +109,7 @@
                 name: "条件1"
               }
             ],
+	          id: this.getId(),
             name: "条件1",
             node: {}
           }
@@ -92,6 +126,8 @@
                     name: "条件1"
                   }
                 ],
+                id: this.getId(),
+                type: 'tj',
                 name: "条件1",
               }, {
                 condition: [
@@ -99,14 +135,18 @@
                     name: "条件2"
                   }
                 ],
+                id: this.getId(),
+                type: 'tj',
                 name: "条件2",
               }
             ],
+            id: this.getId(),
             type: 'condition',
             node: nextNode
           })
         } else {
           this.$set(node, 'node', {
+            id: this.getId(),
             name: '新节点',
             type: type,
             node: node.node
@@ -115,9 +155,31 @@
         //this.updateDom()
       },
       delNode(node) {
-        console.log(JSON.stringify(node))
-        this.updateDom()
+	      let parentNode = this.getParentNode(node);
+	      if (null !== parentNode){
+	        if ('condition' === parentNode.node.type){
+	          //删除的是条件节点
+            for (let i =0; i< parentNode.node.conditions.length; i++) {
+	            if (parentNode.node.conditions[i].id === node.id){
+                parentNode.node.conditions.splice(i, 1)
+	            }
+            }
+            //需要去除条件
+            if (parentNode.node.conditions.length < 2){
+              let nextBoxNode = parentNode.node.node
+              parentNode.node = parentNode.node.conditions[0].node
+              parentNode.node.node = nextBoxNode.node
+            }
+	        }else {
+            let node = parentNode.node.node
+            parentNode.node = node
+	        }
+	      }
       },
+	    getId(){
+		    return (Math.floor(Math.random() * (99999 - 10000)) + 10000).toString()
+			    + new Date().getTime().toString().substring(5);
+	    },
       updateDom() {
         console.log(JSON.stringify(this.dom))
         this.updated = false;

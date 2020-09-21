@@ -73,7 +73,7 @@
         <i :class="form[select].icon" style="margin-right: 5px; font-size: medium"></i>
         <span>{{form[select].text}}</span>
       </div>
-      <div v-if="select === null" class="tip">
+      <div v-if="select === null || form.length === 0" class="tip">
         😀 选中控件后在这里进行编辑
       </div>
       <div style="text-align:left; padding: 10px" v-else>
