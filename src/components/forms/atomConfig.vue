@@ -7,7 +7,7 @@
       <el-input v-model="atom.props.placeholder" size="medium" placeholder="请输入提示为文字"></el-input>
     </el-form-item>
 
-      <el-form-item label="配置选项" prop="placeholder" v-if="showMoreSelect">
+      <el-form-item label="配置选项" prop="placeholder" v-if="showSelect">
         <draggable :list="atom.props.options" group="option" handler=".el-icon-rank" :options="{animation: 300, sort: true}">
           <div v-for="(op, index) in atom.props.options" :key="index" class="options">
             <i class="el-icon-rank"></i>
@@ -77,13 +77,15 @@
     computed: {
       showPlaceholder() {
         let name = this.atom.name;
-        return name === 'jDateTime' || name === 'jSelect' || name === 'jInput'
+        return name === 'jDateTime'
+          || name === 'jSelect'
+          || name === 'jInput'
       },
       showRemark() {
         return this.atom.name === 'explain'
       },
-      showMoreSelect(){
-        return this.atom.name === 'jSelect' && this.atom.props.type === 'more'
+      showSelect(){
+        return this.atom.name === 'jSelect'
       },
       showOrgSelect(){
         return this.atom.name === 'orgSelect'

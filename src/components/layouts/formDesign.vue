@@ -101,7 +101,7 @@
           {text: '单行输入框', name: 'jInput', icon: 'el-icon-edit', valid: false, props:{type: 'text'}},
           {text: '多行输入框', name: 'jInput', icon: 'el-icon-edit-outline', valid: false, props:{type: 'textarea'}},
           {text: '数字输入框', name: 'jInput', icon: 'el-icon-more-outline', valid: false, props:{type: 'number'}},
-          {text: '单选框', name: 'jSelect', icon: 'el-icon-menu', valid: false, props:{type: 'single'}},
+          {text: '单选框', name: 'jSelect', icon: 'el-icon-menu', valid: false, props:{type: 'single', options:['选项']}},
           {text: '多选框', name: 'jSelect', icon: 'el-icon-s-grid', valid: false, props:{type: 'more', options:['选项']}},
           {text: '日期', name: 'jDateTime', icon: 'el-icon-date', valid: false, props:{type: 'dateTime'}},
           {text: '日期区间', name: 'jDateTime', icon: 'el-icon-c-scale-to-original', valid: false, props:{type: 'dateTimeRange'}},
