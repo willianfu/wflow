@@ -18,7 +18,7 @@
     },
 		computed:{
       dom(){
-        return this.$store.state.process
+        return this.$store.state.template.process
       }
 		},
     mounted() {

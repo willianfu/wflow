@@ -4,16 +4,17 @@
 			<el-tab-pane label="审批列表">
 				<el-row style="margin-bottom: 20px">
 					<el-col :span="6">
-						<el-input size="medium" placeholder="搜索表单">
+						<el-input size="medium" v-model="formList.inputs" placeholder="搜索表单" clearable>
 							<i slot="prefix" class="el-input__icon el-icon-search"></i>
 						</el-input>
 					</el-col>
 				</el-row>
-				<el-collapse v-model="actives">
-					<el-collapse-item v-for="(group, index) in groups" :key="index" :title="group.name" :name="group.name">
+				<el-collapse v-model="actives" v-show="formList.inputs === ''">
+					<el-collapse-item v-for="(group, index) in formList.list" :key="index"
+					                  :title="group.name" :name="group.name" v-show="group.items.length > 0 && group.id > 0">
 						<div>
 							<div v-for="(item, index) in group.items" :key="index" class="form-item">
-								<i class="el-icon-document"></i>
+								<i :class="item.icon" :style="'background: '+item.background"></i>
 								<div>
 									<span>{{item.name}}</span>
 									<span>发起审批</span>
@@ -22,6 +23,18 @@
 						</div>
 					</el-collapse-item>
 				</el-collapse>
+				<div>
+					<div v-for="(item, index) in formList.searchResult" :key="index" class="form-item">
+						<i :class="item.icon" :style="'background: '+item.background"></i>
+						<div>
+							<span>{{item.name}}</span>
+							<span>发起审批</span>
+						</div>
+					</div>
+					<div class="no-data" v-show="formList.searchResult.length === 0 && formList.inputs !== ''">
+						没有找到相关的表单 😥
+					</div>
+				</div>
 			</el-tab-pane>
 			<el-tab-pane label="待我处理(3)">
         <div class="no-data">暂无数据 😀</div>
@@ -38,39 +51,33 @@
 </template>
 
 <script>
+  import {getTemplateGroups} from '@/api/setting'
+  
   export default {
     name: "workSpace",
     data() {
       return {
-        groups: [
-          {
-            name: '人事',
-            items: [
-              {name: '入职'},
-              {name: '离职'}, {name: '报销'},
-              {name: '绩效'}, {name: '罚款'},
-              {name: '物品申请'}, {name: '绩效'},
-              {name: '招聘'},
-            ]
-          }, {
-            name: '财务',
-            items: [
-              {name: '报销'},
-              {name: '付款申请'},
-            ]
-          }, {
-            name: '考勤',
-            items: [
-              {name: '出差'},
-              {name: '加班'},
-            ]
-          },
-        ],
-        actives: []
+        actives: [],
+	      formList:{
+          list:[],
+		      inputs:'',
+		      searchResult:[]
+	      },
+        pending:{
+          list:[]
+        }
       }
     },
     mounted() {
-      this.groups.forEach(g => this.actives.push(g.name))
+      this.getGroups()
+    },
+    methods: {
+      getGroups() {
+        getTemplateGroups().then(rsp => {
+          this.formList.list = rsp.data
+          this.formList.list.forEach(g => this.actives.push(g.name))
+        }).catch(err => this.$message.error('获取分组异常'))
+      },
     }
   }
 </script>
@@ -121,10 +128,10 @@
 			}
 			
 			i {
-				padding: 12px;
+				padding: 8px;
 				border-radius: 8px;
 				float: left;
-				font-size: 14px;
+				font-size: 20px;
 				color: #ffffff;
 				background: #38adff;
 			}
@@ -134,7 +141,7 @@
 				line-height: 35px;
 				
 				span:nth-child(1) {
-					margin-left: 5px;
+					margin-left: 10px;
 				}
 				
 				span:nth-child(2) {

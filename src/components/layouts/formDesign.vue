@@ -124,7 +124,7 @@
     },
     computed:{
       form(){
-        return this.$store.state.form;
+        return this.$store.state.template.form;
       }
     },
     methods:{

@@ -9,6 +9,14 @@ Vue.use(ElementUI);
 
 Vue.config.productionTip = false
 
+Vue.prototype.$isNotEmpty = function(obj){
+  return (obj !== undefined && obj !== null && obj !== '' && obj !== 'null')
+}
+
+Vue.prototype.$getDefalut = function(obj, key, df){
+  return (obj === undefined || key === undefined || obj[key] === undefined) ? df : obj[key];
+}
+
 new Vue({
   router,
   store,

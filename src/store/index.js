@@ -57,40 +57,46 @@ var process = {
 
 export default new Vuex.Store({
   state: {
-    baseSetup:{
-      icon:'el-icon-s-custom',
-      background:'#718dff',
-      name:'新的审批',
-      group:'',
-      remark:'',
-      whoCommit:{
-        names:[],
-        values:[]
+    template:{
+      baseSetup:{
+        icon:'el-icon-s-custom',
+        background:'#718dff',
+        name:'新的审批',
+        group:'',
+        remark:'',
+        whoCommit:{
+          names:[],
+          values:[]
+        },
+        whoEdit:{
+          names:[],
+          values:[]
+        },
+        whoViewData:[]
       },
-      whoEdit:{
-        names:[],
-        values:[]
-      },
-      whoViewData:''
-    },
-    //表单设计
-    form: [],
-    //流程设计
-   /* process: {
-      name: '发起人',
-      type: 'root'
-    }*/
-    process: process
+      //表单设计
+      form: [],
+      //流程设计
+      /* process: {
+         name: '发起人',
+         type: 'root'
+       }*/
+      process: process
+    }
+
   },
   mutations: {
     setwhoCommit(state, val){
-      state.baseSetup.whoCommit = val
+      state.template.baseSetup.whoCommit = val
     },
     setwhoEdit(state, val){
-      state.baseSetup.whoEdit = val
+      state.template.baseSetup.whoEdit = val
     },
     setwhoViewData(state, val){
-      state.baseSetup.whoViewData = val
+      state.template.baseSetup.whoViewData = val
+    },
+    setTemplate(state, val){
+      state.template = val
     },
   },
   getters:{

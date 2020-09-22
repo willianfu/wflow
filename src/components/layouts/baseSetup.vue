@@ -118,7 +118,7 @@
     },
     computed: {
       setup() {
-        return this.$store.state.baseSetup;
+        return this.$store.state.template.baseSetup;
       }
     },
     methods: {
