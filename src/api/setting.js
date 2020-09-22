@@ -19,7 +19,25 @@ export function groupItemsSort(param) {
   })
 }
 
-// 查询表单组
+// 更新表单组
+export function updateGroup(param, method) {
+  return request({
+    url: 'setting/form/group',
+    method: method,
+    params: param
+  })
+}
+
+// 更新表单组
+export function updateTemplate(param) {
+  return request({
+    url: 'setting/form',
+    method: 'put',
+    params: param
+  })
+}
+
+// 查询表单详情
 export function getFormDetail(param) {
   return request({
     url: 'setting/form/detail',
@@ -28,6 +46,8 @@ export function getFormDetail(param) {
   })
 }
 
+
+
 export default {
-  getTemplateGroups, groupItemsSort, getFormDetail
+  getTemplateGroups, groupItemsSort, getFormDetail, updateGroup, updateTemplate
 }

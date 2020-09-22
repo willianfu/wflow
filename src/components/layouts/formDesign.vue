@@ -49,7 +49,7 @@
                   👈 请在左侧选择控件并拖至此处
                 </div>
                 <draggable class="drag-from" :list="form" group="from"
-                           :options="{animation: 300, chosenClass:'choose',sort:true}"
+                           :options="{animation: 300, chosenClass:'choose', sort:true}"
                            @start="drag = true, select = null" @end="drag = false">
 
                   <div v-for="(cp, id) in form" :key="id" class="form-item"

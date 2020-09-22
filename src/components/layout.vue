@@ -42,7 +42,7 @@
     },
     computed:{
       setup() {
-        return this.$store.state.baseSetup;
+        return this.$store.state.template.baseSetup;
       }
     },
     mounted() {
@@ -70,7 +70,10 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          window.location.reload()
+          //sessionStorage.setItem('router-path','/formListPanel')
+          //window.location.reload()
+          this.$store.commit('clearTemplate')
+          this.$router.push('/formListPanel')
         })
       },
       to(path) {

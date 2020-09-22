@@ -69,6 +69,7 @@
 
 <script>
   import orgPicker from '@/components/common/organizationPicker'
+  import {getTemplateGroups, updateGroup} from '@/api/setting'
 
   export default {
     name: "baseSetup",
@@ -78,9 +79,9 @@
         nowUserSelect: null,
         showUserSelect: false,
         showIconSelect: false,
-	      select: [],
+        select: [],
         newGroup: '',
-        fromGroup: ['哈哈', '嘿嘿'],
+        fromGroup: [],
         colors: [
           '#ff4500',
           '#ff8c00',
@@ -121,11 +122,21 @@
         return this.$store.state.template.baseSetup;
       }
     },
+    mounted(){
+      this.getGroups()
+    },
     methods: {
+      getGroups(){
+        getTemplateGroups().then(rsp => {
+          this.fromGroup = rsp.data
+        }).catch(err => this.$message.error('获取分组异常'))
+      },
       addGroup() {
         if (this.newGroup.trim() !== '') {
-          this.fromGroup.push(this.newGroup)
-          this.newGroup = ''
+          updateGroup({name: this.newGroup.trim()}, 'post').then(rsp => {
+            this.$message.success(rsp.data)
+            this.getGroups()
+          }).catch(err => this.$message.error(err.response.data))
         }
       },
       closeSelect() {
@@ -138,11 +149,11 @@
         this.$store.commit("set" + this.nowUserSelect, select);
         //this.setup[this.nowUserSelect] = select
       },
-	    selectUser(key){
+      selectUser(key) {
         this.select = this.setup[key]
         this.nowUserSelect = key
         this.showUserSelect = true
-	    },
+      },
     }
   }
 </script>

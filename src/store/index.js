@@ -98,6 +98,9 @@ export default new Vuex.Store({
     setTemplate(state, val){
       state.template = val
     },
+    clearTemplate(state){
+      state.template = {}
+    }
   },
   getters:{
   },
