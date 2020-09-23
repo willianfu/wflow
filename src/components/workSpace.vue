@@ -1,5 +1,7 @@
 <template>
 	<div class="workspace">
+		<el-button icon="el-icon-back" class="back" type="info" size="mini" plain
+		           @click="$router.push('/')">返回主页</el-button>
 		<el-tabs type="border-card">
 			<el-tab-pane label="审批列表">
 				<el-row style="margin-bottom: 20px">
@@ -85,7 +87,12 @@
 <style lang="less" scoped>
 	.workspace {
 		padding: 50px 20px;
-    
+		position: relative;
+    .back{
+	    position: absolute;
+	    left: 20px;
+	    top: 13px;
+    }
     .no-data{
       text-align: center;
       padding: 50px 0;

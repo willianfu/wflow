@@ -46,8 +46,16 @@ export function getFormDetail(param) {
   })
 }
 
-
+// 查询表单详情
+export function updateFormDetail(param) {
+  return request({
+    url: 'setting/form/detail',
+    method: 'put',
+    data: param
+  })
+}
 
 export default {
-  getTemplateGroups, groupItemsSort, getFormDetail, updateGroup, updateTemplate
+  getTemplateGroups, groupItemsSort, getFormDetail,
+  updateGroup, updateTemplate, updateFormDetail
 }

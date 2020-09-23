@@ -1,6 +1,8 @@
 <template>
   <div class="from-panel" ref="panel">
     <div class="from-title">
+      <el-button icon="el-icon-back" type="info" size="mini"
+                 circle plain style="margin-right: 15px" @click="$router.push('/')"></el-button>
       <span>流程面板</span>
       <div>
         <el-button type="primary" icon="el-icon-plus" size="mini" @click="newProcess">新建表单</el-button>
@@ -34,7 +36,7 @@
               <i :class="item.icon" :style="'background: '+item.background"></i>
               <span>{{item.name}}</span><br>
             </div>
-            <div class="desp">{{item.remark}}审批描述</div>
+            <div class="desp">{{item.remark}}</div>
             <div>
               <span>最后更新时间：{{item.updated}}</span>
             </div>
@@ -100,10 +102,8 @@
         }).catch(err => this.$message.error('获取分组异常'))
       },
       newProcess() {
-        this.$router.push("/layout/baseSetup")
-      },
-      editProcess() {
-        this.$router.push("/layout/baseSetup")
+        this.$store.commit("setTemplate", this.getTemplateData());
+        this.$router.push("/layout/baseSetup");
       },
       groupSort() {
         this.groupsSort = false
@@ -162,31 +162,34 @@
           this.getGroups()
         }).catch(err => this.$message.error(err.response.data))
       },
+      getTemplateData(data, group){
+        return {
+          id: this.$getDefalut(data, 'templateId', null),
+          baseSetup: {
+            icon: this.$getDefalut(data, 'icon', 'el-icon-s-custom'),
+            background: this.$getDefalut(data, 'background', '#FF7800'),
+            name: this.$getDefalut(data, 'templateName', '未命名的表单'),
+            group: this.$getDefalut(group, 'id', ''),
+            remark: this.$getDefalut(data, 'remark', ''),
+            whoCommit: JSON.parse(this.$getDefalut(data, 'whoCommit', '[]')),
+            whoEdit: JSON.parse(this.$getDefalut(data, 'whoEdit', '[]')),
+            whoExport: JSON.parse(this.$getDefalut(data, 'whoExport', '[]')),
+          },
+          form: JSON.parse(this.$getDefalut(data, 'formItems', '[]')),
+          process: JSON.parse(
+                  this.$getDefalut(data, 'process',
+                          JSON.stringify({
+                            type: 'root',
+                            name: '发起人',
+                            id: '787489674',
+                          })
+                  )),
+        }
+      },
       editFrom(item, group) {
         getFormDetail({templateId: item.id}).then(rsp => {
           let data = rsp.data;
-          let template = {
-            id: this.$getDefalut(data, 'templateId', 0),
-            baseSetup: {
-              icon: this.$getDefalut(data, 'icon', 'el-icon-s-custom'),
-              name: this.$getDefalut(data, 'templateName', '未命名的表单'),
-              group: this.$getDefalut(data, 'templateName', '未命名的表单'),
-              remark: this.$getDefalut(group, 'id', ''),
-              whoCommit: JSON.parse(this.$getDefalut(data, 'whoCommit', '[]')),
-              whoEdit: JSON.parse(this.$getDefalut(data, 'whoEdit', '[]')),
-              whoViewData: JSON.parse(this.$getDefalut(data, 'whoViewData', '[]')),
-            },
-            form: JSON.parse(this.$getDefalut(data, 'formItems', '[]')),
-            process: JSON.parse(
-              this.$getDefalut(data, 'process',
-                JSON.stringify({
-                  type: 'root',
-                  name: '发起人',
-                  id: '787489674',
-                })
-              )),
-          }
-          this.$store.commit("setTemplate", template);
+          this.$store.commit("setTemplate", this.getTemplateData(data, group));
           this.$router.push("/layout/baseSetup");
         }).catch(err => {
 					this.$message.error(err.response.data)
@@ -212,6 +215,10 @@
             this.updateForm(item, 'delete');
           })
         } else {
+          if (this.moveSelect === null || this.moveSelect === ''){
+            this.$message.error('请选择分组')
+            return;
+          }
 					updateTemplate({templateId: item.id, type: 'move', groupId: this.moveSelect}).then(rsp => {
 						this.$message.success(rsp.data)
 						this.getGroups()

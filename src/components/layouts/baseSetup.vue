@@ -27,7 +27,8 @@
       </el-form-item>
       <el-form-item label="所在分组" class="group">
         <el-select v-model="setup.group" placeholder="请选择分组" size="medium">
-          <el-option v-for="(op, index) in fromGroup" :key="index" :label="op.name" :value="op.id"></el-option>
+          <el-option v-for="(op, index) in fromGroup" :key="index" v-show="op.id > 1"
+                     :label="op.name" :value="op.id"></el-option>
         </el-select>
         <el-popover placement="bottom-end" title="新建表单分组" width="300" trigger="click">
           <el-input size="medium" v-model="newGroup" placeholder="请输入新的分组名">
@@ -56,10 +57,10 @@
         </el-select>
       </el-form-item>
       <el-form-item label="谁可以查看并导出数据">
-        <el-select v-model="setup.whoViewData" @click.native="selectUser('whoViewData')" value-key="name"
+        <el-select v-model="setup.whoExport" @click.native="selectUser('whoExport')" value-key="name"
                    class="select-u" placeholder="请选择可以查看并导出数据的人员"
                    size="medium" clearable multiple>
-          <el-option v-for="(wc, index) in setup.whoViewData" :label="wc.name" :key="index" :value="wc"></el-option>
+          <el-option v-for="(wc, index) in setup.whoExport" :label="wc.name" :key="index" :value="wc"></el-option>
         </el-select>
       </el-form-item>
     </el-form>

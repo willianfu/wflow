@@ -33,6 +33,8 @@
 </template>
 
 <script>
+  import {updateFormDetail, updateTemplate} from '@/api/setting'
+  
   export default {
     data() {
       return {
@@ -43,6 +45,9 @@
     computed:{
       setup() {
         return this.$store.state.template.baseSetup;
+      },
+      template() {
+        return this.$store.state.template;
       }
     },
     mounted() {
@@ -55,14 +60,47 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '发布成功!'
-          });
+          console.log(this.setup)
+          let template = {
+            templateId: this.template.id,
+            templateName: this.setup.name,
+            icon: this.setup.icon,
+            group: this.setup.group,
+            background: this.setup.background,
+            whoCommit: JSON.stringify(this.setup.whoCommit.map(
+                    wc => {return {id: wc.id, type: wc.type, name: wc.name}})),
+            whoEdit: JSON.stringify(this.setup.whoEdit.map(
+                    wc => {return {id: wc.id, type: wc.type, name: wc.name}})),
+            whoExport: JSON.stringify(this.setup.whoExport.map(
+                    wc => {return {id: wc.id, type: wc.type, name: wc.name}})),
+            formItems: JSON.stringify(this.template.form),
+            remark: this.setup.remark,
+            process: JSON.stringify(this.template.process),
+          }
+          if (this.valid()){
+            updateFormDetail(template).then(rsp => {
+              let isAdd = this.template.id === undefined
+              let params = {templateId: isAdd ? this.template.id:rsp.data,
+                type:'move', groupId: this.setup.group}
+              updateTemplate(params).then(rsp => {
+                this.$message.success(rsp.data)
+                this.$store.commit('clearTemplate')
+                this.$router.push('/formListPanel')
+              }).catch(err => this.$message.error(err.response.data))
+            }).catch(err => this.$message.error(err.response.data))
+          }
         })
       },
       preview() {
         this.viewCode = true;
+      },
+      valid(){
+        if (!this.$isNotEmpty(this.setup.group)){
+          this.$message.warning('请选择分组')
+          this.$router.push('/layout/baseSetup')
+          return false;
+        }
+        return true;
       },
       exit(){
         this.$confirm('未发布的内容将不会被保存，是否直接退出 ?', '提示', {
@@ -77,8 +115,9 @@
         })
       },
       to(path) {
-        this.$router.push(path);
-        console.log(this.$route.path);
+        if (path !== this.$route.path){
+          this.$router.push(path);
+        }
       },
       handleSelect(key, keyPath) {
         console.log(key, keyPath);

@@ -62,7 +62,7 @@ export default new Vuex.Store({
         icon:'el-icon-s-custom',
         background:'#718dff',
         name:'新的审批',
-        group:'',
+        group: null,
         remark:'',
         whoCommit:{
           names:[],
@@ -72,7 +72,7 @@ export default new Vuex.Store({
           names:[],
           values:[]
         },
-        whoViewData:[]
+        whoExport:[]
       },
       //表单设计
       form: [],
@@ -92,8 +92,8 @@ export default new Vuex.Store({
     setwhoEdit(state, val){
       state.template.baseSetup.whoEdit = val
     },
-    setwhoViewData(state, val){
-      state.template.baseSetup.whoViewData = val
+    setwhoExport(state, val){
+      state.template.baseSetup.whoExport = val
     },
     setTemplate(state, val){
       state.template = val
