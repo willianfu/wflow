@@ -27,7 +27,9 @@
 </script>
 <style lang="less">
 	@import "@/assets/global";
-	
+	:focus {
+		outline: -webkit-focus-ring-color auto 0px;
+	}
 	body {
 		margin: 0;
 		min-width: 500px;

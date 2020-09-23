@@ -295,6 +295,7 @@
 
 <style lang="less" scoped>
 	/deep/ .el-dialog {
+		z-index: 99999;
 		border-radius: 13px;
 		overflow: hidden;
 		

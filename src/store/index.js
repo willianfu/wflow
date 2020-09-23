@@ -6,6 +6,9 @@ var process = {
   type: 'root',
   name: '发起人',
   id: '787489674',
+  props:{
+    approver: []
+  },
   node: {
     type: 'sp',
     id: '45864864',

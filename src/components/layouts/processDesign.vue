@@ -9,19 +9,22 @@
 			<!--<el-row v-for="(node, id) in nodes" :key="id">
 				<arrow :node="ch" :index="id" v-for="(ch, i) in node" :key="i" @addNode="addNode" @delNode="delNode(id)" @select="selectNode"></arrow>
 			</el-row>-->
-			<process></process>
+			<process @select="selectNode"></process>
 			<el-row>
-                <div class="end">
-                  <div></div>
-                  <div></div>
-                 <!-- <arrow @addNode="addNode" @delNode="delNode(nodes.length - 1)" @select="selectNode"></arrow>-->
-                  <div class="end-node">流程结束</div>
-                </div>
+				<div class="end">
+					<div></div>
+					<div></div>
+					<!-- <arrow @addNode="addNode" @delNode="delNode(nodes.length - 1)" @select="selectNode"></arrow>-->
+					<div class="end-node">流程结束</div>
+				</div>
 			</el-row>
 		
 		</div>
-		<el-drawer :title="select.name" :visible.sync="drawer" direction="rtl" :modal="false">
-			<span></span>
+		<el-drawer :title="select.name" :visible.sync="drawer" size="400px" direction="rtl" :modal="false">
+			<el-input slot="title" v-model="select.name" size="mini" v-if="showInput"
+								style="width: 300px" @blur="showInput = false"></el-input>
+			<el-link slot="title" v-else @click="showInput = true">{{select.name}}</el-link>
+			<node-config :node="select"></node-config>
 		</el-drawer>
 	</div>
 
@@ -29,14 +32,16 @@
 
 <script>
     import process from "./process/processView";
-    import tp from "@/assets/approvalTemplate"
+    import tp from "@/assets/approvalTemplate";
+		import nodeConfig from "./process/nodeConfig";
 
     export default {
         name: "processDesign",
-        components: { process},
+        components: { process, nodeConfig},
         data() {
             return {
                 select: {},
+								showInput: false,
                 drawer: false,
                 scale: 100,
                 nodes: [
@@ -145,7 +150,11 @@
 			
 		}
 	}
-	
+
+	/deep/ .el-link{
+		display: inline;
+		width: 50px;
+	}
 	.scale {
 		z-index: 999;
 		position: fixed;
