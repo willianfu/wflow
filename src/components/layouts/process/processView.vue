@@ -46,6 +46,7 @@
           return [h('div', {'class': {c: true}}, dom)]
         } else if (node.type === 'condition' && node.conditions !== undefined
           && node.conditions instanceof Array) {
+          let index = 0;
           let co = node.conditions.map(cd => {
             let c = that.getDomTree(h, cd.node);
             cd.type = 'tj';
@@ -58,7 +59,13 @@
                 delNode: this.delNode
               },
             }, []))
-            return h('div', {'class': {bd: true}}, c)
+            index ++;
+            return h('div', {
+              'class': {
+                bd: true,
+                bdl: (index === 1),
+		            bdr: (node.conditions.length === index)
+              }}, c)
           })
           return [h('div', {'class': {fc: true}}, [
             h('div', {'class': {fdr: true, bdtb: true}}, co)]),
@@ -116,6 +123,23 @@
             ],
             id: this.getId(),
             name: "条件1",
+            props: {
+              approval:{
+                //审批人选项类型
+                type:'1',
+                //审批模式 会签/或签/依次
+                model:'and',
+                userEmpty: 'toAdmin',
+                user:{
+                  users:[],
+                  select:'one',
+                  moreLeader:'',
+                  leader: 1,
+                  role:'',
+                  self:'',
+                },
+              }
+            },
             node: {}
           }
         )
@@ -134,6 +158,23 @@
                 id: this.getId(),
                 type: 'tj',
                 name: "条件1",
+                props:{
+                  approval:{
+                    //审批人选项类型
+                    type:'1',
+                    //审批模式 会签/或签/依次
+                    model:'and',
+                    userEmpty: 'toAdmin',
+                    user:{
+                      users:[],
+                      select:'one',
+                      moreLeader:'',
+                      leader: 1,
+                      role:'',
+                      self:'',
+                    },
+                  }
+                },
               }, {
                 condition: [
                   {
@@ -143,6 +184,23 @@
                 id: this.getId(),
                 type: 'tj',
                 name: "条件2",
+                props:{
+                  approval:{
+                    //审批人选项类型
+                    type:'1',
+                    //审批模式 会签/或签/依次
+                    model:'and',
+                    userEmpty: 'toAdmin',
+                    user:{
+                      users:[],
+                      select:'one',
+                      moreLeader:'',
+                      leader: 1,
+                      role:'',
+                      self:'',
+                    },
+                  }
+                },
               }
             ],
             id: this.getId(),
@@ -154,7 +212,24 @@
             id: this.getId(),
             name: '新节点',
             type: type,
-            node: node.node
+            node: node.node,
+            props:{
+              approval:{
+                //审批人选项类型
+                type:'1',
+                //审批模式 会签/或签/依次
+                model:'and',
+                userEmpty: 'toAdmin',
+                user:{
+                  users:[],
+                  select:'one',
+                  moreLeader:'',
+                  leader: 1,
+                  role:'',
+                  self:'',
+                },
+              }
+            },
           })
         }
         //this.updateDom()
@@ -200,58 +275,105 @@
 </script>
 
 <style lang="less" scoped>
-  .process {
-    display: flex;
-    justify-content: center;
-  }
-
-  .fc {
-    display: flex;
-    justify-content: center;
-  }
-
-  .bdtb {
-    margin-top: 15px;
-    border-top: 2px solid #CACACA;
-    border-bottom: 2px solid #CACACA;
-  }
-
-  .clear {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-
-  .fdr {
-    display: flex;
-    flex-direction: row;
-  }
-
-  .pt {
-    padding-top: 30px;
-  }
-
-  /*.bd::before {
-    content: "";
-    z-index: -999;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    width: 2px;
-    height: 100%;
-    background-color: #CACACA;
-  }*/
-
-  .addTjF {
-    display: block;
-    position: relative;
-
-    .addTj {
-      position: absolute;
-      top: 0;
-    }
-  }
+	.process {
+		display: flex;
+		justify-content: center;
+	}
+	
+	.fc {
+		display: flex;
+		justify-content: center;
+	}
+	
+	.bdtb {
+		display: flex;
+		justify-content: center;
+		//width: calc(100% - 220px);
+		margin-top: 15px;
+		border-top: 2px solid #CACACA;
+		border-bottom: 2px solid #CACACA;
+	}
+	
+	.clear {
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+	
+	.fdr {
+		/*display: flex;
+		flex-direction: row;*/
+		position: relative;
+	}
+	.fdr::after{
+		content: "";
+		z-index: 100;
+		top: 2px;
+		left: calc(50% - 1px);
+		position: absolute;
+		width: 2px;
+		height: calc(100% - 2px);
+		background: rgb(245, 246, 246);
+	}
+	
+	.pt {
+		padding-top: 30px;
+	}
+	
+	.bdl {
+		position: relative;
+		margin-right: 40px;
+	}
+	
+	.bdr {
+		position: relative;
+		margin-left: 40px;
+	}
+	.bd{
+		position: relative;
+	}
+	.bd::after {
+		content: "";
+		top: 0;
+		left: calc(50% - 1px);
+		position: absolute;
+		width: 2px;
+		height: 100%;
+		background: #CACACA;
+	}
+	
+	.c::after {display: none}
+	
+	.bdl::before {
+		content: "";
+		z-index: 100;
+		top: -3px;
+		position: absolute;
+		width: calc(50% - 1px);
+		height: calc(100% - 2px);
+		border-bottom: 4px solid #F5F6F6;
+		border-top: 4px solid #F5F6F6;
+	}
+	
+	.bdr::before {
+		content: "";
+		z-index: 100;
+		top: -3px;
+		right: 0;
+		position: absolute;
+		width: calc(50% - 1px);
+		height: calc(100% - 2px);
+		border-bottom: 4px solid #F5F6F6;
+		border-top: 4px solid #F5F6F6;
+	}
+	
+	.addTjF {
+		display: block;
+		position: relative;
+		
+		.addTj {
+			position: absolute;
+			top: 0;
+		}
+	}
 
 </style>

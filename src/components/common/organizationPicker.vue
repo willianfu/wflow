@@ -1,7 +1,7 @@
 <template>
 	<el-dialog
 					:title="title" :destroy-on-close="true"
-					:close-on-click-modal="false"
+					:close-on-click-modal="false" :modal="false"
 					:visible.sync="show" :before-close="close"
 					width="700px" center>
 		<div class="picker">

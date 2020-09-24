@@ -75,6 +75,7 @@
         this.$emit('delNode', this.node)
       },
       select(){
+        this.$store.commit('selectedNode', this.node)
         this.$emit('select', this.node)
       },
       showCard(node){
@@ -97,7 +98,12 @@
 <style lang="less" scoped>
   @import "@/assets/theme";
   
+  /deep/ .el-card{
+    //position: absolute;
+  }
+  
   .arrow{
+    z-index: 555;
     position: relative;
     .add-tj{
       cursor: pointer;
@@ -126,11 +132,12 @@
     bottom: 0;
     margin: auto;
     width: 2px;
-    height: 100%;
+    height: calc(100% + 4px);
     background-color: #CACACA;
   }
   .arrow {
-    padding: 30px 50px;
+    padding: 30px 0px;
+    //margin: 0 50px;
     /deep/ .el-card {
       margin: 0 auto;
       cursor: pointer;

@@ -7,52 +7,20 @@ var process = {
   name: '发起人',
   id: '787489674',
   props:{
-    approver: []
-  },
-  node: {
-    type: 'sp',
-    id: '45864864',
-    name: '审批人',
-    node: {
-      conditions: [
-        {
-          condition: [
-            {
-              name: "条件1"
-            }
-          ],
-          id: '5645455',
-          name: "条件1",
-          node: {
-            name: '审批人',
-            id: '896789',
-            type: 'sp',
-          }
-        }, {
-          condition: [
-            {
-              name: "条件2"
-            }
-          ],
-          id: '49689778',
-          name: "条件2",
-          node: {
-            name: '审批人',
-            id: '4586786',
-            type: 'sp',
-          }
-        }
-      ],
-      id: '5645645',
-      type: 'condition',
-      node: {
-        type: 'empty',
-        node: {
-          name: '抄送人',
-          id: '54874878',
-          type: 'cs',
-        }
-      }
+    approval:{
+      //审批人选项类型
+      type:'1',
+      //审批模式 会签/或签/依次
+      model:'and',
+      userEmpty: 'toAdmin',
+      user:{
+        users:[],
+        select:'one',
+        moreLeader:'',
+        leader: 1,
+        role:'',
+        self:'',
+      },
     }
   }
 }
@@ -60,6 +28,7 @@ var process = {
 
 export default new Vuex.Store({
   state: {
+    selectedNode:{},
     template:{
       baseSetup:{
         icon:'el-icon-s-custom',
@@ -103,6 +72,12 @@ export default new Vuex.Store({
     },
     clearTemplate(state){
       state.template = {}
+    },
+    selectedNode(state, val){
+      state.selectedNode = val
+    },
+    selectedApprover(state, val){
+      state.selectedNode.props.approval.user.users = val
     }
   },
   getters:{

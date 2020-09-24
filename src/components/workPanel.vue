@@ -1,6 +1,6 @@
 <template>
 	<div style="text-align: center">
-		<h4>各位大佬手下留情，不要把数据删光了，我还要留点数据开发测试用 😅</h4>
+		<h4>选择进入的系统 😅</h4>
 		<div class="work-panel">
 			<div class="panel">
 				<div class="panel-item" @click="$router.push('workSpace')">
@@ -41,6 +41,7 @@
 	}
 	
 	.work-panel {
+		text-align: left;
 		display: flex;
 		justify-content: center;
 		
