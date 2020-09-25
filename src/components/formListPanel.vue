@@ -181,7 +181,24 @@
                           JSON.stringify({
                             type: 'root',
                             name: '发起人',
-                            id: '787489674',
+                            id: '10000',
+                            props:{
+                              approval:{
+                                //审批人选项类型
+                                type:'1',
+                                //审批模式 会签/或签/依次
+                                mode:'and',
+                                userEmpty: 'toAdmin',
+                                user:{
+                                  users:[],
+                                  select:'one',
+                                  moreLeader:'',
+                                  leader: 1,
+                                  role:'',
+                                  self:'',
+                                },
+                              }
+                            }
                           })
                   )),
         }

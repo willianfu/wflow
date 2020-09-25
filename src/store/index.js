@@ -11,8 +11,10 @@ var process = {
       //审批人选项类型
       type:'1',
       //审批模式 会签/或签/依次
-      model:'and',
+      mode:'and',
       userEmpty: 'toAdmin',
+      leaderLevel: 1,
+      endCondition: 'top',
       user:{
         users:[],
         select:'one',
@@ -78,7 +80,10 @@ export default new Vuex.Store({
     },
     selectedApprover(state, val){
       state.selectedNode.props.approval.user.users = val
-    }
+    },
+    setCondition(state, val){
+      state.selectedNode.condition = val
+    },
   },
   getters:{
   },

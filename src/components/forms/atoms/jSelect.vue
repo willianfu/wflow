@@ -4,13 +4,13 @@
 
 <script>
   export default {
-    name: "textInput",
+    name: "jSelect",
     props:{
       options:{
         type: Array
       },
       type: {
-        default: 'single',
+        default: 'one',
         type: String
       },
       placeholder: {

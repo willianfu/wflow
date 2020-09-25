@@ -25,7 +25,7 @@
 						<div style="margin-top: 8px; overflow-y: auto; height: calc(100% - 90px);">
 							<div v-for="(node, index) in (search === '' ? nodes : searchUsers)" :key="index" class="line"
 							     :style="node.type === 'user' && type === 'dept' ? 'display: none':''" @click="selectChange(node)">
-								<el-checkbox v-model="node.selected"></el-checkbox>
+								<el-checkbox v-model="node.selected" :disabled="disableDept(node)"></el-checkbox>
 								<span style="margin-left: 10px">
                     <i class="el-icon-folder-opened" v-if="node.type === 'dept'"></i>
                     <div class="avt" :style="'background: ' + getAvatarColor()"
@@ -102,7 +102,11 @@
       selected: {
         default: ()=>{return[]},
         type: Array
-      }
+      },
+	    onlyUser:{
+        default: false,
+        type: Boolean
+	    }
     },
     data() {
       return {
@@ -160,7 +164,13 @@
     },
     mounted() {
     },
+	  computed:{
+   
+	  },
     methods: {
+      disableDept(node){
+        return this.onlyUser && 'dept' === node.type
+      },
       getOrgList() {
         getOrgTree({deptId: this.nowDeptId, type: this.type}).then(rsp => {
           this.nodes = rsp.data
@@ -198,7 +208,7 @@
             }
           }
           node.selected = false;
-        } else {
+        } else if(!this.disableDept(node)){
           node.selected = true
           if (node.type === 'dept') {
             this.select.unshift(node);
@@ -224,7 +234,7 @@
       handleCheckAllChange() {
         this.nodes.forEach(node => {
           if (this.checkAll) {
-            if (!node.selected) {
+            if (!node.selected && !this.disableDept(node)) {
               node.selected = true
               this.select.push(node)
             }

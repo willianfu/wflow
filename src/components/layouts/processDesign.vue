@@ -21,9 +21,14 @@
 		
 		</div>
 		<el-drawer :title="select.name" :visible.sync="drawer" size="400px" direction="rtl" :modal="false">
-			<el-input slot="title" v-model="select.name" size="mini" v-if="showInput"
-								style="width: 300px" @blur="showInput = false"></el-input>
-			<el-link slot="title" v-else @click="showInput = true">{{select.name}}</el-link>
+			<div slot="title">
+				<el-input v-model="select.name" size="medium" v-if="showInput"
+				          style="width: 300px" @blur="showInput = false"></el-input>
+				<el-link v-else @click="showInput = true" style="font-size: medium">
+					<i class="el-icon-edit" style="margin-right: 10px"></i> {{select.name}}
+				</el-link>
+			</div>
+			
 			<node-config :node="select"></node-config>
 		</el-drawer>
 	</div>
@@ -44,23 +49,7 @@
 								showInput: false,
                 drawer: false,
                 scale: 100,
-                nodes: [
-                    [
-                        {
-                            name: '发起人',
-                            type: 'root'
-                        }
-                    ], [
-                      {
-                        name: '条件1',
-                        type: 'tj'
-                      },{
-                        name: '条件2',
-                        type: 'tj'
-                      }
-                  ]
-
-                ]
+                nodes: []
             }
         },
         mounted() {
@@ -70,32 +59,6 @@
             selectNode(node) {
                 this.select = node;
                 this.drawer = true;
-            },
-            addNode(type, index) {
-                if (type === 'sp') {
-                    this.nodes.splice(index + 1, 0, [{
-                        name: '审批人',
-                        type: 'sp',
-                    }])
-                } else if (type === 'cs') {
-                    this.nodes.splice(index + 1, 0, [{
-                        name: '抄送人',
-                        type: 'cs',
-                    }])
-                } else if (type === 'tj') {
-                    this.nodes.splice(index + 1, 0, [{
-                        name: '条件分支',
-                        type: 'tj',
-                    }])
-                } else {
-                    this.$message({
-                        message: '暂不支持条件分支哦 😁',
-                        type: 'warning'
-                    });
-                }
-            },
-            delNode(index) {
-                this.nodes.splice(index, 1)
             },
             templateDecode() {
                 console.log(tp)

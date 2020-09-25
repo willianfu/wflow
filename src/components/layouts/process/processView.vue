@@ -14,6 +14,25 @@
       return {
         pro: test,
         updated: true,
+        props: {
+          approval:{
+            //审批人选项类型
+            type:'1',
+            //审批模式 会签/或签/依次
+            mode:'and',
+            userEmpty: 'toAdmin',
+            leaderLevel: 1,
+            endCondition: 'top',
+            user:{
+              users:[],
+              select:'one',
+              moreLeader:'',
+              leader: 1,
+              role:'',
+              self:'',
+            },
+          }
+        },
       }
     },
     computed: {
@@ -116,30 +135,10 @@
       },
       addCd(node) {
         node.node.conditions.push({
-            condition: [
-              {
-                name: "条件1"
-              }
-            ],
+            condition: [],
             id: this.getId(),
-            name: "条件1",
-            props: {
-              approval:{
-                //审批人选项类型
-                type:'1',
-                //审批模式 会签/或签/依次
-                model:'and',
-                userEmpty: 'toAdmin',
-                user:{
-                  users:[],
-                  select:'one',
-                  moreLeader:'',
-                  leader: 1,
-                  role:'',
-                  self:'',
-                },
-              }
-            },
+            name: "条件",
+            props: JSON.parse(JSON.stringify(this.props)),
             node: {}
           }
         )
@@ -150,57 +149,17 @@
           this.$set(node, 'node', {
             conditions: [
               {
-                condition: [
-                  {
-                    name: "条件1"
-                  }
-                ],
+                condition: [],
                 id: this.getId(),
                 type: 'tj',
-                name: "条件1",
-                props:{
-                  approval:{
-                    //审批人选项类型
-                    type:'1',
-                    //审批模式 会签/或签/依次
-                    model:'and',
-                    userEmpty: 'toAdmin',
-                    user:{
-                      users:[],
-                      select:'one',
-                      moreLeader:'',
-                      leader: 1,
-                      role:'',
-                      self:'',
-                    },
-                  }
-                },
+                name: "条件",
+                props: JSON.parse(JSON.stringify(this.props)),
               }, {
-                condition: [
-                  {
-                    name: "条件2"
-                  }
-                ],
+                condition: [],
                 id: this.getId(),
                 type: 'tj',
-                name: "条件2",
-                props:{
-                  approval:{
-                    //审批人选项类型
-                    type:'1',
-                    //审批模式 会签/或签/依次
-                    model:'and',
-                    userEmpty: 'toAdmin',
-                    user:{
-                      users:[],
-                      select:'one',
-                      moreLeader:'',
-                      leader: 1,
-                      role:'',
-                      self:'',
-                    },
-                  }
-                },
+                name: "条件",
+                props: JSON.parse(JSON.stringify(this.props)),
               }
             ],
             id: this.getId(),
@@ -213,23 +172,7 @@
             name: '新节点',
             type: type,
             node: node.node,
-            props:{
-              approval:{
-                //审批人选项类型
-                type:'1',
-                //审批模式 会签/或签/依次
-                model:'and',
-                userEmpty: 'toAdmin',
-                user:{
-                  users:[],
-                  select:'one',
-                  moreLeader:'',
-                  leader: 1,
-                  role:'',
-                  self:'',
-                },
-              }
-            },
+            props: JSON.parse(JSON.stringify(this.props)),
           })
         }
         //this.updateDom()
