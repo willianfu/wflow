@@ -34,16 +34,12 @@
 				
 				<el-form-item label="设置审批条件" prop="text">
 					<el-divider></el-divider>
-					<el-form label-width="100px" class="condition">
-						<el-form-item :label="condition" v-for="condition in selectedNode.condition">
-							<condition :value="condition"></condition>
-						</el-form-item>
-					</el-form>
-					
+					<condition></condition>
+					<el-divider v-if="selectedNode.cids.length > 0"></el-divider>
           <el-popover placement="left" title="选择审批条件" width="300" trigger="click">
            <!-- <div>以下条件将决定具体的审批流程</div>-->
-            <el-checkbox-group v-model="selectedNode.condition" @change="conditionSelect">
-              <el-checkbox :label="condition.name" v-for="condition in formList" :key="condition.id"></el-checkbox>
+            <el-checkbox-group v-model="selectedNode.cids" @change="conditionSelect">
+              <el-checkbox :label="condition.id" v-for="condition in formList" :key="condition.id">{{condition.name}}</el-checkbox>
             </el-checkbox-group>
             <el-button type="primary" slot="reference" size="mini" icon="el-icon-plus" round @click="">选择条件</el-button>
           </el-popover>
@@ -69,8 +65,7 @@
 						</el-button>
 						<div>
 							<el-tag :type="'dept' === user.type? 'info': 'primary'" v-for="(user, index) in props.approval.user.users"
-							        size="mini"
-							        style="margin: 5px 10px 5px 0"
+							        size="mini" style="margin: 5px 10px 5px 0"
 							        @close="props.approval.user.users.splice(index, 1)" closable>{{user.name}}
 							</el-tag>
 						</div>
@@ -174,7 +169,7 @@
         return this.$store.state.selectedNode;
       },
       onlySelectUser() {
-        return this.selectedNode.type === 'cs'
+        return this.selectedNode.type === 'cs' || this.props.type === '1'
       },
       props() {
         return this.$store.state.selectedNode.props;
@@ -193,7 +188,7 @@
         let result = []
 	      this.$store.state.template.form.forEach(atom => {
           if (atom.valid){
-            if (atom.name === 'jinput'&& atom.props.type === 'number'){
+            if (atom.name === 'jInput'&& atom.props.type === 'number'){
               result.push({
                 id: atom.id,
                 name: atom.text,
@@ -230,7 +225,16 @@
         this.showUserSelect = false
       },
       conditionSelect(){
-        this.selectedNode.condition
+        let condition = []
+				this.selectedNode.cids.forEach(cd => {
+					for (let key in this.formList) {
+						if (this.formList[key].id === cd){
+							condition.push(this.formList[key]);
+							break;
+						}
+					}
+				})
+				this.$store.commit('setCondition', condition)
       }
     }
   }

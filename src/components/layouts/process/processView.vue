@@ -150,12 +150,14 @@
             conditions: [
               {
                 condition: [],
+                cids:[],
                 id: this.getId(),
                 type: 'tj',
                 name: "条件",
                 props: JSON.parse(JSON.stringify(this.props)),
               }, {
                 condition: [],
+                cids:[],
                 id: this.getId(),
                 type: 'tj',
                 name: "条件",

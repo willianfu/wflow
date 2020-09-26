@@ -84,6 +84,9 @@ export default new Vuex.Store({
     setCondition(state, val){
       state.selectedNode.condition = val
     },
+    setConditionRootUser(state, val){
+      state.selectedNode.condition = val
+    },
   },
   getters:{
   },
