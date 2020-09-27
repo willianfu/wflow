@@ -42,6 +42,16 @@
                   :autosize="{ minRows: 2, maxRows: 5}" maxlength="500"
         ></el-input>
       </el-form-item>
+	
+	    <el-form-item label="消息通知方式">
+		    <el-select v-model="setup.notify.types" value-key="name"
+		               placeholder="选择消息通知方式" style="width: 30%;"
+		               size="medium" clearable multiple collapse-tags>
+			    <el-option v-for="(wc, index) in notifyTypes" :label="wc.name" :key="index" :value="wc"></el-option>
+		    </el-select>
+		    <el-input size="medium" v-model="setup.notify.title" style="width: 68%; float:right;" placeholder="消息通知标题"></el-input>
+	    </el-form-item>
+	    
       <el-form-item label="谁可以发起提交">
         <el-select v-model="setup.whoCommit" @click.native="selectUser('whoCommit')" value-key="name"
                    class="select-u" placeholder="请选择可以发起提交的人员"
@@ -83,6 +93,13 @@
         select: [],
         newGroup: '',
         fromGroup: [],
+	      notifyTypes:[
+          {type:'app',name:'应用内通知'},
+          {type:'email',name:'邮件通知'},
+          {type:'sms',name:'短信通知'},
+	        {type:'wx',name:'微信通知'},
+          {type:'dd',name:'钉钉通知'},
+	      ],
         colors: [
           '#ff4500',
           '#ff8c00',

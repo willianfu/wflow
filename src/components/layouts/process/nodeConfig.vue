@@ -4,8 +4,11 @@
 			<div v-if="selectedNode.type === 'root' || selectedNode.type === 'cs'">
 				<el-form-item :label="selectedNode.type === 'root' ? '谁可以发起此审批' : '选择要抄送的人员'" prop="text">
 					<el-button type="primary" size="mini" icon="el-icon-plus" style="margin-bottom: 15px"
-					           round @click="showUserSelect = true, select = props.approval.user.users">选择人员
+					           round @click="showUserSelect = true, select = props.approval.user.users">选择人员/部门
 					</el-button>
+					<div style="color: #38adff; font-size: x-small" v-show="props.approval.user.users.length === 0">
+						不指定则默认所有人都可发起此审批
+					</div>
 					<div>
 						<el-tag :type="'dept' === user.type? 'info': 'primary'" v-for="(user, index) in props.approval.user.users"
 						        size="mini"
@@ -71,6 +74,13 @@
 						</div>
 					</div>
 					
+					<div v-if="props.approval.type === '5'">
+						<el-button type="primary" slot="reference" size="mini" icon="el-icon-plus" round @click="">选择角色</el-button>
+						<el-tag type="primary" size="mini" style="margin: 5px 10px 5px 20px" v-if="props.approval.user.role !== ''">
+							{{props.approval.user.role.name}}
+						</el-tag>
+					</div>
+					
 					<div v-if="props.approval.type === '6'">
 						<p style="font-size: 15px; color:#8c8c8c;">发起人自己作为审批人进行审批</p>
 					</div>
@@ -81,8 +91,48 @@
 							<el-option :value="'more'" label="自选多个人"></el-option>
 						</el-select>
 					</div>
-				
 				</div>
+				
+				<el-divider></el-divider>
+				<el-form-item label="审批同意时是否需要手写签字">
+					<el-switch inactive-text="不用" active-text="需要"
+					           v-model="props.approval.sign"
+					           :disable="$store.state.template.baseSetup.sign"></el-switch>
+					<el-tooltip class="item" effect="dark" content="如果全局设置了需要签字，则此处不生效" placement="top-start">
+						<i class="el-icon-question" style="margin-left: 10px; font-size: medium; color: #b0b0b1"></i>
+					</el-tooltip>
+				</el-form-item>
+				<el-form-item label="审批期限（为 0 则不生效）" prop="timeLimit">
+					<el-select v-model="props.approval.timeLimitType" size="mini" placeholder="维度 天 / 小时" style="width:100px">
+						<el-option :value="'hour'" label="小时"></el-option>
+						<el-option :value="'day'" label="天"></el-option>
+					</el-select>
+					<span style="margin: 0 10px">时长:</span>
+					<el-input-number :min="0" :max="100" :step="1" size="mini" v-model="props.approval.timeLimitVal"></el-input-number>
+					<span> {{props.approval.timeLimitType === 'hour' ? '小时':'天'}}</span>
+				</el-form-item>
+				
+				<el-form-item label="审批期限超时后执行" prop="level" v-if="props.approval.timeLimitVal > 0">
+					<el-radio-group v-model="props.approval.timeoutEvent.event">
+						<el-radio v-for="ev in timeoutEvents" :label="ev.event" :key="ev.event">{{ev.name}}</el-radio>
+					</el-radio-group>
+					<!--<div>
+						<span style="color:#4987ff; font-size: small">提醒 </span>
+						<el-select v-model="props.approval.timeoutEvent.userType" size="mini" placeholder="提醒谁" style="width:100px">
+							<el-option :value="'sender'" label="发起人"></el-option>
+							<el-option :value="'select'" label="指定成员"></el-option>
+						</el-select>
+					</div>-->
+					<div v-if="props.approval.timeoutEvent.event === 'notify'">
+						<div style="color:#409EEF; font-size: small">默认提醒当前审批人</div>
+						<el-switch inactive-text="一次" active-text="循环" v-model="props.approval.timeoutEvent.loop"></el-switch>
+						<span style="margin-left: 20px" v-if="props.approval.timeoutEvent.loop">
+							每隔
+							<el-input-number :min="0" :max="10000" :step="1" size="mini" v-model="props.approval.timeoutEvent.loopTime"></el-input-number>
+							天
+						</span>
+					</div>
+				</el-form-item>
 			</div>
 			
 			<div v-if="props.approval.type === '4'">
@@ -106,6 +156,7 @@
 					</el-radio-group>
 				</el-form-item>
 			</div>
+			
 			<div v-if="props.approval.type === '3'">
 				<el-divider></el-divider>
 				<el-form-item label="审批终点" prop="text" class="approve-end">
@@ -161,7 +212,12 @@
       return {
         showUserSelect: false,
         select: [],
-        approval: []
+        approval: [],
+	      timeoutEvents:[
+		      {event:'pass', name:'自动通过'},
+          {event:'refuse', name:'自动拒绝'},
+          {event:'notify', name:'发送提醒'},
+	      ]
       }
     },
     computed: {
@@ -169,7 +225,7 @@
         return this.$store.state.selectedNode;
       },
       onlySelectUser() {
-        return this.selectedNode.type === 'cs' || this.props.type === '1'
+        return this.selectedNode.type === 'cs' || this.selectedNode.type === 'sp' || this.props.type === '1'
       },
       props() {
         return this.$store.state.selectedNode.props;
@@ -243,7 +299,7 @@
 <style lang="less" scoped>
 	.node-config {
 		padding: 0 20px;
-		
+		overflow-y: auto;
 		/deep/ .el-form {
 			.el-form-item__label {
 				padding: 0;

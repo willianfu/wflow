@@ -170,7 +170,9 @@
             background: this.$getDefalut(data, 'background', '#FF7800'),
             name: this.$getDefalut(data, 'templateName', '未命名的表单'),
             group: this.$getDefalut(group, 'id', ''),
+            sign: this.$getDefalut(data, 'sign', false),
             remark: this.$getDefalut(data, 'remark', ''),
+            notify: JSON.parse(this.$getDefalut(data, 'notify', JSON.stringify({types:[], title:''}))),
             whoCommit: JSON.parse(this.$getDefalut(data, 'whoCommit', '[]')),
             whoEdit: JSON.parse(this.$getDefalut(data, 'whoEdit', '[]')),
             whoExport: JSON.parse(this.$getDefalut(data, 'whoExport', '[]')),
@@ -189,6 +191,14 @@
                                 //审批模式 会签/或签/依次
                                 mode:'and',
                                 userEmpty: 'toAdmin',
+                                timeLimitType:'hour',
+                                timeLimitVal: 0,
+                                timeoutEvent:{
+                                  event:'pass',
+                                  loop: false,
+                                  loopTime: 0
+                                },
+                                sign: false,
                                 user:{
                                   users:[],
                                   select:'one',
@@ -386,6 +396,12 @@
   @media screen and (max-width: 1000px) {
     .desp {
       display: none !important;
+    }
+  }
+
+  @media screen and (max-width: 800px) {
+    .from-panel{
+      padding: 50px 10px;
     }
   }
 </style>

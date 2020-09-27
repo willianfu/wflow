@@ -12,7 +12,11 @@
             <i class="el-icon-copy-document" v-if="'tj' === node.type"></i>
           </el-tooltip>
         </div>
-        <span>请设置{{node.name}}</span>
+        <div style="position:relative;" v-show="'notify' === node.props.approval.timeoutEvent.event">
+          <i class="el-icon-time" style="font-size: x-small; position:absolute; left: -15px; top: -5px;"></i>
+        </div>
+        <span>{{nodeText}}</span>
+        
       </el-card>
     </div>
     <div class="line-y">
@@ -63,10 +67,57 @@
         type: Number
       }
     },
+    computed:{
+      nodeText(){
+        let text = '', type = '', approval = this.node.props.approval;
+        if (this.node.type === 'root'){
+          text = this.getUsersText(approval.user.users)
+          text = text === '' ? '所有人':text
+          type = '发起人'
+        }else if (this.node.type === 'sp'){
+          switch (approval.type) {
+            case "1": text = this.getUsersText(approval.user.users); break;
+            case '2': text = '发起人自选(' +
+                    (approval.user.select === 'one' ? '一人)':'多人)'); break;
+            case '3': text = '连续多级主管'; break;
+            case '4': text = '发起人的' +
+                    (approval.leaderLevel === 1 ?
+                            '直接主管' : ('第 ' + approval.leaderLevel + ' 级主管')); break;
+            case '5': text = '角色- ' +
+                    (approval.user.role !== ''?approval.user.role.name : '请选择角色'); break;
+            case '6': text = '发起人自己'; break;
+          }
+          type = '审批人'
+        }else if (this.node.type === 'tj'){
+          type = '审批条件'
+        }else if (this.node.type === 'cs'){
+          text = this.getUsersText(approval.user.users)
+          type = '抄送人'
+        }else {
+          return '未知节点'
+        }
+        if (text.lastIndexOf('、') !== -1){
+          text = text.substring(0, text.length - 1);
+        }else if(text === ''){
+          text = '请设置' + type
+        }
+        return text.length > 24 ? (text.substring(0, 24) + '...') : text;
+      }
+    },
     methods: {
       addNode(type){
         this.$refs.arrow.click()
         this.$emit('addNode', type, this.node)
+      },
+      getUsersText(users){
+        let text = ''
+        if (users === undefined || (users === '')){
+          users = []
+        }
+        users.forEach(u => {
+          text = text + u.name + '、'
+        })
+        return text
       },
       addCd(){
         this.$emit('addCd', this.node)
@@ -99,7 +150,13 @@
   @import "@/assets/theme";
   
   /deep/ .el-card{
-    //position: absolute;
+    .el-card__body{
+      height: 50px;
+      overflow: hidden;
+      padding: 0 20px !important;
+      display: flex;
+      align-items:center;
+    }
   }
   
   .arrow{

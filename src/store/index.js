@@ -9,11 +9,23 @@ var process = {
   props:{
     approval:{
       //审批人选项类型
-      type:'1',
+      type:'0',
       //审批模式 会签/或签/依次
       mode:'and',
+      //审批时限
+      timeLimitType:'hour',
+      timeLimitVal: 0,
+      timeoutEvent:{
+        event:'pass',
+        loop: false,
+        loopTime: 0
+      },
+      sign: false,
+      //如果审批人为空该如何做
       userEmpty: 'toAdmin',
+      //主管级别
       leaderLevel: 1,
+      //结束条件
       endCondition: 'top',
       user:{
         users:[],
@@ -38,6 +50,7 @@ export default new Vuex.Store({
         name:'新的审批',
         group: null,
         remark:'',
+        sign: false,
         whoCommit:{
           names:[],
           values:[]
@@ -46,7 +59,11 @@ export default new Vuex.Store({
           names:[],
           values:[]
         },
-        whoExport:[]
+        whoExport:[],
+        notify:{
+          types:[],
+          title:''
+        }
       },
       //表单设计
       form: [],

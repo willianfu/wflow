@@ -110,6 +110,7 @@
           {text: '说明文字', name: 'explain', icon: 'el-icon-warning-outline', valid: false, props:{remark:'请输入说明内容'}},
           {text: '人员', name: 'orgSelect', icon: 'el-icon-user', valid: false, props:{type: 'user'}},
           {text: '部门', name: 'orgSelect', icon: 'el-icon-takeaway-box', valid: false, props:{type: 'dept'}},
+          {text: '签字', name: 'sign', icon: 'el-icon-edit', valid: false, props:{}},
           /*{text: '说明文字', name:''},
           {text: '金额', name:''},
           {text: '附件', name:''},

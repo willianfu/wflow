@@ -118,6 +118,20 @@
 		display: inline;
 		width: 50px;
 	}
+	
+	/deep/ .el-drawer__body{
+		overflow-y: auto;
+		&::-webkit-scrollbar {
+			width: 8px;
+			height: 8px;
+			background-color: #e1e1e1;
+		}
+		
+		&::-webkit-scrollbar-thumb {
+			border-radius: 5px;
+			background-color: #a8a8a9;
+		}
+	}
 	.scale {
 		z-index: 999;
 		position: fixed;

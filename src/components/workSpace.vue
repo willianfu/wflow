@@ -5,7 +5,7 @@
 		<el-tabs type="border-card">
 			<el-tab-pane label="审批列表">
 				<el-row style="margin-bottom: 20px">
-					<el-col :span="6">
+					<el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="4">
 						<el-input size="medium" v-model="formList.inputs" placeholder="搜索表单" clearable>
 							<i slot="prefix" class="el-input__icon el-icon-search"></i>
 						</el-input>
@@ -169,6 +169,19 @@
 				font-size: x-small;
 				margin: 5px 0 5px 0;
 			}*/
+		}
+	}
+	
+	@media screen and (max-width: 800px) {
+		.form-item{
+			padding: 12px 10px !important;
+			width: 150px !important;
+			margin: 5px !important;
+			&:hover{
+				span:last-child{
+					display: none !important;
+				}
+			}
 		}
 	}
 </style>

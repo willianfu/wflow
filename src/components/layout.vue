@@ -52,6 +52,10 @@
     },
     mounted() {
 			this.activeIndex = this.$route.path
+      console.log(document.body.offsetWidth)
+      if (document.body.offsetWidth <= 970){
+        this.$msgbox.alert("本设计器未适配中小屏幕，建议您在PC电脑端浏览器进行操作")
+      }
     },
     methods: {
       publish() {
@@ -127,8 +131,14 @@
 </script>
 <style lang="less" scoped>
   @import "@/assets/global";
+
+  .layout-body{
+    min-width: 980px;
+  }
   
   /deep/ .header {
+    min-width: 980px;
+    position: relative;
     .el-menu {
       top: 0;
       z-index: 999;
@@ -138,7 +148,7 @@
     }
 
     .publish {
-      position: fixed;
+      position: absolute;
       top: 15px;
       right: 20px;
       z-index: 1000;
@@ -153,8 +163,8 @@
     }
   
     .back{
+      position: absolute;
       z-index: 1000;
-      position: fixed;
       top: 10px;
       left: 20px;
       font-size: small;

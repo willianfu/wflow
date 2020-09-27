@@ -22,6 +22,14 @@
             mode:'and',
             userEmpty: 'toAdmin',
             leaderLevel: 1,
+            timeLimitVal: 0,
+            timeLimitType: 'hour',
+            timeoutEvent:{
+              event:'pass',
+              loop: false,
+              loopTime: 0
+            },
+            sign: false,
             endCondition: 'top',
             user:{
               users:[],
@@ -171,11 +179,13 @@
         } else {
           this.$set(node, 'node', {
             id: this.getId(),
-            name: '新节点',
+            name: type === 'sp' ? '审批人' : '抄送人',
             type: type,
             node: node.node,
             props: JSON.parse(JSON.stringify(this.props)),
           })
+	        this.$store.commit('selectedNode', node.node)
+          this.select(node.node)
         }
         //this.updateDom()
       },
