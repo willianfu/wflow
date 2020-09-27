@@ -10,7 +10,7 @@
 				</div>
 			</div>
 			<div class="panel">
-				<div class="panel-item" @click="$router.push('workSpace')">
+				<div class="panel-item" @click="to('workSpace')">
 					<div>
 						<i class="el-icon-s-platform"></i>
 						<span>进入工作区</span>
@@ -19,7 +19,7 @@
 						您可以发起、处理及查看审批，进行日常工作任务
 					</p>
 				</div>
-				<div class="panel-item" @click="$router.push('formListPanel')">
+				<div class="panel-item" @click="to('formListPanel')">
 					<div>
 						<i class="el-icon-s-custom"></i>
 						<span>进入管理后台</span>
@@ -62,7 +62,13 @@
         this.showUserSelect = false
 	      sessionStorage.setItem("user", JSON.stringify(this.loginUser))
       },
-		  
+		  to(path){
+        if (this.loginUser === null || this.loginUser === ''){
+          this.$message.warning("请先选择一个人员身份进行登录")
+        }else {
+          this.$router.push(path)
+        }
+		  }
 	  }
   }
 </script>
