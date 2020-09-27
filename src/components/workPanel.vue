@@ -1,7 +1,14 @@
 <template>
 	<div style="text-align: center">
-		<h4>选择进入的系统 😅</h4>
+		<h4>先选择本次登录人员的身份，再进入相应的系统 😅</h4>
+		
 		<div class="work-panel">
+			<div class="user">
+				<el-button type="primary" round size="small" @click="showUserSelect = true" icon="el-icon-user">选择本次登录者</el-button>
+				<div v-if="loginUser !== '' && loginUser !== null">
+					<span>{{loginUser.name}}</span>
+				</div>
+			</div>
 			<div class="panel">
 				<div class="panel-item" @click="$router.push('workSpace')">
 					<div>
@@ -23,12 +30,40 @@
 				</div>
 			</div>
 		</div>
+		
+		<org-picker :show="showUserSelect" single onlyUser @close="showUserSelect = false" :selected="select" @selectOver="selected"></org-picker>
 	</div>
 </template>
 
 <script>
+	import orgPicker from "@/components/common/organizationPicker";
+	
   export default {
-    name: "workPanel"
+    name: "workPanel",
+	  components:{orgPicker},
+	  data(){
+      return{
+        showUserSelect: false,
+        select:[],
+        loginUser: ''
+      }
+	  },
+	  mounted(){
+      let user = sessionStorage.getItem("user")
+		  if (user !== null && user !== ''){
+        this.loginUser = JSON.parse(user)
+			  this.select.push(this.loginUser)
+		  }
+	  },
+	  methods:{
+      selected(select){
+        this.select = select
+        this.loginUser = select.length > 0 ? select[0]:''
+        this.showUserSelect = false
+	      sessionStorage.setItem("user", JSON.stringify(this.loginUser))
+      },
+		  
+	  }
   }
 </script>
 
@@ -40,13 +75,23 @@
     margin-top: 150px;
 	}
 	
+	.user{
+		position: absolute;
+		left: 20%;
+		margin-top: 20px;
+		div{
+			margin-left: 20px;
+			display: inline-block;
+		}
+	}
+	
 	.work-panel {
 		text-align: left;
 		display: flex;
 		justify-content: center;
-		
+		position: relative;
 		.panel {
-			margin-top: 100px;
+			margin-top: 80px;
 			max-width: 700px;
 			display: flex;
 			justify-content: center;

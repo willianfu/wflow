@@ -18,7 +18,7 @@
 								{{node.name}}
 							</el-breadcrumb-item>
 						</el-breadcrumb>
-						<el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+						<el-checkbox v-model="checkAll" @change="handleCheckAllChange" v-show="!single">全选</el-checkbox>
 						<span style="margin-left: 20px; cursor: pointer; color:#38adff;" @click="beforeNode">上一级</span>
 					</div>
 					<div style="margin-top: 8px; width: 100%;">
@@ -98,6 +98,11 @@
         default: 'user',
         type: String
       },
+	    //是否单选
+	    single:{
+        default: false,
+        type: Boolean
+	    },
       //已经选中的
       selected: {
         default: ()=>{return[]},
@@ -116,36 +121,7 @@
         navNodes: [],
         navNodePointer: null,
         searchUsers: [],
-        nodes: [
-          {
-            id: '325435',
-            selected: false,
-            type: 'dept',
-            name: '采购部',
-          }, {
-            id: '354335',
-            selected: false,
-            type: 'dept',
-            name: '研发部',
-          }, {
-            id: '3546535',
-            selected: false,
-            type: 'dept',
-            name: '行政部',
-          }, {
-            id: '546354754756474',
-            selected: false,
-            type: 'user',
-            name: '张大锤',
-            avatar: 'https://portrait.gitee.com/uploads/avatars/user/1642/4928216_willianfu_1594015042.png!avatar200'
-          }, {
-            id: '546354754756474',
-            selected: false,
-            type: 'user',
-            name: '李四',
-            avatar: ''
-          }
-        ],
+        nodes: [],
         select: [],
         search: '',
         avatarColor: [
@@ -210,10 +186,26 @@
           node.selected = false;
         } else if(!this.disableDept(node)){
           node.selected = true
+          let nodes = this.search.trim() === '' ? this.nodes : this.searchUsers;
+	        if (this.single){
+            nodes.forEach(nd => {
+              if (node.id !== nd.id){
+                nd.selected = false
+              }
+            })
+	        }
           if (node.type === 'dept') {
-            this.select.unshift(node);
+            if (this.single){
+              this.select = [node]
+            }else{
+              this.select.unshift(node);
+            }
           } else {
-            this.select.push(node);
+            if (this.single){
+              this.select = [node]
+            }else {
+              this.select.push(node);
+            }
           }
         }
       },
