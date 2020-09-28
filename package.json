@@ -13,6 +13,8 @@
     "element-ui": "^2.13.2",
     "less": "^3.12.2",
     "less-loader": "^7.0.1",
+    "signature_pad": "^3.0.0-beta.4",
+    "trim-canvas": "^0.1.2",
     "vue": "^2.6.11",
     "vue-router": "^3.4.3",
     "vuedraggable": "^2.24.1",

@@ -6,8 +6,10 @@
 </template>
 
 <script>
+	//https://github.com/szimek/signature_pad
   export default {
     name: "sign"
+	  
   }
 </script>
 
