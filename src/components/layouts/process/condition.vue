@@ -1,7 +1,7 @@
 <template>
   <el-form label-position="top" label-width="100px" class="condition">
     <el-form-item :label="condition.name" v-for="condition in selectedNode.condition" :key="condition.id">
-      <div v-if="condition.type === 'number'">
+      <div v-if="condition.type === type.NUMBER">
         <el-select v-model="condition.symbol" style="width: 120px; margin-right: 20px" size="small">
           <el-option :value="sb.symbol" :label="sb.name" v-for="sb in symbolOptions" :key="sb.symbol"></el-option>
         </el-select>
@@ -15,7 +15,7 @@
                   size="small" style="width: 100px;"></el-input>
       </div>
 
-      <div v-else-if="condition.type === 'one' || condition.type === 'more'">
+      <div v-else-if="condition.type === type.ONE || condition.type === type.MORE">
         <el-select v-model="condition.symbol" style="width: 120px; margin-right: 20px" size="small">
           <el-option :value="'='" label="完全等于"></el-option>
           <el-option :value="'in'" label="在选项中"></el-option>
@@ -25,18 +25,18 @@
         </el-select>
       </div>
 
-      <div v-else-if="condition.type === 'dept' || condition.type === 'user'">
+      <div v-else-if="condition.type === type.DEPT || condition.type === type.USER">
         选择部门
       </div>
 
-      <div v-else-if="condition.type === 'org'">
+      <div v-else-if="condition.type === type.ORG">
         <el-button type="primary" size="mini" icon="el-icon-plus" style="margin-bottom: 15px"
                    round @click="showUserSelect = true, select = condition.values">选择
         </el-button>
         <div>
-          <el-tag :type="'dept' === user.type? 'info': 'primary'" v-for="(user, index) in condition.values"
+          <el-tag :type="type.DEPT === user.type? 'info': 'primary'" v-for="(user, index) in condition.orgValues"
                   size="mini" style="margin: 5px 10px 5px 0" :key="index"
-                  @close="condition.values.splice(index, 1)" closable>{{user.name}}
+                  @close="condition.orgValues.splice(index, 1)" closable>{{user.name}}
           </el-tag>
         </div>
       </div>
@@ -50,7 +50,8 @@
 
 <script>
   import orgPicker from '@/components/common/organizationPicker'
-
+  import { conditionType } from '@/components/common/enumConst'
+  
   export default {
     name: "condition",
     components: {orgPicker},
@@ -64,6 +65,7 @@
     },
     data() {
       return {
+        type: conditionType,
         showUserSelect: false,
         onlySelectUser: false,
         select: [],

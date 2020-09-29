@@ -1,7 +1,11 @@
 <script>
   import test from "@/assets/approvalTemplate"
   import arrow from "./arrow";
-
+  import {
+    nodeType, approvalMode, timeoutEvent,
+    timeLimitType, userEmpty, endCondition
+  } from '@/components/common/enumConst'
+  
   export default {
     name: "processView",
     components: {arrow},
@@ -15,29 +19,33 @@
         pro: test,
         updated: true,
         props: {
-          approval:{
+          approval: {
             //审批人选项类型
-            type:'1',
+            type: '1',
             //审批模式 会签/或签/依次
-            mode:'and',
-            userEmpty: 'toAdmin',
-            leaderLevel: 1,
+            mode: approvalMode.AND,
+            //审批时限
+            timeLimitType: timeLimitType.HOUR,
             timeLimitVal: 0,
-            timeLimitType: 'hour',
-            timeoutEvent:{
-              event:'pass',
+            timeoutEvent: {
+              event: timeoutEvent.PASS,
               loop: false,
               loopTime: 0
             },
             sign: false,
-            endCondition: 'top',
-            user:{
-              users:[],
-              select:'one',
-              moreLeader:'',
+            //如果审批人为空该如何做
+            userEmpty: userEmpty.TO_PASS,
+            //主管级别
+            leaderLevel: 1,
+            //结束条件
+            endCondition: endCondition.TOP,
+            user: {
+              users: [],
+              multiple: false,
+              moreLeader: '',
               leader: 1,
-              role:'',
-              self:'',
+              role: '',
+              self: '',
             },
           }
         },
@@ -57,8 +65,8 @@
         if (node === undefined) {
           return [];
         }
-        if (node.type === 'root' || node.type === 'sp'
-          || node.type === 'cs' || node.type === 'empty') {
+        if (node.type === nodeType.ROOT || node.type === nodeType.SP
+          || node.type === nodeType.CS || node.type === nodeType.EMPTY) {
           let dom = that.getDomTree(h, node.node)
           dom.unshift(h('arrow', {
             props: {node: node},
@@ -71,12 +79,12 @@
             },
           }, []))
           return [h('div', {'class': {c: true}}, dom)]
-        } else if (node.type === 'condition' && node.conditions !== undefined
+        } else if (node.type === nodeType.CONDITION && node.conditions !== undefined
           && node.conditions instanceof Array) {
           let index = 0;
           let co = node.conditions.map(cd => {
             let c = that.getDomTree(h, cd.node);
-            cd.type = 'tj';
+            cd.type = nodeType.TJ;
             c.unshift(h('arrow', {
               props: {node: cd},
               on: {
@@ -98,8 +106,8 @@
             h('div', {'class': {fdr: true, bdtb: true}}, co)]),
             h('div', {
               'class': {
-                clear: node.node !== undefined && node.node.type === 'empty',
-                pt: node.node !== undefined && node.node.type !== 'empty'
+                clear: node.node !== undefined && node.node.type === nodeType.EMPTY,
+                pt: node.node !== undefined && node.node.type !== nodeType.EMPTY
               },
               props: {node: node.node},
             }, that.getDomTree(h, node.node))
@@ -109,13 +117,13 @@
         }
       },
       searchParentNode(nodeList, node, nodes) {
-        if (node.type === 'tj' && node.id === nodes.id) {
+        if (node.type === nodeType.TJ && node.id === nodes.id) {
           return true;
         } else if (nodes.node === undefined) {
           return null;
         } else if (nodes.node.id === node.id) {
           return nodes;
-        } else if (nodes.node.type === 'condition') {
+        } else if (nodes.node.type === nodeType.CONDITION) {
           for (let item of nodes.node.conditions) {
             let result = this.searchParentNode(nodeList, node, item)
             if (result === true) {
@@ -152,34 +160,34 @@
         )
       },
       addNode(type, node) {
-        if (type === 'tj') {
-          let nextNode = node.node === undefined ? {type: 'empty'} : node.node
+        if (type === nodeType.TJ) {
+          let nextNode = node.node === undefined ? {type: nodeType.EMPTY} : node.node
           this.$set(node, 'node', {
             conditions: [
               {
                 condition: [],
                 cids:[],
                 id: this.getId(),
-                type: 'tj',
+                type: nodeType.TJ,
                 name: "条件",
                 props: JSON.parse(JSON.stringify(this.props)),
               }, {
                 condition: [],
                 cids:[],
                 id: this.getId(),
-                type: 'tj',
+                type: nodeType.TJ,
                 name: "条件",
                 props: JSON.parse(JSON.stringify(this.props)),
               }
             ],
             id: this.getId(),
-            type: 'condition',
+            type: nodeType.CONDITION,
             node: nextNode
           })
         } else {
           this.$set(node, 'node', {
             id: this.getId(),
-            name: type === 'sp' ? '审批人' : '抄送人',
+            name: type === nodeType.SP ? '审批人' : '抄送人',
             type: type,
             node: node.node,
             props: JSON.parse(JSON.stringify(this.props)),
@@ -192,7 +200,7 @@
       delNode(node) {
         let parentNode = this.getParentNode(node);
         if (null !== parentNode) {
-          if ('condition' === parentNode.node.type) {
+          if (nodeType.CONDITION === parentNode.node.type) {
             //删除的是条件节点
             for (let i = 0; i < parentNode.node.conditions.length; i++) {
               if (parentNode.node.conditions[i].id === node.id) {

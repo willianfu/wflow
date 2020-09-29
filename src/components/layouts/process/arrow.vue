@@ -4,15 +4,15 @@
       <el-card shadow="always" >
         <div slot="header" :class="node.type">
           <span>
-            <i :class="{'el-icon-s-check': node.type === 'sp', 'el-icon-s-promotion': node.type === 'cs'}"></i>
+            <i :class="{'el-icon-s-check': node.type === nodeType.SP, 'el-icon-s-promotion': node.type === nodeType.CS}"></i>
             {{node.name}}
           </span>
-          <i class="el-icon-close" v-if="'root' !== node.type" @click.stop="delNode"></i>
+          <i class="el-icon-close" v-if="nodeType.ROOT !== node.type" @click.stop="delNode"></i>
           <el-tooltip effect="dark" content="复制条件" placement="top-start">
-            <i class="el-icon-copy-document" v-if="'tj' === node.type"></i>
+            <i class="el-icon-copy-document" v-if="nodeType.TJ === node.type"></i>
           </el-tooltip>
         </div>
-        <div style="position:relative;" v-show="'notify' === node.props.approval.timeoutEvent.event">
+        <div style="position:relative;" v-show="'NOTIFY' === node.props.approval.timeoutEvent.event">
           <i class="el-icon-time" style="font-size: x-small; position:absolute; left: -15px; top: -5px;"></i>
         </div>
         <span>{{nodeText}}</span>
@@ -26,15 +26,15 @@
           width="350"
           trigger="click">
         <div class="node-select">
-          <div @click="addNode('sp')">
+          <div @click="addNode(nodeType.SP)">
             <i class="el-icon-s-check" style="color:rgb(255, 148, 62);"></i>
             <span>审批人</span>
           </div>
-          <div @click="addNode('cs')">
+          <div @click="addNode(nodeType.CS)">
             <i class="el-icon-s-promotion" style="color:rgb(50, 150, 250);"></i>
             <span>抄送人</span>
           </div>
-          <div @click="addNode('tj')">
+          <div @click="addNode(nodeType.TJ)">
             <i class="el-icon-share" style="color:rgb(21, 188, 131);"></i>
             <span>条件分支</span>
           </div>
@@ -51,6 +51,8 @@
 </template>
 
 <script>
+  import { nodeType } from '@/components/common/enumConst'
+  
   export default {
     name: "arrow",
     props: {
@@ -67,18 +69,23 @@
         type: Number
       }
     },
+    data(){
+      return{
+        nodeType: nodeType
+      }
+    },
     computed:{
       nodeText(){
         let text = '', type = '', approval = this.node.props.approval;
-        if (this.node.type === 'root'){
+        if (this.node.type === nodeType.ROOT){
           text = this.getUsersText(approval.user.users)
-          text = text === '' ? '所有人':text
+          text = text === '' ? '所有人':''
           type = '发起人'
-        }else if (this.node.type === 'sp'){
+        }else if (this.node.type === nodeType.SP){
           switch (approval.type) {
             case "1": text = this.getUsersText(approval.user.users); break;
-            case '2': text = '发起人自选(' +
-                    (approval.user.select === 'one' ? '一人)':'多人)'); break;
+            case '2': text = '发起人自选（' +
+                    (approval.user.multiple? '多人）':'一人）'); break;
             case '3': text = '连续多级主管'; break;
             case '4': text = '发起人的' +
                     (approval.leaderLevel === 1 ?
@@ -88,9 +95,9 @@
             case '6': text = '发起人自己'; break;
           }
           type = '审批人'
-        }else if (this.node.type === 'tj'){
+        }else if (this.node.type === nodeType.TJ){
           type = '审批条件'
-        }else if (this.node.type === 'cs'){
+        }else if (this.node.type === nodeType.CS){
           text = this.getUsersText(approval.user.users)
           type = '抄送人'
         }else {
@@ -131,10 +138,10 @@
       },
       showCard(node){
         return (node !== null && node !== undefined)
-          && (node.type === 'root'
-            || node.type === 'sp'
-            || node.type === 'cs'
-            || node.type === 'tj')
+          && (node.type === nodeType.ROOT
+            || node.type === nodeType.SP
+            || node.type === nodeType.CS
+            || node.type === nodeType.TJ)
       },
       showArrow(node){
         return false && node;//node.node === undefined
@@ -213,7 +220,7 @@
         padding: 10px 20px;
         font-size: small;
       }
-      .root, .sp, .cs, .tj {
+      .ROOT, .SP, .CS, .TJ {
         padding: 5px 10px;
 
         span {
@@ -233,17 +240,17 @@
         }
       }
 
-      .root {
+      .ROOT {
         background-color: rgb(87, 106, 149);
       }
 
-      .sp {
+      .SP {
         background-color: rgb(255, 148, 62);
       }
-      .cs {
+      .CS {
         background-color: #1890ff;
       }
-      .tj {
+      .TJ {
         font-size: small;
         background-color: #ffffff;
         color: rgb(21, 188, 131);

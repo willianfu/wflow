@@ -1,8 +1,8 @@
 <template>
 	<div class="node-config">
 		<el-form label-position="top" label-width="80px">
-			<div v-if="selectedNode.type === 'root' || selectedNode.type === 'cs'">
-				<el-form-item :label="selectedNode.type === 'root' ? '谁可以发起此审批' : '选择要抄送的人员'" prop="text">
+			<div v-if="selectedNode.type === enumConst.nodeType.ROOT || selectedNode.type === enumConst.nodeType.CS">
+				<el-form-item :label="selectedNode.type === enumConst.nodeType.ROOT ? '谁可以发起此审批' : '选择要抄送的人员'" prop="text">
 					<el-button type="primary" size="mini" icon="el-icon-plus" style="margin-bottom: 15px"
 					           round @click="showUserSelect = true, select = props.approval.user.users">选择人员/部门
 					</el-button>
@@ -27,7 +27,7 @@
 				 </el-select>
 			 </el-form-item>-->
 			
-			<div v-if="selectedNode.type === 'tj'">
+			<div v-if="selectedNode.type === enumConst.nodeType.TJ">
 				<el-form-item label="优先级" prop="level">
 					<el-select v-model="selectedNode.level" size="mini">
 						<el-option>1</el-option>
@@ -50,7 +50,7 @@
 				</el-form-item>
 			</div>
 			
-			<div v-if="selectedNode.type === 'sp'">
+			<div v-if="selectedNode.type === enumConst.nodeType.SP">
 				<el-form-item label="选择审批人" prop="text" class="select-user-type">
 					<el-radio-group v-model="props.approval.type">
 						<el-radio label="1">指定人员</el-radio>
@@ -86,9 +86,9 @@
 					</div>
 					
 					<div v-if="props.approval.type === '2'">
-						<el-select size="small" v-model="props.approval.user.select" placeholder="选择人数">
-							<el-option :value="'one'" label="自选一个人"></el-option>
-							<el-option :value="'more'" label="自选多个人"></el-option>
+						<el-select size="small" v-model="props.approval.user.multiple" placeholder="选择人数">
+							<el-option :value="false" label="自选一个人"></el-option>
+							<el-option :value="true" label="自选多个人"></el-option>
 						</el-select>
 					</div>
 				</div>
@@ -104,12 +104,12 @@
 				</el-form-item>
 				<el-form-item label="审批期限（为 0 则不生效）" prop="timeLimit">
 					<el-select v-model="props.approval.timeLimitType" size="mini" placeholder="维度 天 / 小时" style="width:100px">
-						<el-option :value="'hour'" label="小时"></el-option>
-						<el-option :value="'day'" label="天"></el-option>
+						<el-option :value="enumConst.timeLimitType.HOUR" label="小时"></el-option>
+						<el-option :value="enumConst.timeLimitType.DAY" label="天"></el-option>
 					</el-select>
 					<span style="margin: 0 10px">时长:</span>
 					<el-input-number :min="0" :max="100" :step="1" size="mini" v-model="props.approval.timeLimitVal"></el-input-number>
-					<span> {{props.approval.timeLimitType === 'hour' ? '小时':'天'}}</span>
+					<span> {{props.approval.timeLimitType === enumConst.timeLimitType.HOUR ? '小时':'天'}}</span>
 				</el-form-item>
 				
 				<el-form-item label="审批期限超时后执行" prop="level" v-if="props.approval.timeLimitVal > 0">
@@ -123,7 +123,7 @@
 							<el-option :value="'select'" label="指定成员"></el-option>
 						</el-select>
 					</div>-->
-					<div v-if="props.approval.timeoutEvent.event === 'notify'">
+					<div v-if="props.approval.timeoutEvent.event === enumConst.timeoutEvent.NOTIFY">
 						<div style="color:#409EEF; font-size: small">默认提醒当前审批人</div>
 						<el-switch inactive-text="一次" active-text="循环" v-model="props.approval.timeoutEvent.loop"></el-switch>
 						<span style="margin-left: 20px" v-if="props.approval.timeoutEvent.loop">
@@ -150,9 +150,9 @@
 				<el-divider></el-divider>
 				<el-form-item label="多人审批时审批方式" prop="text" class="approve-mode">
 					<el-radio-group v-model="props.approval.mode">
-						<el-radio label="next">按选择顺序依次审批</el-radio>
-						<el-radio label="and">会签（可同时审批，每个人必须同意）</el-radio>
-						<el-radio label="or">或签（有一人同意即可）</el-radio>
+						<el-radio :label="enumConst.approvalMode.NEXT">按选择顺序依次审批</el-radio>
+						<el-radio :label="enumConst.approvalMode.AND">会签（可同时审批，每个人必须同意）</el-radio>
+						<el-radio :label="enumConst.approvalMode.OR">或签（有一人同意即可）</el-radio>
 					</el-radio-group>
 				</el-form-item>
 			</div>
@@ -164,7 +164,7 @@
 						<el-radio label="top">直到最上层主管</el-radio>
 						<el-radio label="level">不超过发起人的</el-radio>
 					</el-radio-group>
-					<div class="approve-end-leave" v-if="'top' !== props.approval.endCondition">
+					<div class="approve-end-leave" v-if="enumConst.endCondition.TOP !== props.approval.endCondition">
 						<span>第 </span>
 						<el-input-number :min="1" :max="20" :step="1" size="mini"
 						                 v-model="props.approval.leaderLevel"></el-input-number>
@@ -177,9 +177,9 @@
 				<el-divider></el-divider>
 				<el-form-item label="审批人为空时" prop="text" class="approve-mode">
 					<el-radio-group v-model="props.approval.userEmpty">
-						<el-radio label="toPass">自动通过</el-radio>
-						<el-radio label="toAdmin">自动转交管理员</el-radio>
-						<el-radio label="toUser">转交到指定人员</el-radio>
+						<el-radio :label="enumConst.userEmpty.TO_PASS">自动通过</el-radio>
+						<el-radio :label="enumConst.userEmpty.TO_ADMIN">自动转交管理员</el-radio>
+						<el-radio :label="enumConst.userEmpty.TO_USER">转交到指定人员</el-radio>
 					</el-radio-group>
 				</el-form-item>
 			</div>
@@ -196,6 +196,7 @@
 <script>
   import orgPicker from '@/components/common/organizationPicker'
   import condition from './condition'
+  import enumConst from '@/components/common/enumConst'
   
   export default {
     name: "nodeConfig",
@@ -210,13 +211,14 @@
     },
     data() {
       return {
+        enumConst: enumConst,
         showUserSelect: false,
         select: [],
         approval: [],
 	      timeoutEvents:[
 		      {event:'pass', name:'自动通过'},
           {event:'refuse', name:'自动拒绝'},
-          {event:'notify', name:'发送提醒'},
+          {event:'NOTIFY', name:'发送提醒'},
 	      ]
       }
     },
@@ -225,14 +227,16 @@
         return this.$store.state.selectedNode;
       },
       onlySelectUser() {
-        return this.selectedNode.type === 'cs' || this.selectedNode.type === 'sp' || this.props.type === '1'
+        return this.selectedNode.type === enumConst.nodeType.CS
+	        || this.selectedNode.type === enumConst.nodeType.SP
+	        || this.props.type === '1'
       },
       props() {
         return this.$store.state.selectedNode.props;
       },
       showModel() {
         return (this.props.approval.user.users.length > 1 && this.props.approval.type === '1')
-          || (this.props.approval.type === '2' && this.props.approval.user.select === 'more')
+          || (this.props.approval.type === '2' && this.props.approval.user.multiple)
           || this.props.approval.type === '4'
           || (this.props.approval.type === '5' && this.props.approval.user.role !== '')
       },
@@ -272,7 +276,7 @@
     },
     methods: {
       showRoot() {
-        return this.selectedNode.type === 'root'
+        return this.selectedNode.type === enumConst.nodeType.ROOT
       },
       selected(select) {
         this.$store.commit('selectedApprover', select.map(s => {
