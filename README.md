@@ -2,20 +2,27 @@
 
 由 Vue + ElementUI搭建，仿钉钉风格
 
-  👉 在线体验地址： [戳我打开演示页面](http://47.100.202.245:83) 👈
+  👉 在线体验地址(未适配移动端)： [戳我打开演示页面](http://47.100.202.245:83) 👈
+
+ **工作区面板** 
+
+<video src="https://www.bilibili.com/video/BV1Vh41197Pw/" controls="controls" width="500" height="300">您的浏览器不支持播放该视频！</video>
+
 
  **工作流表单管理，支持分组和单组表单拖拽排序** 
 
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0918/161955_1243e4a2_4928216.gif "GIF.gif")
+<video src="https://www.bilibili.com/video/BV1dT4y1c7md/" controls="controls" width="500" height="300">您的浏览器不支持播放该视频！</video>
+
+<video src="https://www.bilibili.com/video/BV1Kk4y1C7F5/" controls="controls" width="500" height="300">您的浏览器不支持播放该视频！</video>
 
  **表单基本设置** 
 
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0918/162224_edbc90a3_4928216.gif "GIF.gif")
+<video src="https://www.bilibili.com/video/BV1Th41197LS/" controls="controls" width="500" height="300">您的浏览器不支持播放该视频！</video>
 
  **表单布局设计器**
 
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0918/162343_673f5056_4928216.gif "GIF.gif")
+<video src="https://www.bilibili.com/video/BV1Xi4y1E7gb/" controls="controls" width="500" height="300">您的浏览器不支持播放该视频！</video>
  
  **流程设计器，任意审批流程编辑** 
 
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0918/162801_c96e6c07_4928216.gif "GIF.gif")
+<video src="https://www.bilibili.com/video/BV1Nz4y1f7kS/" controls="controls" width="500" height="300">您的浏览器不支持播放该视频！</video>
