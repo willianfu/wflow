@@ -6,6 +6,8 @@
 
  **工作区面板** 
 
+<iframe src="https://streamja.com/embed/noQ5O" frameborder="0" width="100%" height="100%" allowfullscreen style="width:100%;height:100%;position:absolute;"></iframe>
+
 <video src="https://www.bilibili.com/video/BV1Vh41197Pw/" controls="controls" width="500" height="300">您的浏览器不支持播放该视频！</video>
 
 
