@@ -50,12 +50,16 @@
         return this.$store.state.template;
       }
     },
+    created(){
+      this.check()
+    },
     mounted() {
 			this.activeIndex = this.$route.path
       console.log(document.body.offsetWidth)
       if (document.body.offsetWidth <= 970){
         this.$msgbox.alert("本设计器未适配中小屏幕，建议您在PC电脑端浏览器进行操作")
       }
+      this.listener()
     },
     methods: {
       publish() {
@@ -125,6 +129,20 @@
       },
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
+      },
+      listener(){
+        window.onunload = this.closeBefore()
+        window.onbeforeunload = this.closeBefore()
+        window.on('beforeunload',this.closeBefore())
+      },
+      closeBefore(){
+        //alert("您将要离开本页")
+        return false
+      },
+      check(){
+        if(this.$store.state.isEdit === null){
+          this.$router.push("/workPanel");
+        }
       }
     }
   }

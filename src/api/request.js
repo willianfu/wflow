@@ -11,7 +11,7 @@ Vue.prototype.$axios = axios;
 
 const service = axios.create({
 	//baseURL: "http://localhost:10000",
-	baseURL: "http://192.168.50.13:10000",
+	baseURL: "http://192.168.10.58:10000",
 	//baseURL: "http://47.100.202.245:10000",
 	timeout: 50000
 });

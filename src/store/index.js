@@ -46,6 +46,7 @@ var process = {
 
 export default new Vuex.Store({
   state: {
+    isEdit: null,
     selectedNode: {},
     template: {
       baseSetup: {
@@ -108,6 +109,9 @@ export default new Vuex.Store({
     setConditionRootUser(state, val) {
       state.selectedNode.condition = val
     },
+    setIsEdit(state, val){
+      state.isEdit = val
+    }
   },
   getters: {},
   actions: {},
