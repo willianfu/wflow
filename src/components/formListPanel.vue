@@ -80,6 +80,7 @@
     getTemplateGroups, groupItemsSort,
     getFormDetail, updateGroup, updateTemplate
   } from '@/api/setting'
+  import {nodeType, getDefaultNodeProps} from '@/components/common/enumConst'
 
   export default {
     name: "formListPanel",
@@ -178,39 +179,12 @@
             whoExport: JSON.parse(this.$getDefalut(data, 'whoExport', '[]')),
           },
           form: JSON.parse(this.$getDefalut(data, 'formItems', '[]')),
-          process: JSON.parse(
-                  this.$getDefalut(data, 'process',
-                          JSON.stringify({
-                            type: 'root',
-                            name: '发起人',
-                            id: '10000',
-                            props:{
-                              approval:{
-                                //审批人选项类型
-                                type:'1',
-                                //审批模式 会签/或签/依次
-                                mode:'and',
-                                userEmpty: 'toAdmin',
-                                timeLimitType:'hour',
-                                timeLimitVal: 0,
-                                timeoutEvent:{
-                                  event:'pass',
-                                  loop: false,
-                                  loopTime: 0
-                                },
-                                sign: false,
-                                user:{
-                                  users:[],
-                                  select:'one',
-                                  moreLeader:'',
-                                  leader: 1,
-                                  role:'',
-                                  self:'',
-                                },
-                              }
-                            }
-                          })
-                  )),
+          process: JSON.parse(this.$getDefalut(data, 'process', JSON.stringify({
+            type: nodeType.ROOT,
+            name: '发起人',
+            id: '10000',
+            props: getDefaultNodeProps()
+          }))),
         }
       },
       editFrom(item, group) {

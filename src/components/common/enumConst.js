@@ -1,4 +1,17 @@
 /**
+ * 审批类型
+ * @type {{ROLE: string, LEADER: string, ASSIGN_USER: string, SELF_SELECT: string, SELF: string, LEADER_TOP: string}}
+ */
+export const approvalType = {
+  ASSIGN_USER: 'ASSIGN_USER',
+  SELF_SELECT: 'SELF_SELECT',
+  LEADER_TOP: 'LEADER_TOP',
+  LEADER: 'LEADER',
+  ROLE: 'ROLE',
+  SELF: 'SELF'
+}
+
+/**
  * 流程节点类型
  * @type {{CS: string, ROOT: string, TJ: string, CONDITION: string, SP: string, EMPTY: string}}
  */
@@ -55,7 +68,7 @@ export const userEmpty = {
  * @type {{TOP: string, LEAVE: string}}
  */
 export const endCondition = {
-  TOP:'TOP', LEAVE:'LEAVE'
+  TOP: 'TOP', LEAVE: 'LEAVE'
 }
 
 /**
@@ -63,13 +76,51 @@ export const endCondition = {
  * @type {{MORE: string, NUMBER: string, ORG: string, ONE: string, DEPT: string, USER: string}}
  */
 export const conditionType = {
-  NUMBER:'NUMBER', ONE:'ONE', MORE:'MORE',
-  DEPT:'DEPT', USER:'USER', ORG:'ORG'
+  NUMBER: 'NUMBER', ONE: 'ONE', MORE: 'MORE',
+  DEPT: 'DEPT', USER: 'USER', ORG: 'ORG'
+}
+
+
+export function getDefaultNodeProps(){
+  return {
+    //审批人选项类型
+    type: approvalType.ASSIGN_USER,
+    //审批模式 会签/或签/依次
+    mode: approvalMode.AND,
+    //审批时限
+    timeLimit:{
+      //时限单位
+      type: timeLimitType.HOUR,
+      limit: 0, //时限值
+      event: {
+        type: timeoutEvent.PASS, //触发超时执行事件
+        loop: false, //循环触发
+        loopTime: 0 //循环频率
+      }
+    },
+    sign: false, //是否需要签字
+    //如果审批人为空该如何做
+    userEmpty: userEmpty.TO_PASS,
+    //主管级别
+    leaderLevel: 1,
+    //结束条件
+    endCondition: endCondition.TOP,
+    //目标对象 人员/部门/角色
+    targetObj: {
+      //是否多选
+      multiple: false,
+      //角色
+      roles:[],
+      //用户或部门
+      objs: [],
+    }
+  }
 }
 
 export default {
   nodeType, approvalMode, timeoutEvent, timeLimitType,
-  userEmpty, endCondition, conditionType
+  userEmpty, endCondition, conditionType, approvalType,
+  getDefaultNodeProps
 }
 
 
