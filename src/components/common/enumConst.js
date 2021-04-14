@@ -76,8 +76,8 @@ export const endCondition = {
  * @type {{MORE: string, NUMBER: string, ORG: string, ONE: string, DEPT: string, USER: string}}
  */
 export const conditionType = {
-  NUMBER: 'NUMBER', ONE: 'ONE', MORE: 'MORE',
-  DEPT: 'DEPT', USER: 'USER', ORG: 'ORG'
+  NUMBER: 'number', ONE: 'one', MORE: 'more',
+  DEPT: 'dept', USER: 'user', ORG: 'org'
 }
 
 
