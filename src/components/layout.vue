@@ -133,7 +133,7 @@
       listener(){
         window.onunload = this.closeBefore()
         window.onbeforeunload = this.closeBefore()
-        window.on('beforeunload',this.closeBefore())
+        //window.on('beforeunload',this.closeBefore())
       },
       closeBefore(){
         //alert("您将要离开本页")

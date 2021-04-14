@@ -253,15 +253,16 @@
 	
 	.bdl {
 		position: relative;
-		margin-right: 40px;
+		margin-right: 0px;
 	}
 	
 	.bdr {
 		position: relative;
-		margin-left: 40px;
+		margin-left: 0px;
 	}
 	.bd{
 		position: relative;
+		margin: 0 20px;
 	}
 	.bd::after {
 		content: "";
@@ -279,8 +280,9 @@
 		content: "";
 		z-index: 100;
 		top: -3px;
+		left: -20px;
 		position: absolute;
-		width: calc(50% - 1px);
+		width: calc(50% + 20px - 1px);
 		height: calc(100% - 2px);
 		border-bottom: 4px solid #F5F6F6;
 		border-top: 4px solid #F5F6F6;
@@ -290,9 +292,9 @@
 		content: "";
 		z-index: 100;
 		top: -3px;
-		right: 0;
+		right: -20px;
 		position: absolute;
-		width: calc(50% - 1px);
+		width: calc(50% + 20px - 1px);
 		height: calc(100% - 2px);
 		border-bottom: 4px solid #F5F6F6;
 		border-top: 4px solid #F5F6F6;

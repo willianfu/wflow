@@ -190,6 +190,7 @@
       editFrom(item, group) {
         getFormDetail({templateId: item.id}).then(rsp => {
           let data = rsp.data;
+          this.$store.commit("setIsEdit", true);
           this.$store.commit("setTemplate", this.getTemplateData(data, group));
           this.$router.push("/layout/baseSetup");
         }).catch(err => {
