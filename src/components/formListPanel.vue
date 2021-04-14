@@ -80,10 +80,7 @@
     getTemplateGroups, groupItemsSort,
     getFormDetail, updateGroup, updateTemplate
   } from '@/api/setting'
-  import {
-    nodeType, approvalMode, timeoutEvent,
-    timeLimitType, userEmpty, conditionType
-  } from '@/components/common/enumConst'
+  import {nodeType, getDefaultNodeProps} from '@/components/common/enumConst'
 
   export default {
     name: "formListPanel",
@@ -129,7 +126,6 @@
         }).then(({value}) => {
           updateGroup({name: value}, 'post').then(rsp => {
             this.$message.success(rsp.data)
-            this.$store.commit('setIsEdit', true)
             this.getGroups()
           }).catch(err => this.$message.error(err.response.data))
         })
@@ -183,46 +179,18 @@
             whoExport: JSON.parse(this.$getDefalut(data, 'whoExport', '[]')),
           },
           form: JSON.parse(this.$getDefalut(data, 'formItems', '[]')),
-          process: JSON.parse(
-                  this.$getDefalut(data, 'process',
-                          JSON.stringify({
-                            type: nodeType.ROOT,
-                            name: '发起人',
-                            id: '10000',
-                            props:{
-                              approval:{
-                                //审批人选项类型
-                                type: '1',
-                                //审批模式 会签/或签/依次
-                                mode:approvalMode.AND,
-                                userEmpty: userEmpty.TO_ADMIN,
-                                timeLimitType:timeLimitType.HOUR,
-                                timeLimitVal: 0,
-                                timeoutEvent:{
-                                  event: timeoutEvent.PASS,
-                                  loop: false,
-                                  loopTime: 0
-                                },
-                                sign: false,
-                                user:{
-                                  users:[],
-                                  select: conditionType.ONE,
-                                  moreLeader:'',
-                                  leader: 1,
-                                  role:'',
-                                  self:'',
-                                },
-                              }
-                            }
-                          })
-                  )),
+          process: JSON.parse(this.$getDefalut(data, 'process', JSON.stringify({
+            type: nodeType.ROOT,
+            name: '发起人',
+            id: '10000',
+            props: getDefaultNodeProps()
+          }))),
         }
       },
       editFrom(item, group) {
         getFormDetail({templateId: item.id}).then(rsp => {
           let data = rsp.data;
           this.$store.commit("setTemplate", this.getTemplateData(data, group));
-          this.$store.commit('setIsEdit', true)
           this.$router.push("/layout/baseSetup");
         }).catch(err => {
 					this.$message.error(err.response.data)

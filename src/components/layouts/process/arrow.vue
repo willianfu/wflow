@@ -12,9 +12,9 @@
             <i class="el-icon-copy-document" v-if="nodeType.TJ === node.type"></i>
           </el-tooltip>
         </div>
-        <div style="position:relative;" v-show="'NOTIFY' === node.props.approval.timeoutEvent.event">
+        <!--<div style="position:relative;" v-show="'NOTIFY' === node.props.timeLimit.event.type">
           <i class="el-icon-time" style="font-size: x-small; position:absolute; left: -15px; top: -5px;"></i>
-        </div>
+        </div>-->
         <span>{{nodeText}}</span>
         
       </el-card>
@@ -52,7 +52,8 @@
 
 <script>
   import { nodeType } from '@/components/common/enumConst'
-  
+  import {approvalType, endCondition} from '@/components/common/enumConst'
+
   export default {
     name: "arrow",
     props: {
@@ -76,29 +77,34 @@
     },
     computed:{
       nodeText(){
-        let text = '', type = '', approval = this.node.props.approval;
+        let text = '', type = '', approval = this.node.props;
         if (this.node.type === nodeType.ROOT){
-          text = this.getUsersText(approval.user.users)
-          text = text === '' ? '所有人':''
+          text = this.getUsersText(approval.targetObj.objs)
+          text = text === '' ? '所有人': text
           type = '发起人'
         }else if (this.node.type === nodeType.SP){
           switch (approval.type) {
-            case "1": text = this.getUsersText(approval.user.users); break;
-            case '2': text = '发起人自选（' +
-                    (approval.user.multiple? '多人）':'一人）'); break;
-            case '3': text = '连续多级主管'; break;
-            case '4': text = '发起人的' +
+            case approvalType.ASSIGN_USER: text = this.getUsersText(approval.targetObj.objs); break;
+            case approvalType.SELF_SELECT: text = '发起人自选（' +
+                    (approval.targetObj.multiple? '多人）':'一人）'); break;
+            case approvalType.LEADER_TOP: text = '连续多级主管('
+                  + (approval.endCondition === endCondition.TOP ? '全部)':(approval.leaderLevel + '级)'));
+                  break;
+            case approvalType.LEADER: text = '发起人的' +
                     (approval.leaderLevel === 1 ?
                             '直接主管' : ('第 ' + approval.leaderLevel + ' 级主管')); break;
-            case '5': text = '角色- ' +
-                    (approval.user.role !== ''?approval.user.role.name : '请选择角色'); break;
-            case '6': text = '发起人自己'; break;
+            case approvalType.ROLE: text = '角色- ' +
+                    (approval.targetObj.roles.length > 0 ?
+                      String(approval.targetObj.roles.map(r => {return r.name}))
+                      : '请选择角色');
+            break;
+            case approvalType.SELF: text = '发起人自己'; break;
           }
           type = '审批人'
         }else if (this.node.type === nodeType.TJ){
           type = '审批条件'
         }else if (this.node.type === nodeType.CS){
-          text = this.getUsersText(approval.user.users)
+          text = this.getUsersText(approval.targetObj.objs)
           type = '抄送人'
         }else {
           return '未知节点'

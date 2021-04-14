@@ -2,8 +2,7 @@
   import test from "@/assets/approvalTemplate"
   import arrow from "./arrow";
   import {
-    nodeType, approvalMode, timeoutEvent,
-    timeLimitType, userEmpty, endCondition
+    nodeType, getDefaultNodeProps
   } from '@/components/common/enumConst'
   
   export default {
@@ -18,37 +17,7 @@
       return {
         pro: test,
         updated: true,
-        props: {
-          approval: {
-            //审批人选项类型
-            type: '1',
-            //审批模式 会签/或签/依次
-            mode: approvalMode.AND,
-            //审批时限
-            timeLimitType: timeLimitType.HOUR,
-            timeLimitVal: 0,
-            timeoutEvent: {
-              event: timeoutEvent.PASS,
-              loop: false,
-              loopTime: 0
-            },
-            sign: false,
-            //如果审批人为空该如何做
-            userEmpty: userEmpty.TO_PASS,
-            //主管级别
-            leaderLevel: 1,
-            //结束条件
-            endCondition: endCondition.TOP,
-            user: {
-              users: [],
-              multiple: false,
-              moreLeader: '',
-              leader: 1,
-              role: '',
-              self: '',
-            },
-          }
-        },
+        props: getDefaultNodeProps()
       }
     },
     computed: {
