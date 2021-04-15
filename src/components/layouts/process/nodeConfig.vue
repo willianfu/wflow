@@ -66,7 +66,8 @@
         <div>
           <div v-if="props.type === enumConst.approvalType.ASSIGN_USER">
             <el-button type="primary" size="mini" icon="el-icon-plus" style="margin-bottom: 15px"
-                       round @click="showUserSelect = true, select = props.targetObj.objs">选择人员
+                       round @click="showUserSelect = true, select = props.targetObj.objs">
+              选择人员
             </el-button>
             <div>
               <el-tag :type="'dept' === user.type? 'info': 'primary'" v-for="(user, index) in props.targetObj.objs"
@@ -77,7 +78,9 @@
           </div>
 
           <div v-if="props.type === enumConst.approvalType.ROLE">
-            <el-button type="primary" slot="reference" size="mini" icon="el-icon-plus" round @click="">选择角色</el-button>
+            <el-button type="primary" slot="reference" size="mini" icon="el-icon-plus" round @click="">
+              选择角色
+            </el-button>
             <el-tag type="primary" size="mini" style="margin: 5px 10px 5px 20px" v-for="role in props.targetObj.roles">
               {{role.name}}
             </el-tag>
@@ -132,7 +135,8 @@
             <span style="margin-left: 20px" v-if="props.timeLimit.event.loop">
 							每隔
 							<el-input-number :min="0" :max="10000" :step="1" size="mini"
-                               v-model="props.timeLimit.event.loopTime"></el-input-number>
+                               v-model="props.timeLimit.event.loopTime">
+              </el-input-number>
 							天
 						</span>
           </div>
