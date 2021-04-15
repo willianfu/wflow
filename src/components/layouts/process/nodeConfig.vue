@@ -33,20 +33,25 @@
 
       <div v-if="isTjNode">
         <el-form-item label="优先级" prop="level">
-          <el-select v-model="selectedNode.level" size="mini">
-            <el-option>1</el-option>
-            <el-option>2</el-option>
-          </el-select>
+          <el-button icon="el-icon-sort">第{{0}}级</el-button>
+          <el-popover placement="left" title="选择审批条件" width="300" trigger="click">
+           <!-- <draggable style="width: 100%; min-height:25px" :list="selectedNode" group="from" @end="groupSort"
+                       v-show="!groupsSort" filter=".undrag"
+                       :options="{animation: 300, delay: 200, chosenClass:'choose', scroll: true, sort:true}">
+              
+            </draggable>-->
+          </el-popover>
         </el-form-item>
 
         <el-form-item label="设置审批条件" prop="text">
-          <el-divider></el-divider>
+          <!--<el-divider></el-divider>-->
           <condition></condition>
-          <el-divider v-if="selectedNode.cids.length > 0"></el-divider>
+          <el-divider v-if="(selectedNode.cids || []).length > 0"></el-divider>
           <el-popover placement="left" title="选择审批条件" width="300" trigger="click">
             <!-- <div>以下条件将决定具体的审批流程</div>-->
             <el-checkbox-group v-model="selectedNode.cids" @change="conditionSelect">
-              <el-checkbox :label="condition.id" v-for="condition in formList" :key="condition.id">{{condition.name}}
+              <el-checkbox :label="condition.id" v-for="condition in formList" :key="condition.id">
+                {{condition.name}}
               </el-checkbox>
             </el-checkbox-group>
             <el-button type="primary" slot="reference" size="mini" icon="el-icon-plus" round @click="">选择条件</el-button>

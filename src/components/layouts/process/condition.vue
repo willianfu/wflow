@@ -18,7 +18,7 @@
       <div v-else-if="condition.type === type.ONE || condition.type === type.MORE">
         <el-select v-model="condition.symbol" style="width: 120px; margin-right: 20px" size="small">
           <el-option :value="'='" label="完全等于"></el-option>
-          <el-option :value="'in'" label="在选项中"></el-option>
+          <el-option :value="'in'" label="包含在"></el-option>
         </el-select>
         <el-select v-model="condition.values" style="width: 200px;" size="small" multiple>
           <el-option :value="op" :label="op" v-for="(op, id) in condition.options" :key="id"></el-option>
@@ -31,8 +31,10 @@
 
       <div v-else-if="condition.type === type.ORG">
         <el-button type="primary" size="mini" icon="el-icon-plus" style="margin-bottom: 15px"
-                   round @click="showUserSelect = true, itemCd = condition">选择
+                   round @click="showUserSelect = true, itemCd = condition">
+          选择
         </el-button>
+        <span style="margin-left: 15px; color:#a6a6a7;">(属于某部门或哪些人员)</span>
         <div>
           <el-tag :type="type.DEPT === user.type? 'info': 'primary'"
                   v-for="(user, index) in condition.values"

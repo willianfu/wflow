@@ -5,6 +5,9 @@
     nodeType, getDefaultNodeProps
   } from '@/components/common/enumConst'
   
+  //节点ID关系映射
+  const parentMap = new Map();
+  
   export default {
     name: "processView",
     components: {arrow},
@@ -17,7 +20,7 @@
       return {
         pro: test,
         updated: true,
-        props: getDefaultNodeProps()
+        props: getDefaultNodeProps(),
       }
     },
     computed: {
@@ -26,13 +29,31 @@
       }
     },
     mounted() {
-      //console.log("模板数据：", this.dom)
+      console.log("节点：", this.dom)
+      console.log("节点map：", parentMap)
     },
     methods: {
+      /**
+       * 将对象映射为dom，这里改进下节点遍历算法，由于每次点击的都是子对象，
+       * 导致每次需要操作父节点时都需要从顶部往下递归遍历，容易出错且性能差劲，
+       * 将对象嵌套关系映射为map(当前ID, 本对象)，O1就能取出父级对象
+       * @param h
+       * @param node
+       * @returns {*[]|Array|*[]}
+       */
       getDomTree(h, node) {
         let that = this;
         if (node === undefined) {
           return [];
+        }else {
+          console.log('------>' + node.id)
+          if (undefined !== node.id){
+            parentMap.set(node.id, node)
+          }
+          //关联到子节点
+          if (undefined !== node.node){
+            node.node.pid = node.id
+          }
         }
         if (node.type === nodeType.ROOT || node.type === nodeType.SP
           || node.type === nodeType.CS || node.type === nodeType.EMPTY) {
@@ -48,7 +69,8 @@
             },
           }, []))
           return [h('div', {'class': {c: true}}, dom)]
-        } else if (node.type === nodeType.CONDITION && node.conditions !== undefined
+        } else if (node.type === nodeType.CONDITION
+	        && node.conditions !== undefined
           && node.conditions instanceof Array) {
           let index = 0;
           let co = node.conditions.map(cd => {
@@ -85,6 +107,14 @@
           return []
         }
       },
+      /**
+       * 递归搜索父节点，已废弃
+       * @deprecated
+       * @param nodeList
+       * @param node
+       * @param nodes
+       * @returns {null|*|boolean|null|{condition, name, cids, id, type, props}|boolean}
+       */
       searchParentNode(nodeList, node, nodes) {
         if (node.type === nodeType.TJ && node.id === nodes.id) {
           return true;
@@ -109,6 +139,11 @@
       select(node) {
         this.$emit('select', node);
       },
+      /**
+       * @deprecated
+       * @param node
+       * @returns {null|*}
+       */
       getParentNode(node) {
         let nodeResults = [];
         let rs = this.searchParentNode(nodeResults, node, this.dom)
@@ -122,7 +157,8 @@
         node.node.conditions.push({
             condition: [],
             id: this.getId(),
-            name: "条件",
+	          pid: node.node.id,
+            name: "条件" + (node.node.conditions.length + 1),
             props: JSON.parse(JSON.stringify(this.props)),
             node: {}
           }
@@ -130,26 +166,30 @@
       },
       addNode(type, node) {
         if (type === nodeType.TJ) {
-          let nextNode = node.node === undefined ? {type: nodeType.EMPTY} : node.node
+          let nextNode = node.node === undefined ?
+	          {type: nodeType.EMPTY, id: this.getId()} : node.node
+          let cdId = this.getId()
           this.$set(node, 'node', {
             conditions: [
               {
                 condition: [],
                 cids:[],
+	              pid: cdId,
                 id: this.getId(),
                 type: nodeType.TJ,
-                name: "条件",
+                name: "条件1",
                 props: JSON.parse(JSON.stringify(this.props)),
               }, {
                 condition: [],
                 cids:[],
+                pid: cdId,
                 id: this.getId(),
                 type: nodeType.TJ,
-                name: "条件",
+                name: "条件2",
                 props: JSON.parse(JSON.stringify(this.props)),
               }
             ],
-            id: this.getId(),
+            id: cdId,
             type: nodeType.CONDITION,
             node: nextNode
           })
@@ -167,31 +207,62 @@
         //this.updateDom()
       },
       delNode(node) {
-        let parentNode = this.getParentNode(node);
-        if (null !== parentNode) {
-          if (nodeType.CONDITION === parentNode.node.type) {
+        //let parentNode = this.getParentNode(node);
+        let parentNode = parentMap.get(node.pid)
+        if (parentNode) {
+          if (nodeType.CONDITION === parentNode.type) {
             //删除的是条件节点
-            for (let i = 0; i < parentNode.node.conditions.length; i++) {
-              if (parentNode.node.conditions[i].id === node.id) {
-                parentNode.node.conditions.splice(i, 1)
+            for (let i = 0; i < parentNode.conditions.length; i++) {
+              if (parentNode.conditions[i].id === node.id) {
+                parentNode.conditions.splice(i, 1)
               }
             }
-            //需要去除条件
-            if (parentNode.node.conditions.length < 2) {
-              let nextBoxNode = parentNode.node.node
-              parentNode.node = parentNode.node.conditions[0].node
-              parentNode.node.node = nextBoxNode.node
+            //只剩一条条件则需要去除条件，把条件1合并到主分支
+            if (parentNode.conditions.length < 2) {
+              //获取条件块上方节点
+              let pnode = parentMap.get(parentNode.pid)
+              //取出条件块下方节点
+              let nextBoxNode = parentNode.node
+	            //取出第一个条件分支下方节点
+              let cdSonNode = parentNode.conditions[0].node
+	            //将分支节点连接到主分支
+	            if (cdSonNode && cdSonNode.type !== nodeType.EMPTY){
+                cdSonNode.pid = pnode.id
+	              this.$set(pnode, 'node', cdSonNode)
+	            }else {
+                cdSonNode = pnode
+	            }
+	            //将下节点连接到主分支尾部
+	            if (nextBoxNode && nextBoxNode.type !== nextBoxNode.EMPTY){
+                let lastNode = this.getDomFooterNode(cdSonNode)
+                nextBoxNode.pid = lastNode.id
+                this.$set(lastNode, 'node', nextBoxNode)
+              }
             }
           } else {
             let node = parentNode.node.node
-            parentNode.node = node
+	          this.$set(parentNode, 'node', node)
+            //parentNode.node = node
           }
+        }else {
+          this.$message.warning("未找到上一级节点")
         }
       },
       getId() {
         return (Math.floor(Math.random() * (99999 - 10000)) + 10000).toString()
-          + new Date().getTime().toString().substring(5);
+          + new Date().getTime().toString().substring(5, 11);
       },
+      /**
+       * 搜索末端非空节点
+       * @param node
+       */
+	    getDomFooterNode(node){
+        if (node && node.node && node.node.type !== nodeType.EMPTY){
+          return this.getDomFooterNode(node)
+        }else {
+          return node
+        }
+	    },
       updateDom() {
         console.log(JSON.stringify(this.dom))
         this.updated = false;
