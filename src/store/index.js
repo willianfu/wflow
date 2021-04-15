@@ -13,6 +13,7 @@ const process = {
 
 export default new Vuex.Store({
   state: {
+    parentMap: new Map(),
     isEdit: null,
     selectedNode: {},
     template: {

@@ -5,9 +5,6 @@
     nodeType, getDefaultNodeProps
   } from '@/components/common/enumConst'
   
-  //节点ID关系映射
-  const parentMap = new Map();
-  
   export default {
     name: "processView",
     components: {arrow},
@@ -26,11 +23,16 @@
     computed: {
       dom() {
         return this.$store.state.template.process
+      },
+      parentMap(){
+        return this.$store.state.parentMap
       }
     },
     mounted() {
       console.log("节点：", this.dom)
-      console.log("节点map：", parentMap)
+      console.log("节点map：", this.parentMap)
+      //放置跟节点
+      this.parentMap.set(this.dom.id, this.dom)
     },
     methods: {
       /**
@@ -46,28 +48,12 @@
         if (node === undefined) {
           return [];
         }else {
-          console.log('------>' + node.id)
-          if (undefined !== node.id){
-            parentMap.set(node.id, node)
-          }
-          //关联到子节点
-          if (undefined !== node.node){
-            node.node.pid = node.id
-          }
+          this.recoverIdAndPid(node)
         }
         if (node.type === nodeType.ROOT || node.type === nodeType.SP
           || node.type === nodeType.CS || node.type === nodeType.EMPTY) {
           let dom = that.getDomTree(h, node.node)
-          dom.unshift(h('arrow', {
-            props: {node: node},
-            'class': {clear: true},
-            on: {
-              addNode: this.addNode,
-              addCd: this.addCd,
-              select: this.select,
-              delNode: this.delNode
-            },
-          }, []))
+          that.addArrow(h, node, dom, true)
           return [h('div', {'class': {c: true}}, dom)]
         } else if (node.type === nodeType.CONDITION
 	        && node.conditions !== undefined
@@ -76,15 +62,7 @@
           let co = node.conditions.map(cd => {
             let c = that.getDomTree(h, cd.node);
             cd.type = nodeType.TJ;
-            c.unshift(h('arrow', {
-              props: {node: cd},
-              on: {
-                addNode: this.addNode,
-                addCd: this.addCd,
-                select: this.select,
-                delNode: this.delNode
-              },
-            }, []))
+            that.addArrow(h, cd, c, false)
             index ++;
             return h('div', {
               'class': {
@@ -97,8 +75,8 @@
             h('div', {'class': {fdr: true, bdtb: true}}, co)]),
             h('div', {
               'class': {
-                clear: node.node !== undefined && node.node.type === nodeType.EMPTY,
-                pt: node.node !== undefined && node.node.type !== nodeType.EMPTY
+                clear: !this.isEmptyNode(node.node),
+                pt: !this.isEmptyNode(node.node)
               },
               props: {node: node.node},
             }, that.getDomTree(h, node.node))
@@ -107,67 +85,54 @@
           return []
         }
       },
-      /**
-       * 递归搜索父节点，已废弃
-       * @deprecated
-       * @param nodeList
-       * @param node
-       * @param nodes
-       * @returns {null|*|boolean|null|{condition, name, cids, id, type, props}|boolean}
-       */
-      searchParentNode(nodeList, node, nodes) {
-        if (node.type === nodeType.TJ && node.id === nodes.id) {
-          return true;
-        } else if (nodes.node === undefined) {
-          return null;
-        } else if (nodes.node.id === node.id) {
-          return nodes;
-        } else if (nodes.node.type === nodeType.CONDITION) {
-          for (let item of nodes.node.conditions) {
-            let result = this.searchParentNode(nodeList, node, item)
-            if (result === true) {
-              return nodes
-            } else if (result !== null) {
-              return item;
-            }
-          }
-          return this.searchParentNode(nodeList, node, nodes.node);
-        } else {
-          return this.searchParentNode(nodeList, node, nodes.node)
+      addArrow(h, node, dom, clear){
+        dom.unshift(h('arrow', {
+          props: {node: node},
+          'class': {clear: clear},
+          on: {
+            addNode: this.addNode,
+            addCd: this.addCd,
+            select: this.select,
+            delNode: this.delNode
+          },
+        }, []))
+      },
+      recoverIdAndPid(node){
+        if (undefined !== node.id){
+          this.parentMap.set(node.id, node)
+        }
+        //关联到子节点
+        if (undefined !== node.node){
+          node.node.pid = node.id
         }
       },
       select(node) {
         this.$emit('select', node);
       },
-      /**
-       * @deprecated
-       * @param node
-       * @returns {null|*}
-       */
-      getParentNode(node) {
-        let nodeResults = [];
-        let rs = this.searchParentNode(nodeResults, node, this.dom)
-        if (rs !== null) {
-          return rs;
-        }
-        this.$message.warning('糟糕，没有找到需要删除的节点')
-        return null;
-      },
       addCd(node) {
-        node.node.conditions.push({
-            condition: [],
-            id: this.getId(),
-	          pid: node.node.id,
-            name: "条件" + (node.node.conditions.length + 1),
-            props: JSON.parse(JSON.stringify(this.props)),
-            node: {}
-          }
-        )
+        let condition = {
+          condition: [],
+          id: this.getId(),
+          pid: node.node.id,
+          name: "条件" + (node.node.conditions.length + 1),
+          props: JSON.parse(JSON.stringify(this.props)),
+          node: {}
+        }
+        node.node.conditions.push(condition)
+        this.parentMap.set(condition.id, condition)
       },
       addNode(type, node) {
         if (type === nodeType.TJ) {
-          let nextNode = node.node === undefined ?
-	          {type: nodeType.EMPTY, id: this.getId()} : node.node
+          let nextNode = {
+            type: nodeType.EMPTY,
+            id: this.getId(),
+            pid: node.id
+          }
+          //判断下一个节点是否有东西且不为空
+          if(!this.isEmptyNode(node.node)){
+            node.node.pid = nextNode.id
+            this.$set(nextNode, 'node', node.node)
+          }
           let cdId = this.getId()
           this.$set(node, 'node', {
             conditions: [
@@ -190,25 +155,30 @@
               }
             ],
             id: cdId,
+            pid: node.id,
             type: nodeType.CONDITION,
             node: nextNode
           })
+          this.parentMap.set(nextNode.id, nextNode)
+          this.parentMap.set(node.node.id, node.node)
+          this.parentMap.set(node.node.conditions[0].id, node.node.conditions[0])
+          this.parentMap.set(node.node.conditions[1].id, node.node.conditions[1])
         } else {
           this.$set(node, 'node', {
             id: this.getId(),
+            pid: node.id,
             name: type === nodeType.SP ? '审批人' : '抄送人',
             type: type,
             node: node.node,
             props: JSON.parse(JSON.stringify(this.props)),
           })
+          this.parentMap.set(node.node.id, node.node)
 	        this.$store.commit('selectedNode', node.node)
           this.select(node.node)
         }
-        //this.updateDom()
       },
       delNode(node) {
-        //let parentNode = this.getParentNode(node);
-        let parentNode = parentMap.get(node.pid)
+        let parentNode = this.parentMap.get(node.pid)
         if (parentNode) {
           if (nodeType.CONDITION === parentNode.type) {
             //删除的是条件节点
@@ -219,34 +189,51 @@
             }
             //只剩一条条件则需要去除条件，把条件1合并到主分支
             if (parentNode.conditions.length < 2) {
-              //获取条件块上方节点
-              let pnode = parentMap.get(parentNode.pid)
-              //取出条件块下方节点
-              let nextBoxNode = parentNode.node
-	            //取出第一个条件分支下方节点
-              let cdSonNode = parentNode.conditions[0].node
-	            //将分支节点连接到主分支
-	            if (cdSonNode && cdSonNode.type !== nodeType.EMPTY){
-                cdSonNode.pid = pnode.id
-	              this.$set(pnode, 'node', cdSonNode)
-	            }else {
-                cdSonNode = pnode
-	            }
-	            //将下节点连接到主分支尾部
-	            if (nextBoxNode && nextBoxNode.type !== nextBoxNode.EMPTY){
-                let lastNode = this.getDomFooterNode(cdSonNode)
-                nextBoxNode.pid = lastNode.id
-                this.$set(lastNode, 'node', nextBoxNode)
-              }
+              this.delCondition(parentNode)
             }
           } else {
-            let node = parentNode.node.node
-	          this.$set(parentNode, 'node', node)
-            //parentNode.node = node
+            if (this.isEmptyNode(node.node)){
+              parentNode.node = undefined
+            }else {
+              node.node.pid = parentNode.id
+              this.$set(parentNode, 'node', node.node)
+            }
           }
         }else {
           this.$message.warning("未找到上一级节点")
         }
+      },
+      delCondition(parentNode){
+        //获取条件块上方节点
+        let pnode = this.parentMap.get(parentNode.pid)
+        //取出条件块下方节点
+        let nextBoxNode = parentNode.node
+        //取出第一个条件分支下方节点
+        let cdSonNode = parentNode.conditions[0].node
+        //将分支节点连接到主分支
+        if (!this.isEmptyNode(cdSonNode)){
+          cdSonNode.pid = pnode.id
+          this.$set(pnode, 'node', cdSonNode)
+        } else if(this.isEmptyNode(nextBoxNode.node)){
+          //只剩下根节点
+          pnode.node = undefined
+        } else {
+          nextBoxNode.node.pid = pnode.id
+          this.$set(pnode, 'node', nextBoxNode.node)
+          cdSonNode = pnode
+        }
+        //将下节点连接到主分支尾部
+        if (!this.isEmptyNode(nextBoxNode.node)){
+          let lastNode = this.getDomFooterNode(cdSonNode)
+          nextBoxNode.node.pid = lastNode.id
+          this.$set(lastNode, 'node', nextBoxNode.node)
+        }
+      },
+      isEmptyNode(node){
+        return undefined === node
+          || null === node
+          || undefined === node.type
+          || nodeType.EMPTY === node.type
       },
       getId() {
         return (Math.floor(Math.random() * (99999 - 10000)) + 10000).toString()
@@ -257,22 +244,16 @@
        * @param node
        */
 	    getDomFooterNode(node){
-        if (node && node.node && node.node.type !== nodeType.EMPTY){
-          return this.getDomFooterNode(node)
+        if (node && !this.isEmptyNode(node.node)){
+          return this.getDomFooterNode(node.node)
         }else {
           return node
         }
-	    },
-      updateDom() {
-        console.log(JSON.stringify(this.dom))
-        this.updated = false;
-        this.$nextTick(() => {
-          this.updated = true
-        })
-      },
+	    }
     },
     render(h) {
-      return h('div', {'class': {process: true}}, this.updated ? this.getDomTree(h, this.dom) : [])
+      return h('div', {'class': {process: true}},
+        this.updated ? this.getDomTree(h, this.dom) : [])
     }
   }
 </script>
