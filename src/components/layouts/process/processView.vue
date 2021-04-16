@@ -2,9 +2,9 @@
   import test from "@/assets/approvalTemplate"
   import arrow from "./arrow";
   import {
-    nodeType, getDefaultNodeProps
+    nodeType, logicType, getDefaultNodeProps
   } from '@/components/common/enumConst'
-  
+
   export default {
     name: "processView",
     components: {arrow},
@@ -24,7 +24,7 @@
       dom() {
         return this.$store.state.template.process
       },
-      parentMap(){
+      parentMap() {
         return this.$store.state.parentMap
       }
     },
@@ -47,7 +47,7 @@
         let that = this;
         if (node === undefined) {
           return [];
-        }else {
+        } else {
           this.recoverIdAndPid(node)
         }
         if (node.type === nodeType.ROOT || node.type === nodeType.SP
@@ -56,20 +56,21 @@
           that.addArrow(h, node, dom, true)
           return [h('div', {'class': {c: true}}, dom)]
         } else if (node.type === nodeType.CONDITION
-	        && node.conditions !== undefined
+          && node.conditions !== undefined
           && node.conditions instanceof Array) {
           let index = 0;
           let co = node.conditions.map(cd => {
             let c = that.getDomTree(h, cd.node);
             cd.type = nodeType.TJ;
             that.addArrow(h, cd, c, false)
-            index ++;
+            index++;
             return h('div', {
               'class': {
                 bd: true,
                 bdl: (index === 1),
-		            bdr: (node.conditions.length === index)
-              }}, c)
+                bdr: (node.conditions.length === index)
+              }
+            }, c)
           })
           return [h('div', {'class': {fc: true}}, [
             h('div', {'class': {fdr: true, bdtb: true}}, co)]),
@@ -85,7 +86,7 @@
           return []
         }
       },
-      addArrow(h, node, dom, clear){
+      addArrow(h, node, dom, clear) {
         dom.unshift(h('arrow', {
           props: {node: node},
           'class': {clear: clear},
@@ -97,12 +98,12 @@
           },
         }, []))
       },
-      recoverIdAndPid(node){
-        if (undefined !== node.id){
+      recoverIdAndPid(node) {
+        if (undefined !== node.id) {
           this.parentMap.set(node.id, node)
         }
         //关联到子节点
-        if (undefined !== node.node){
+        if (undefined !== node.node) {
           node.node.pid = node.id
         }
       },
@@ -110,14 +111,8 @@
         this.$emit('select', node);
       },
       addCd(node) {
-        let condition = {
-          condition: [],
-          id: this.getId(),
-          pid: node.node.id,
-          name: "条件" + (node.node.conditions.length + 1),
-          props: JSON.parse(JSON.stringify(this.props)),
-          node: {}
-        }
+        let condition = this.getConditionNode(this.getId(), node.node.id,
+	        "条件" + (node.node.conditions.length + 1), this.props)
         node.node.conditions.push(condition)
         this.parentMap.set(condition.id, condition)
       },
@@ -129,30 +124,15 @@
             pid: node.id
           }
           //判断下一个节点是否有东西且不为空
-          if(!this.isEmptyNode(node.node)){
+          if (!this.isEmptyNode(node.node)) {
             node.node.pid = nextNode.id
             this.$set(nextNode, 'node', node.node)
           }
           let cdId = this.getId()
           this.$set(node, 'node', {
             conditions: [
-              {
-                condition: [],
-                cids:[],
-	              pid: cdId,
-                id: this.getId(),
-                type: nodeType.TJ,
-                name: "条件1",
-                props: JSON.parse(JSON.stringify(this.props)),
-              }, {
-                condition: [],
-                cids:[],
-                pid: cdId,
-                id: this.getId(),
-                type: nodeType.TJ,
-                name: "条件2",
-                props: JSON.parse(JSON.stringify(this.props)),
-              }
+              this.getConditionNode(this.getId(), cdId, "条件1", this.props),
+              this.getConditionNode(this.getId(), cdId, "条件2", this.props)
             ],
             id: cdId,
             pid: node.id,
@@ -173,7 +153,7 @@
             props: JSON.parse(JSON.stringify(this.props)),
           })
           this.parentMap.set(node.node.id, node.node)
-	        this.$store.commit('selectedNode', node.node)
+          this.$store.commit('selectedNode', node.node)
           this.select(node.node)
         }
       },
@@ -192,18 +172,35 @@
               this.delCondition(parentNode)
             }
           } else {
-            if (this.isEmptyNode(node.node)){
+            if (this.isEmptyNode(node.node)) {
               parentNode.node = undefined
-            }else {
+            } else {
               node.node.pid = parentNode.id
               this.$set(parentNode, 'node', node.node)
             }
           }
-        }else {
+        } else {
           this.$message.warning("未找到上一级节点")
         }
       },
-      delCondition(parentNode){
+      getConditionNode(id, pid, name, props) {
+        return {
+          groups: [//条件分组
+            {
+              connection: logicType.OR,
+              cids: [],
+              condition: []
+            }
+          ],
+          connection: logicType.AND,
+          pid: pid,
+          id: id,
+          type: nodeType.TJ,
+          name: name,
+          props: JSON.parse(JSON.stringify(props)),
+        }
+      },
+      delCondition(parentNode) {
         //获取条件块上方节点
         let pnode = this.parentMap.get(parentNode.pid)
         //取出条件块下方节点
@@ -211,10 +208,10 @@
         //取出第一个条件分支下方节点
         let cdSonNode = parentNode.conditions[0].node
         //将分支节点连接到主分支
-        if (!this.isEmptyNode(cdSonNode)){
+        if (!this.isEmptyNode(cdSonNode)) {
           cdSonNode.pid = pnode.id
           this.$set(pnode, 'node', cdSonNode)
-        } else if(this.isEmptyNode(nextBoxNode.node)){
+        } else if (this.isEmptyNode(nextBoxNode.node)) {
           //只剩下根节点
           pnode.node = undefined
         } else {
@@ -223,13 +220,13 @@
           cdSonNode = pnode
         }
         //将下节点连接到主分支尾部
-        if (!this.isEmptyNode(nextBoxNode.node)){
+        if (!this.isEmptyNode(nextBoxNode.node)) {
           let lastNode = this.getDomFooterNode(cdSonNode)
           nextBoxNode.node.pid = lastNode.id
           this.$set(lastNode, 'node', nextBoxNode.node)
         }
       },
-      isEmptyNode(node){
+      isEmptyNode(node) {
         return undefined === node
           || null === node
           || undefined === node.type
@@ -243,13 +240,13 @@
        * 搜索末端非空节点
        * @param node
        */
-	    getDomFooterNode(node){
-        if (node && !this.isEmptyNode(node.node)){
+      getDomFooterNode(node) {
+        if (node && !this.isEmptyNode(node.node)) {
           return this.getDomFooterNode(node.node)
-        }else {
+        } else {
           return node
         }
-	    }
+      }
     },
     render(h) {
       return h('div', {'class': {process: true}},
@@ -288,7 +285,8 @@
 		flex-direction: row;*/
 		position: relative;
 	}
-	.fdr::after{
+	
+	.fdr::after {
 		content: "";
 		z-index: 100;
 		top: 2px;
@@ -312,10 +310,12 @@
 		position: relative;
 		margin-left: 0px;
 	}
-	.bd{
+	
+	.bd {
 		position: relative;
 		margin: 0 20px;
 	}
+	
 	.bd::after {
 		content: "";
 		top: 0;
@@ -326,7 +326,9 @@
 		background: #CACACA;
 	}
 	
-	.c::after {display: none}
+	.c::after {
+		display: none
+	}
 	
 	.bdl::before {
 		content: "";

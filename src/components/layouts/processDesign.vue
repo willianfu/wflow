@@ -20,7 +20,9 @@
 			</el-row>
 		
 		</div>
-		<el-drawer :title="select.name" :visible.sync="drawer" size="400px" direction="rtl" :modal="false">
+		<el-drawer :title="select.name" :visible.sync="drawer"
+		           :size="nodeType.TJ === select.type ? '600px':'400px'"
+		           direction="rtl" :modal="false">
 			<div slot="title">
 				<el-input v-model="select.name" size="medium" v-if="showInput"
 				          style="width: 300px" @blur="showInput = false"></el-input>
@@ -36,35 +38,37 @@
 </template>
 
 <script>
-    import process from "./process/processView";
-    import tp from "@/assets/approvalTemplate";
-		import nodeConfig from "./process/nodeConfig";
+  import process from "./process/processView";
+  import tp from "@/assets/approvalTemplate";
+  import nodeConfig from "./process/nodeConfig";
+  import {nodeType} from '@/components/common/enumConst'
 
-    export default {
-        name: "processDesign",
-        components: { process, nodeConfig},
-        data() {
-            return {
-                select: {},
-								showInput: false,
-                drawer: false,
-                scale: 100,
-                nodes: []
-            }
-        },
-        mounted() {
-            this.templateDecode();
-        },
-        methods: {
-            selectNode(node) {
-                this.select = node;
-                this.drawer = true;
-            },
-            templateDecode() {
-                console.log(tp)
-            }
-        },
-    }
+  export default {
+    name: "processDesign",
+    components: {process, nodeConfig},
+    data() {
+      return {
+        nodeType: nodeType,
+        select: {},
+        showInput: false,
+        drawer: false,
+        scale: 100,
+        nodes: []
+      }
+    },
+    mounted() {
+      this.templateDecode();
+    },
+    methods: {
+      selectNode(node) {
+        this.select = node;
+        this.drawer = true;
+      },
+      templateDecode() {
+        console.log(tp)
+      }
+    },
+  }
 </script>
 
 <style lang="less" scoped>
@@ -80,47 +84,51 @@
 		border-radius: 16px;
 		background-color: #99999a;
 	}
+	
 	.design {
 		margin-top: 100px;
 		//overflow: auto;
 		/deep/ .el-row {
 			display: flex;
 			justify-content: center;
-			.end{
-              /*div:first-child{
-                margin: 0 auto;
-                border-radius: 50%;
-                border: 5px solid #a9a9a9;
-                width: 0;
-                height: 0;
-              }
-              div:nth-child(2){
-                height: 30px;
-                margin: 0 auto;
-                width: 0;
-                border: 1px solid #a9a9a9;
-              }*/
-              .end-node {
-                margin-bottom: 20px;
-                border-radius: 15px;
-                padding: 5px 10px;
-                font-size: small;
-                color: #747474;
-                background-color: #f2f2f2;
-                box-shadow: 0 0 10px 0 #bcbcbc;
-              }
-            }
+			
+			.end {
+				/*div:first-child{
+					margin: 0 auto;
+					border-radius: 50%;
+					border: 5px solid #a9a9a9;
+					width: 0;
+					height: 0;
+				}
+				div:nth-child(2){
+					height: 30px;
+					margin: 0 auto;
+					width: 0;
+					border: 1px solid #a9a9a9;
+				}*/
+				
+				.end-node {
+					margin-bottom: 20px;
+					border-radius: 15px;
+					padding: 5px 10px;
+					font-size: small;
+					color: #747474;
+					background-color: #f2f2f2;
+					box-shadow: 0 0 10px 0 #bcbcbc;
+				}
+			}
 			
 		}
 	}
-
-	/deep/ .el-link{
+	
+	/deep/ .el-link {
 		display: inline;
 		width: 50px;
 	}
 	
-	/deep/ .el-drawer__body{
+	/deep/ .el-drawer__body {
 		overflow-y: auto;
+		
 		&::-webkit-scrollbar {
 			width: 8px;
 			height: 8px;
@@ -132,6 +140,7 @@
 			background-color: #a8a8a9;
 		}
 	}
+	
 	.scale {
 		z-index: 999;
 		position: fixed;

@@ -1,6 +1,6 @@
 <template>
   <div class="node-config">
-    <el-form label-position="top" label-width="80px">
+    <el-form :label-position="isTjNode ? '':'top'" label-width="90px">
       <div v-if="isRootNode || isCsNode">
         <el-form-item :label="isRootNode ? '谁可以发起此审批' : '选择要抄送的人员'" prop="text">
           <el-button type="primary" size="mini" icon="el-icon-plus" style="margin-bottom: 15px"
@@ -32,32 +32,35 @@
        </el-form-item>-->
 
       <div v-if="isTjNode">
-        <el-form-item label="优先级" prop="level">
-          <el-button icon="el-icon-sort">第{{0}}级</el-button>
-          <el-popover placement="left" title="选择审批条件" width="300" trigger="click">
-           <!-- <draggable style="width: 100%; min-height:25px" :list="selectedNode" group="from" @end="groupSort"
-                       v-show="!groupsSort" filter=".undrag"
-                       :options="{animation: 300, delay: 200, chosenClass:'choose', scroll: true, sort:true}">
-              
-            </draggable>-->
+        <el-form-item label="调整优先级" prop="level">
+          <el-popover placement="right" title="拖拽条件调整优先级顺序" width="250" trigger="click">
+            <draggable style="width: 100%; min-height:25px" :list="prioritySortList" group="from"
+                       :options="{animation: 300, chosenClass:'choose', scroll: true, sort:true}">
+              <div class="drag-no-choose"
+                   :style="list.id === selectedNode.id ? 'background: #79bbff; color:#ffffff':''"
+                   v-for="(list, index) in prioritySortList">
+                <div>{{list.name}}</div>
+                <div>优先级 {{index + 1}}</div>
+              </div>
+            </draggable>
+            <el-button icon="el-icon-sort" size="small" slot="reference">第{{getNowNodeIndex + 1}}级</el-button>
           </el-popover>
+          <div class="group-connect">
+            <span>条件组关系: </span>
+            <el-switch v-model="conditionGroups.connection" active-color="#409EFF"
+                       inactive-color="#909399" active-value="AND" inactive-value="OR"
+                       active-text="且" inactive-text="或">
+            </el-switch>
+          </div>
         </el-form-item>
-
-        <el-form-item label="设置审批条件" prop="text">
-          <!--<el-divider></el-divider>-->
+        <div>
           <condition></condition>
-          <el-divider v-if="(selectedNode.cids || []).length > 0"></el-divider>
-          <el-popover placement="left" title="选择审批条件" width="300" trigger="click">
-            <!-- <div>以下条件将决定具体的审批流程</div>-->
-            <el-checkbox-group v-model="selectedNode.cids" @change="conditionSelect">
-              <el-checkbox :label="condition.id" v-for="condition in formList" :key="condition.id">
-                {{condition.name}}
-              </el-checkbox>
-            </el-checkbox-group>
-            <el-button type="primary" slot="reference" size="mini" icon="el-icon-plus" round @click="">选择条件</el-button>
-          </el-popover>
+          <el-button type="primary" size="mini" icon="el-icon-plus" style="margin-bottom: 15px"
+                     round @click="addConditionGroup">
+            添加条件组
+          </el-button>
           <span style="font-size: small; color: #7a7a7a; margin-left: 20px">只有必填选项才能作为审批条件</span>
-        </el-form-item>
+        </div>
       </div>
 
       <div v-if="isSpNode">
@@ -210,10 +213,11 @@
   import orgPicker from '@/components/common/organizationPicker'
   import condition from './condition'
   import enumConst from '@/components/common/enumConst'
-
+  import draggable from "vuedraggable";
+  
   export default {
     name: "nodeConfig",
-    components: {orgPicker, condition},
+    components: {draggable, orgPicker, condition},
     props: {
       node: {
         default: () => {
@@ -246,6 +250,20 @@
     computed: {
       selectedNode() {
         return this.$store.state.selectedNode;
+      },
+      getNowNodeIndex(){
+        for (let i = 0; i < this.prioritySortList.length; i++){
+          if (this.selectedNode.id === this.prioritySortList[i].id){
+            return i;
+          }
+        }
+        return 0;
+      },
+      prioritySortList(){
+        return this.$store.state.parentMap.get(this.selectedNode.pid).conditions || []
+      },
+      conditionGroups(){
+        return this.$store.state.parentMap.get(this.selectedNode.pid)
       },
       isRootNode() {
 				return this.selectedNode.type === enumConst.nodeType.ROOT
@@ -280,36 +298,7 @@
         return this.props.type === enumConst.approvalType.LEADER_TOP
 						|| this.props.type === enumConst.approvalType.LEADER
       },
-      formList() {
-        //这个条件有5种类型 user 人员选择、 dept 部门选择、 number 数字、single 单选、 more 多选
-        let result = []
-        this.$store.state.template.form.forEach(atom => {
-          if (atom.valid) {
-            if (atom.name === 'jInput' && atom.props.type === 'number') {
-              result.push({
-                id: atom.id,
-                name: atom.text,
-                type: 'number'
-              })
-            } else if (atom.name === 'jSelect') {
-              result.push({
-                id: atom.id,
-                name: atom.text,
-                type: atom.props.type,
-                options: atom.props.options
-              })
-            } else if (atom.name === 'orgSelect') {
-              result.push({
-                id: atom.id,
-                name: atom.text,
-                type: atom.props.type
-              })
-            }
-          }
-        })
-        result.unshift({id: this.$store.state.template.process.id, name: '发起人', type: 'org'})
-        return result;
-      }
+      
     },
     methods: {
       showRoot() {
@@ -321,17 +310,16 @@
         }))
         this.showUserSelect = false
       },
-      conditionSelect() {
-        let condition = []
-        this.selectedNode.cids.forEach(cd => {
-          for (let key in this.formList) {
-            if (this.formList[key].id === cd) {
-              condition.push(this.formList[key]);
-              break;
-            }
-          }
-        })
-        this.$store.commit('setCondition', condition)
+      addConditionGroup(){
+        if (this.selectedNode.groups.length < 5){
+          this.selectedNode.groups.push({
+            connection: enumConst.logicType.OR,
+            cids: [],
+            condition: []
+          })
+        }else {
+          this.$message.warning("最多只允许添加5个条件组")
+        }
       }
     }
   }
@@ -343,9 +331,7 @@
     overflow-y: auto;
 
     /deep/ .el-form {
-      .el-form-item__label {
-        padding: 0;
-      }
+      
 
       .el-form-item__label {
         font-size: 14px;
@@ -402,5 +388,42 @@
 
   .select-u {
     width: 100%;
+  }
+  
+  .group-connect{
+    display: inline;
+    margin-left: 50px;
+    &>span{
+      margin-right: 20px;
+    }
+  }
+  
+  .choose{
+    border-radius: 5px;
+    margin-top: 2px;
+    background: #f4f4f4;
+    border: 1px dashed #1890FF !important;
+  }
+  .drag-no-choose{
+    cursor: move;
+    background: #f4f4f4;
+    border-radius: 5px;
+    position: relative;
+    margin-top: 2px;
+    padding: 5px 10px;
+    border: 1px solid #bcbcbc;
+    height: 20px;
+    div:nth-child(1){
+      font-size: x-small;
+      position: absolute;
+      width: 160px;
+      left: 10px;
+      height: 20px;
+      overflow: hidden;
+    }
+    div:nth-child(2){
+      position: absolute;
+      right: 10px;
+    }
   }
 </style>

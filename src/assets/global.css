@@ -21,3 +21,16 @@ body{
     transform: translateX(50px);
     opacity: 0;
 }
+
+.fl {
+    float: left;
+}
+.fr {
+    float: right;
+}
+.tl{
+    text-align: left;
+}
+.tr{
+    text-align: right;
+}

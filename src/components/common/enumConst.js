@@ -34,6 +34,11 @@ export const approvalMode = {
   NEXT: 'NEXT'
 }
 
+export const logicType = {
+  AND: 'AND',
+  OR: 'OR'
+}
+
 /**
  * 超时事件
  * @type {{NOTIFY: string, PASS: string, REFUSE: string}}
@@ -120,7 +125,7 @@ export function getDefaultNodeProps(){
 export default {
   nodeType, approvalMode, timeoutEvent, timeLimitType,
   userEmpty, endCondition, conditionType, approvalType,
-  getDefaultNodeProps
+  logicType, getDefaultNodeProps
 }
 
 

@@ -2,11 +2,12 @@
   <div :class="{'arrow': true, 'borderTop': !showCard(node)}" ref="arrow" >
     <div @click.stop="select" v-if="showCard(node)">
       <el-card shadow="always" >
-        <div slot="header" :class="node.type">
-          <span>
-            <i :class="{'el-icon-s-check': node.type === nodeType.SP, 'el-icon-s-promotion': node.type === nodeType.CS}"></i>
+        <div slot="header" :class="node.type" style="height: 15px">
+          <div class="node-name">
+            <i :class="{'el-icon-s-check': node.type === nodeType.SP,
+            'el-icon-s-promotion': node.type === nodeType.CS}"></i>
             {{node.name}}
-          </span>
+          </div>
           <i class="el-icon-close" v-if="nodeType.ROOT !== node.type" @click.stop="delNode"></i>
           <el-tooltip effect="dark" content="复制条件" placement="top-start">
             <i class="el-icon-copy-document" v-if="nodeType.TJ === node.type"></i>
@@ -191,6 +192,12 @@
         box-shadow: 0 0 8px 2px #d6d6d6;
       }
     }
+    .node-name{
+      float: left;
+      width: 158px;
+      overflow: hidden;
+      height: 17px;
+    }
   }
   .arrow::before{
     content: "";
@@ -220,6 +227,7 @@
         color: #ffffff;
         font-size: small;
         width: 100%;
+        height: 25px;
         padding: 0;
       }
       .el-card__body{
