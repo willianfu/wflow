@@ -104,6 +104,7 @@
       },
       newProcess() {
         this.$store.commit("setTemplate", this.getTemplateData());
+        this.$store.commit("setIsEdit", false);
         this.$router.push("/layout/baseSetup");
       },
       groupSort() {
