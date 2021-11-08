@@ -73,7 +73,7 @@
             }, c)
           })
           return [h('div', {'class': {fc: true}}, [
-            h('div', {'class': {fdr: true, bdtb: true}}, co)]),
+            h('div', {'class': {fdr: node.conditions.length % 2 === 0, bdtb: true}}, co)]),
             h('div', {
               'class': {
                 clear: !this.isEmptyNode(node.node),
@@ -220,7 +220,7 @@
           cdSonNode = pnode
         }
         //将下节点连接到主分支尾部
-        if (!this.isEmptyNode(nextBoxNode.node)) {
+        if (!this.isEmptyNode(nextBoxNode.node) && parentNode.conditions[0].node) {
           let lastNode = this.getDomFooterNode(cdSonNode)
           nextBoxNode.node.pid = lastNode.id
           this.$set(lastNode, 'node', nextBoxNode.node)
