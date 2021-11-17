@@ -284,13 +284,14 @@
 		/*display: flex;
 		flex-direction: row;*/
 		position: relative;
+    left: 1px;
 	}
 	
 	.fdr::after {
 		content: "";
-		z-index: 100;
+		z-index: 50;
 		top: 2px;
-		left: calc(50% - 1px);
+		left: calc(50% - 2px);
 		position: absolute;
 		width: 2px;
 		height: calc(100% - 2px);
@@ -309,11 +310,13 @@
 	.bdr {
 		position: relative;
 		margin-left: 0px;
+    z-index: 100;
+    border-left: 2px solid #f5f6f6;
 	}
 	
 	.bd {
 		position: relative;
-		margin: 0 20px;
+		padding: 0 20px;
 	}
 	
 	.bd::after {
@@ -332,7 +335,7 @@
 	
 	.bdl::before {
 		content: "";
-		z-index: 100;
+		//z-index: 100;
 		top: -3px;
 		left: -20px;
 		position: absolute;
