@@ -1,15 +1,15 @@
 <template>
   <div>
     <el-date-picker type="date" :placeholder="placeholder"
-                    v-if="type === 'date'" size="medium" disabled>
+                    v-if="type === 'date'" size="medium" :disabled="disabled">
     </el-date-picker>
     <el-date-picker type="daterange" range-separator="至" size="medium"
                     :start-placeholder="start" :end-placeholder="end"
-                    v-else-if="type === 'dateRange'" disabled>
+                    v-else-if="type === 'dateRange'" :disabled="disabled">
     </el-date-picker>
-    <el-date-picker type="datetime" :placeholder="placeholder"  disabled size="medium"
+    <el-date-picker type="datetime" :placeholder="placeholder"  :disabled="disabled" size="medium"
                     v-else-if="type === 'dateTime'"></el-date-picker>
-    <el-date-picker type="datetimerange" range-separator="至" disabled size="medium"
+    <el-date-picker type="datetimerange" range-separator="至" :disabled="disabled" size="medium"
                     :start-placeholder="start" :end-placeholder="end"
                     v-else-if="type === 'dateTimeRange'">
     </el-date-picker>
@@ -23,6 +23,10 @@
       type: {
         default: 'date',
         type: String
+      },
+      disabled:{
+        default: true,
+        type: Boolean
       },
       placeholder: {
         default: '请选择日期',

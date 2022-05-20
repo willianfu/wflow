@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div style="width: 100%">
 		<div class="scale">
 			<el-button icon="el-icon-plus" size="small" @click="scale += 10" :disabled="scale >= 150" circle></el-button>
 			<span>{{scale}}%</span>
@@ -18,7 +18,7 @@
 					<div class="end-node">流程结束</div>
 				</div>
 			</el-row>
-		
+
 		</div>
 		<el-drawer :title="select.name" :visible.sync="drawer"
 		           :size="nodeType.TJ === select.type ? '600px':'400px'"
@@ -30,7 +30,7 @@
 					<i class="el-icon-edit" style="margin-right: 10px"></i> {{select.name}}
 				</el-link>
 			</div>
-			
+
 			<node-config :node="select"></node-config>
 		</el-drawer>
 	</div>
@@ -73,25 +73,25 @@
 
 <style lang="less" scoped>
 	@import "@/assets/theme";
-	
+
 	::-webkit-scrollbar {
 		width: 8px;
 		height: 8px;
 		background-color: #e1e1e1;
 	}
-	
+
 	::-webkit-scrollbar-thumb {
 		border-radius: 16px;
 		background-color: #99999a;
 	}
-	
+
 	.design {
 		margin-top: 100px;
 		//overflow: auto;
 		/deep/ .el-row {
 			display: flex;
 			justify-content: center;
-			
+
 			.end {
 				/*div:first-child{
 					margin: 0 auto;
@@ -106,7 +106,7 @@
 					width: 0;
 					border: 1px solid #a9a9a9;
 				}*/
-				
+
 				.end-node {
 					margin-bottom: 20px;
 					border-radius: 15px;
@@ -117,36 +117,36 @@
 					box-shadow: 0 0 10px 0 #bcbcbc;
 				}
 			}
-			
+
 		}
 	}
-	
+
 	/deep/ .el-link {
 		display: inline;
 		width: 50px;
 	}
-	
+
 	/deep/ .el-drawer__body {
 		overflow-y: auto;
-		
+
 		&::-webkit-scrollbar {
 			width: 8px;
 			height: 8px;
 			background-color: #e1e1e1;
 		}
-		
+
 		&::-webkit-scrollbar-thumb {
 			border-radius: 5px;
 			background-color: #a8a8a9;
 		}
 	}
-	
+
 	.scale {
 		z-index: 999;
 		position: fixed;
 		top: 80px;
 		right: 40px;
-		
+
 		span {
 			margin: 0 10px;
 			font-size: 15px;
