@@ -23,6 +23,8 @@ Vue.prototype.$getDefalut = function(obj, key, df){
   return (obj === undefined || key === undefined || !this.$isNotEmpty(obj[key])) ? df : obj[key];
 }
 
+Vue.prototype.$deepCopy = function (obj){return JSON.parse(JSON.stringify(obj))}
+
 new Vue({
   router,
   store,

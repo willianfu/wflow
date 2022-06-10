@@ -12,9 +12,38 @@ const router = new Router({
     routes:[
         {
             path: '/',
-            redirect: '/workPanel' // 路由重定向
+            redirect: '/admin/design' // 路由重定向
         },
         {
+            path: "/admin/design",
+            name: "design",
+            component: () => import("@/views/admin/FormProcessDesign.vue"),
+            meta:{title:'表单流程设计', viewport: viewport},
+            children:[
+                {
+                    path: "baseSetting",
+                    name: "baseSetting",
+                    component: () => import("@/views/admin/layout/FormBaseSetting.vue"),
+                    meta:{title:'基础设置'}
+                },{
+                    path: "formSetting",
+                    name: "formSetting",
+                    component: () => import("@/views/admin/layout/FormDesign.vue"),
+                    meta:{title:'表单设计'}
+                },{
+                    path: "processDesign",
+                    name: "processDesign",
+                    component: () => import("@/views/admin/layout/ProcessDesign.vue"),
+                    meta:{title:'流程设计'}
+                },{
+                    path: "proSetting",
+                    name: "proSetting",
+                    component: () => import("@/views/admin/layout/FormProSetting.vue"),
+                    meta:{title:'高级设置'}
+                }
+            ]
+        },
+       /* {
             path: "/workPanel",
             name: "workPanel",
             component: () => import("@/components/workPanel.vue"),
@@ -31,38 +60,7 @@ const router = new Router({
             name: "formListPanel",
             component: () => import("@/components/formListPanel.vue"),
             meta:{title:'表单列表', viewport: viewport}
-        },
-        {
-            path: "/layout",
-            name: "layout",
-            component: () => import("@/components/layout.vue"),
-            children:[
-                {
-                    path: "baseSetup",
-                    name: "baseSetup",
-                    component: () => import("@/components/layouts/baseSetup.vue"),
-                    meta:{title:'基础设置'}
-                },
-                {
-                    path: "formDesign",
-                    name: "formDesign",
-                    component: () => import("@/components/layouts/formDesign.vue"),
-                    meta:{title:'表单设计器'}
-                },
-                {
-                    path: "processDesign",
-                    name: "processDesign",
-                    component: () => import("@/components/layouts/processDesign.vue"),
-                    meta:{title:'流程设计器'}
-                },
-                {
-                    path: "seniorSetup",
-                    name: "seniorSetup",
-                    component: () => import("@/components/layouts/seniorSetup.vue"),
-                    meta:{title:'高级设置'}
-                }
-            ]
-        },
+        }*/
     ]
 })
 

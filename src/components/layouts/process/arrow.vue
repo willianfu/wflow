@@ -17,15 +17,11 @@
           <i class="el-icon-time" style="font-size: x-small; position:absolute; left: -15px; top: -5px;"></i>
         </div>-->
         <span>{{nodeText}}</span>
-        
+
       </el-card>
     </div>
     <div class="line-y">
-      <el-popover
-          placement="bottom-start"
-          title="添加流程节点"
-          width="350"
-          trigger="click">
+      <el-popover placement="bottom-start" title="添加流程节点" width="350" trigger="click">
         <div class="node-select">
           <div @click="addNode(nodeType.SP)">
             <i class="el-icon-s-check" style="color:rgb(255, 148, 62);"></i>
@@ -162,7 +158,7 @@
 
 <style lang="less" scoped>
   @import "@/assets/theme";
-  
+
   /deep/ .el-card{
     .el-card__body{
       height: 50px;
@@ -172,7 +168,7 @@
       align-items:center;
     }
   }
-  
+
   .arrow{
     z-index: 555;
     position: relative;
@@ -277,7 +273,7 @@
       }
       &:hover {
         border: 1px solid @primary;
-  
+
         .el-icon-close, .el-icon-copy-document {
           display: inline;
         }
@@ -288,13 +284,10 @@
       height: 80px;
       margin: 0 auto;
       width: 0;
-      //border: 1px solid #a9a9a9;
-
       button {
         position: absolute;
         top: 18px;
         right: -16px;
-
         &:hover {
           box-shadow: 0 0 10px 2px #C2C2C2;
         }

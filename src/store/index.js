@@ -13,9 +13,40 @@ const process = {
 
 export default new Vuex.Store({
   state: {
-    parentMap: new Map(),
+    nodeMap: new Map(),
     isEdit: null,
-    selectedNode: {},
+    selectedNode: {name:'', type:''},
+    design:{
+      formId: null,
+      formName:"未命名表单",
+      logo:{
+        icon:"el-icon-eleme",
+        background:"#1e90ff"
+      },
+      settings:{
+        commiter: [],
+        admin:[],
+        sign: false,
+        notify:{
+          types: ["APP"],
+          title: "消息通知标题"
+        }
+      },
+      group: 0,
+      formItems:[],
+      process:{
+        id: "root",
+        parentId: null,
+        type: "ROOT",
+        name: "发起人",
+        desc: "任何人",
+        props:{
+          assignedUser: []
+        },
+        children: {}
+      },
+      remark: "备注说明"
+    },
     template: {
       baseSetup: {
         icon: 'el-icon-s-custom',
@@ -50,15 +81,6 @@ export default new Vuex.Store({
 
   },
   mutations: {
-    setwhoCommit(state, val) {
-      state.template.baseSetup.whoCommit = val
-    },
-    setwhoEdit(state, val) {
-      state.template.baseSetup.whoEdit = val
-    },
-    setwhoExport(state, val) {
-      state.template.baseSetup.whoExport = val
-    },
     setTemplate(state, val) {
       state.template = val
     },
@@ -67,15 +89,6 @@ export default new Vuex.Store({
     },
     selectedNode(state, val) {
       state.selectedNode = val
-    },
-    selectedApprover(state, val) {
-      state.selectedNode.props.targetObj.objs = val
-    },
-    setCondition(state, val) {
-      state.selectedNode.condition = val
-    },
-    setConditionRootUser(state, val) {
-      state.selectedNode.condition = val
     },
     setIsEdit(state, val){
       state.isEdit = val

@@ -16,9 +16,9 @@
     mounted() {
       let beforeUrl = sessionStorage.getItem('router-path')
       if(beforeUrl === undefined || beforeUrl === ''){
-        this.$router.push("/workPanel")
+        //this.$router.push("/workPanel")
       }else {
-        this.$router.push(beforeUrl)
+        //this.$router.push(beforeUrl)
       }
 
     },
@@ -39,7 +39,7 @@
 	ul {
 		padding: 0;
 		margin: 0;
-		
+
 		li {
 			list-style-type: none;
 		}
