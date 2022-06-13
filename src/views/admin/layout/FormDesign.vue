@@ -116,7 +116,7 @@ export default {
   },
   computed: {
     form() {
-      return this.$store.state.template.form;
+      return this.$store.state.design.formItems;
     }
   },
   methods: {

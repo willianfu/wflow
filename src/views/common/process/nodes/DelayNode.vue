@@ -26,7 +26,13 @@ export default {
   },
   computed:{
     content(){
-      this.config
+      if (this.config.props.type === 'FIXED'){
+        return `等待 ${this.config.props.time} ${this.getName(this.config.props.unit)}`
+      }else if(this.config.props.type === 'AUTO'){
+        return `至当天 ${this.config.props.dateTime}`
+      }else {
+        return null
+      }
     }
   },
   methods: {
@@ -50,6 +56,14 @@ export default {
         this.errorInfo = "配置出现问题"
       }
       return !this.showError
+    },
+    getName(unit){
+      switch (unit){
+        case 'D': return '天';
+        case 'H': return '小时';
+        case 'M': return '分钟';
+        default: return '未知';
+      }
     }
   }
 }

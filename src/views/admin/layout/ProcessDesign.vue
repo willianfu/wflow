@@ -10,7 +10,7 @@
       <process-tree ref="process-tree" @selectedNode="nodeSelected"/>
     </div>
     <el-drawer :title="selectedNode.name" :visible.sync="showConfig"
-               :size="selectedNode.type === 'CONDITION' ? '600px':'400px'"
+               :size="selectedNode.type === 'CONDITION' ? '600px':'500px'"
                direction="rtl" :modal="false" destroy-on-close>
       <div slot="title">
         <el-input v-model="selectedNode.name" size="medium" v-show="showInput"
@@ -20,17 +20,21 @@
           {{selectedNode.name}}
         </el-link>
       </div>
+      <div class="node-config-content">
+        <node-config/>
+      </div>
     </el-drawer>
   </el-main>
 </template>
 
 <script>
 import ProcessTree from './process/ProcessTree.vue'
+import NodeConfig from '../../common/process/config/NodeConfig'
 //import ProcessTree from '@/views/common/process/FormComponentConfig.vue'
 
 export default {
   name: "ProcessDesign",
-  components: {ProcessTree},
+  components: {ProcessTree, NodeConfig},
   data() {
     return {
       scale: 100,
@@ -87,5 +91,9 @@ export default {
     color: #7a7a7a;
     width: 50px;
   }
+}
+
+.node-config-content{
+  padding: 0 20px 20px;
 }
 </style>
