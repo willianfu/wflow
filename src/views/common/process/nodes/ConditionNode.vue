@@ -10,7 +10,7 @@
           <span class="level">优先级{{level}}</span>
           <span class="option">
             <el-tooltip effect="dark" content="复制条件" placement="top">
-              <i class="el-icon-copy-document" @click="$emit('copy')"></i>
+              <i class="el-icon-copy-document" @click.stop="$emit('copy')"></i>
             </el-tooltip>
             <i class="el-icon-close" @click.stop="$emit('delNode')"></i>
           </span>

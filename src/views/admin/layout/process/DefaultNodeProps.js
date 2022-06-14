@@ -3,8 +3,8 @@ export const APPROVAL_PROPS = {
   assignedType: "ASSIGN_USER",
   mode: "AND",
   sign: false,
-  nobady: {
-    handler: "PASS",
+  nobody: {
+    handler: "TO_PASS",
     assignedUser:[]
   },
   timeLimit:{
@@ -55,12 +55,13 @@ export const CONDITION_PROPS = {
 
 //抄送节点默认属性
 export const CC_PROPS = {
+  shouldAdd: false,
   assignedUser: []
 }
 
 //延时节点默认属性
 export const DELAY_PROPS = {
-  type: "", //延时类型 FIXED:到达当前节点后延时固定时长 、AUTO:延时到 dateTime设置的时间
+  type: "FIXED", //延时类型 FIXED:到达当前节点后延时固定时长 、AUTO:延时到 dateTime设置的时间
   time: 0, //延时时间
   unit: "M", //时间单位 D天 H小时 M分钟
   dateTime: "" //如果当天没有超过设置的此时间点，就延时到这个指定的时间，到了就直接跳过不延时

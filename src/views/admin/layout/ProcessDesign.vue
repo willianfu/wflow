@@ -96,4 +96,8 @@ export default {
 .node-config-content{
   padding: 0 20px 20px;
 }
+
+/deep/ .el-drawer__body{
+  overflow-y: auto;
+}
 </style>
