@@ -15,7 +15,7 @@ export default new Vuex.Store({
   state: {
     nodeMap: new Map(),
     isEdit: null,
-    selectedNode: {name:'', type:''},
+    selectedNode: {},
     design:{
       formId: null,
       formName:"未命名表单",

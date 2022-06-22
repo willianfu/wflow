@@ -187,19 +187,19 @@ export default {
       this.$forceUpdate()
     },
     insertApprovalNode(parentNode){
-      parentNode.children.name = "审批人"
+      this.$set(parentNode.children, "name", "审批人")
       parentNode.children.props = this.$deepCopy(DefaultProps.APPROVAL_PROPS)
     },
     insertCcNode(parentNode){
-      parentNode.children.name = "抄送人"
+      this.$set(parentNode.children, "name", "抄送人")
       parentNode.children.props = this.$deepCopy(DefaultProps.CC_PROPS)
     },
     insertDelayNode(parentNode){
-      parentNode.children.name = "延时处理"
+      this.$set(parentNode.children, "name", "延时处理")
       parentNode.children.props = this.$deepCopy(DefaultProps.DELAY_PROPS)
     },
     insertConditionsNode(parentNode){
-      parentNode.children.name = "条件分支"
+      this.$set(parentNode.children, "name", "条件分支")
       parentNode.children.children = {
         id: this.getRandomId(),
         parentId: parentNode.children.id,
@@ -223,7 +223,7 @@ export default {
       this.$forceUpdate()
     },
     insertConcurrentsNode(parentNode){
-      parentNode.children.name = "并行分支"
+      this.$set(parentNode.children, "name", "并行分支")
       parentNode.children.children = {
         id: this.getRandomId(),
         parentId: parentNode.children.id,
