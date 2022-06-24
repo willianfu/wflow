@@ -4,16 +4,17 @@ import Approval from '@/views/common/process/nodes/ApprovalNode.vue'
 import Cc from '@/views/common/process/nodes/CcNode.vue'
 import Concurrent from '@/views/common/process/nodes/ConcurrentNode.vue'
 import Condition from '@/views/common/process/nodes/ConditionNode.vue'
+import Trigger from '@/views/common/process/nodes/TriggerNode.vue'
 import Delay from '@/views/common/process/nodes/DelayNode.vue'
 import Empty from '@/views/common/process/nodes/EmptyNode.vue'
 import Root from '@/views/common/process/nodes/RootNode.vue'
 import Node from '@/views/common/process/nodes/Node.vue'
 
-import DefaultProps from "./DefaultNodeProps"
+import DefaultProps, {TRIGGER_PROPS} from "./DefaultNodeProps"
 
 export default {
   name: "ProcessTree",
-  components: {Node, Root, Approval, Cc, Concurrent, Condition, Delay, Empty},
+  components: {Node, Root, Approval, Cc, Trigger, Concurrent, Condition, Delay, Empty},
   data() {
     return {
       valid: true
@@ -135,7 +136,8 @@ export default {
     isPrimaryNode(node){
       return node &&
           (node.type === 'ROOT' || node.type === 'APPROVAL'
-          || node.type === 'CC' || node.type === 'DELAY');
+          || node.type === 'CC' || node.type === 'DELAY'
+              || node.type === 'TRIGGER');
     },
     isBranchNode(node){
       return node && (node.type === 'CONDITIONS' || node.type === 'CONCURRENTS');
@@ -174,6 +176,7 @@ export default {
         case 'APPROVAL': this.insertApprovalNode(parentNode, afterNode); break;
         case 'CC': this.insertCcNode(parentNode); break;
         case 'DELAY': this.insertDelayNode(parentNode); break;
+        case 'TRIGGER': this.insertTriggerNode(parentNode); break;
         case 'CONDITIONS': this.insertConditionsNode(parentNode); break;
         case 'CONCURRENTS': this.insertConcurrentsNode(parentNode); break;
         default: break;
@@ -188,15 +191,19 @@ export default {
     },
     insertApprovalNode(parentNode){
       this.$set(parentNode.children, "name", "审批人")
-      parentNode.children.props = this.$deepCopy(DefaultProps.APPROVAL_PROPS)
+      this.$set(parentNode.children, "props", this.$deepCopy(DefaultProps.APPROVAL_PROPS))
     },
     insertCcNode(parentNode){
       this.$set(parentNode.children, "name", "抄送人")
-      parentNode.children.props = this.$deepCopy(DefaultProps.CC_PROPS)
+      this.$set(parentNode.children, "props", this.$deepCopy(DefaultProps.CC_PROPS))
     },
     insertDelayNode(parentNode){
       this.$set(parentNode.children, "name", "延时处理")
-      parentNode.children.props = this.$deepCopy(DefaultProps.DELAY_PROPS)
+      this.$set(parentNode.children, "props", this.$deepCopy(DefaultProps.DELAY_PROPS))
+    },
+    insertTriggerNode(parentNode){
+      this.$set(parentNode.children, "name", "触发器")
+      this.$set(parentNode.children, "props", this.$deepCopy(DefaultProps.TRIGGER_PROPS))
     },
     insertConditionsNode(parentNode){
       this.$set(parentNode.children, "name", "条件分支")
@@ -205,7 +212,7 @@ export default {
         parentId: parentNode.children.id,
         type: "EMPTY"
       }
-      parentNode.children.branchs = [
+      this.$set(parentNode.children, "branchs", [
         {
           id: this.getRandomId(),
           parentId: parentNode.children.id,
@@ -219,7 +226,7 @@ export default {
           props: this.$deepCopy(DefaultProps.CONDITION_PROPS),
           name: "条件2",
         }
-      ]
+      ])
       this.$forceUpdate()
     },
     insertConcurrentsNode(parentNode){
@@ -229,7 +236,7 @@ export default {
         parentId: parentNode.children.id,
         type: "EMPTY"
       }
-      parentNode.children.branchs = [
+      this.$set(parentNode.children, "branchs", [
         {
           id: this.getRandomId(),
           parentId: parentNode.children.id,
@@ -243,7 +250,7 @@ export default {
           props: {},
           name: "分支2",
         }
-      ]
+      ])
       this.$forceUpdate()
     },
     getBranchEndNode(conditionNode){

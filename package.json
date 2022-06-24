@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.20.0",
+    "codemirror": "^6.0.0",
     "core-js": "^3.6.5",
     "element-ui": "^2.13.2",
     "less": "^3.12.2",
@@ -31,6 +32,7 @@
     "babel-preset-env": "^1.7.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "vue-codemirror": "^6.0.0",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {

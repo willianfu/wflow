@@ -17,6 +17,7 @@ import Approval from './ApprovalNodeConfig.vue'
 import Condition from './ConditionNodeConfig.vue'
 import Delay from './DelayNodeConfig.vue'
 import Cc from './CcNodeConfig.vue'
+import Trigger from './TriggerNodeConfig.vue'
 import FormAuthorityConfig from './FormAuthorityConfig.vue'
 import Root from './RootNodeConfig.vue'
 
@@ -25,6 +26,7 @@ export default {
   components: {
     Approval,
     Condition,
+    Trigger,
     Delay,
     Root,
     Cc,

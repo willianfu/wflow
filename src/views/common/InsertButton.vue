@@ -14,12 +14,16 @@
         <span>条件分支</span>
       </div>
       <div @click="addConcurrentsNode">
-        <i class="el-icon-s-operation" style="color:rgb(21, 188, 131);"></i>
+        <i class="el-icon-s-operation" style="color:#718dff;"></i>
         <span>并行分支</span>
       </div>
       <div @click="addDelayNode">
         <i class="el-icon-time" style="color:#f25643;"></i>
         <span>延迟等待</span>
+      </div>
+      <div @click="addTriggerNode">
+        <i class="el-icon-set-up" style="color:#15BC83;"></i>
+        <span>触发器</span>
       </div>
     </div>
     <el-button icon="el-icon-plus" slot="reference" type="primary" size="small" circle></el-button>
@@ -54,6 +58,9 @@ export default {
     addConcurrentsNode(){
       this.$emit('insertNode', "CONCURRENTS")
     },
+    addTriggerNode(){
+      this.$emit('insertNode', "TRIGGER")
+    }
   }
 }
 </script>

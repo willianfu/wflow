@@ -59,6 +59,39 @@ export const CC_PROPS = {
   assignedUser: []
 }
 
+//触发器节点默认属性
+export const TRIGGER_PROPS = {
+  type: 'WEBHOOK',
+  http:{
+    method: 'GET', //请求方法 支持GET/POST
+    url: '', //URL地址，可以直接带参数
+    headers: [ //http header
+      {
+        name: '',
+        isField: true,
+        value: '' //支持表达式 ${xxx} xxx为表单字段名称
+      }
+    ],
+    contentType: 'FORM', //请求参数类型
+    params:[ //请求参数
+      {
+        name: '',
+        isField: true, //是表单字段还是自定义
+        value: '' //支持表达式 ${xxx} xxx为表单字段名称
+      }
+    ],
+    retry: 1,
+    handlerByScript: false,
+    success: 'function resHandler(res) {\n  return true;\n}',
+    fail: 'function resHandler(res) {\n  return true;\n}'
+  },
+  email:{
+    subject: '',
+    to: [],
+    content: ''
+  }
+}
+
 //延时节点默认属性
 export const DELAY_PROPS = {
   type: "FIXED", //延时类型 FIXED:到达当前节点后延时固定时长 、AUTO:延时到 dateTime设置的时间
@@ -68,5 +101,5 @@ export const DELAY_PROPS = {
 }
 
 export default {
-  APPROVAL_PROPS, CC_PROPS, DELAY_PROPS, CONDITION_PROPS, ROOT_PROPS
+  APPROVAL_PROPS, CC_PROPS, DELAY_PROPS, CONDITION_PROPS, ROOT_PROPS, TRIGGER_PROPS
 }

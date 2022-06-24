@@ -7,7 +7,7 @@ const viewport = {
 }
 
 const router = new Router({
-    mode: 'history',
+    //mode: 'history',
     base: __dirname, //这个很重要
     routes:[
         {

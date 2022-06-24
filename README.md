@@ -354,7 +354,43 @@
 }
 ```
 
+##### TRIGGER（触发器节点）
 
+> 流程到达此节点时，会触发一个提前设置好的动作，用来与外部系统对接
+
+```json
+{
+  type: 'WEBHOOK', //触发的动作类型 WEBHOOK、EMAIL
+  http:{
+    method: 'GET', //请求方法 支持GET/POST
+    url: '', //URL地址，可以直接带参数
+    headers: [ //http header
+      {
+        name: '',
+        isField: true,
+        value: '' //支持表达式 ${xxx} xxx为表单字段名称
+      }
+    ],
+    contentType: 'FORM', //请求参数类型
+    params:[ //请求参数
+      {
+        name: '',
+        isField: true, //是表单字段还是自定义
+        value: '' //支持表达式 ${xxx} xxx为表单字段名称
+      }
+    ],
+    retry: 1, //重试次数
+    handlerByScript: false, //是否使用脚本处理请求结果
+    success: 'function resHandler(res) {\n  return true;\n}',
+    fail: 'function resHandler(res) {\n  return true;\n}'
+  },
+  email:{
+    subject: '',
+    to: [],
+    content: ''
+  }
+}
+```
 
 ##### EMPTY (空节点）
 
