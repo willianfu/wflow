@@ -42,9 +42,17 @@
           <el-button size="mini" icon="el-icon-plus" type="primary" @click="selectUser" round>选择系统角色</el-button>
 
         </div>
+        <div v-else-if="nodeProps.assignedType === 'FORM_USER'">
+          <el-form-item label="选择表单联系人项" prop="text" class="approve-end">
+            <el-select style="width: 80%;" size="small" v-model="nodeProps.formUser" placeholder="请选择包含联系人的表单项">
+              <el-option v-for="op in forms" :label="op.title" :value="op.id"></el-option>
+            </el-select>
+          </el-form-item>
+        </div>
         <div v-else>
           <span class="item-desc">发起人自己作为审批人进行审批</span>
         </div>
+
       </el-form-item>
 
       <el-divider></el-divider>
@@ -131,7 +139,8 @@ export default {
         {name: '连续多级主管', type: 'LEADER_TOP'},
         {name: '主管', type: 'LEADER'},
         {name: '角色', type: 'ROLE'},
-        {name: '发起人自己', type: 'SELF'}
+        {name: '发起人自己', type: 'SELF'},
+        {name: '表单内联系人', type: 'FORM_USER'}
       ]
     }
   },
@@ -141,6 +150,13 @@ export default {
     },
     select() {
       return this.config.assignedUser || []
+    },
+    forms(){
+      return this.$store.state.design.formItems.map(f => {
+        if (f.type === 'USER'){
+          return f;
+        }
+      })
     },
     showMode() {
       switch (this.nodeProps.assignedType) {
