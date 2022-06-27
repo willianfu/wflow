@@ -32,6 +32,7 @@ export const APPROVAL_PROPS = {
     level: 1
   },
   role:[],
+  formUser: ''
 }
 
 //根节点默认属性
