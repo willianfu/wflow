@@ -165,6 +165,8 @@ export default {
         case "SELF_SELECT":
           return this.nodeProps.selfSelect.multiple;
         case "LEADER_TOP":
+          return this.nodeProps.formUser !== '';
+        case "FORM_USER":
           return true;
         case "ROLE":
           return true;

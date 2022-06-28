@@ -15,7 +15,7 @@ export default {
   name: "FormProSetting",
   computed: {
     setup() {
-      return this.$store.state.template.baseSetup;
+      return this.$store.state.design.settings;
     }
   }
 }

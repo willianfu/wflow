@@ -1,17 +1,17 @@
 <template>
-  <div style="max-width: 200px">
+  <div style="max-width: 500px">
     <div v-if="mode === 'DESIGN'">
-      <el-input disabled :placeholder="placeholder" type="number"/>
+      <el-input disabled :placeholder="placeholder" show-word-limit :rows="2" type="textarea"/>
     </div>
     <div v-else>
-      <el-input :placeholder="placeholder" type="number"/>
+      <el-input clearable :maxlength="255" :placeholder="placeholder" show-word-limit :rows="3" type="textarea"/>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "NumberInput",
+  name: "TextareaInput",
   components: {},
   props:{
     mode:{
@@ -24,7 +24,7 @@ export default {
     },
     placeholder:{
       type: String,
-      default: '请输入数值'
+      default: '请输入内容'
     }
   },
   data() {

@@ -21,6 +21,7 @@ export const APPROVAL_PROPS = {
     }
   },
   assignedUser:[],
+  formPerms:[],
   selfSelect: {
     multiple: false
   },
@@ -37,7 +38,8 @@ export const APPROVAL_PROPS = {
 
 //根节点默认属性
 export const ROOT_PROPS = {
-  assignedUser: []
+  assignedUser: [],
+  formPerms:[]
 }
 
 //条件节点默认属性
@@ -83,8 +85,8 @@ export const TRIGGER_PROPS = {
     ],
     retry: 1,
     handlerByScript: false,
-    success: 'function resHandler(res) {\n  return true;\n}',
-    fail: 'function resHandler(res) {\n  return true;\n}'
+    success: 'function handlerOk(res) {\n  return true;\n}',
+    fail: 'function handlerFail(res) {\n  return true;\n}'
   },
   email:{
     subject: '',

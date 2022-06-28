@@ -51,14 +51,11 @@
       </el-tab-pane>
     </el-tabs>
 
-    <el-dialog title="发起审批"
-							 width="800px"
-               :visible.sync="openItemDl"
-							 :close-on-click-modal="false">
+    <el-dialog title="发起审批" width="800px" :visible.sync="openItemDl" :close-on-click-modal="false">
 			<div>
 				<el-form label-width="100px">
 					<el-form-item v-for="item in formItem.formItems" :key="item.id" :label="item.text">
-						<base-component :atom="item" :disabled="false"></base-component>
+
 					</el-form-item>
 				</el-form>
 			</div>
@@ -72,16 +69,13 @@
 
 <script>
   import {getTemplateGroups, getFormDetail} from '@/api/setting'
-	import baseComponent from '@/components/forms/component'
-	import atom from '@/components/forms/formComponents'
 
   export default {
     name: "workSpace",
-		components:{baseComponent},
+		components:{},
     data() {
       return {
         openItemDl: false,
-				atoms: atom,
 				formItem: {},
         actives: [],
         formList: {

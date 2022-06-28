@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header style="background: white">
-      <layout-header></layout-header>
+      <layout-header @publish="publishProcess"></layout-header>
     </el-header>
     <div class="layout-body">
       <transition name="router-fade" mode="out-in">
@@ -24,7 +24,9 @@ export default {
     }
   },
   methods:{
+    publishProcess(){
 
+    }
   }
 }
 </script>

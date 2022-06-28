@@ -2,9 +2,9 @@
   <el-container style="height: calc(100vh - 65px);">
     <el-aside>
       <div class="components-nav">
-        <span :class="{'selected': libSelect === 0}" @click="libSelect = 0">基础控件</span>
-        <span :class="{'border': true, 'selected': libSelect === 1}" @click="libSelect = 1">套件</span>
-        <span :class="{'selected': libSelect === 2}" @click="libSelect = 2">关联控件</span>
+        <span :class="{'selected': libSelect === 0}" @click="libSelect = 0">基础组件</span>
+        <span :class="{'border': true, 'selected': libSelect === 1}" @click="libSelect = 1">扩展组件</span>
+        <span :class="{'selected': libSelect === 2}" @click="libSelect = 2">关联组件</span>
       </div>
       <div class="components">
         <ul>
@@ -31,6 +31,9 @@
           </el-tooltip>
         </div>
         <div>
+          <el-tooltip class="item" effect="dark" content="预览表单" placement="bottom-start">
+            <i class="el-icon-view" @click="viewForms"></i>
+          </el-tooltip>
           <el-tooltip class="item" effect="dark" content="移动端" placement="bottom-start">
             <i :class="{'el-icon-mobile':true, 'select': showMobile}" @click="showMobile = true"></i>
           </el-tooltip>
@@ -44,20 +47,20 @@
           <div :class="{'bd': showMobile}">
             <div :class="{'form-content': showMobile}">
               <div class="form">
-                <div class="tip" v-show="form.length === 0 && !isStart">👈 请在左侧选择控件并拖至此处</div>
-                <draggable class="drag-from" :list="form" group="form"
+                <div class="tip" v-show="forms.length === 0 && !isStart">👈 请在左侧选择控件并拖至此处</div>
+                <draggable class="drag-from" :list="forms" group="form"
                            :options="{animation: 300, chosenClass:'choose', sort:true}"
                            @start="drag = true, select = null" @end="drag = false">
 
-                  <div v-for="(cp, id) in form" :key="id" class="form-item"
+                  <div v-for="(cp, id) in forms" :key="id" class="form-item"
                        @click="select = id" :style="select === id ?'border-left: 4px solid #F56C6C':''">
                     <div class="form-header">
                       <p><span v-if="cp.props.required">*</span>{{ cp.title }}</p>
                       <div class="option">
-                        <i class="el-icon-copy-document" @click="copy"></i>
-                        <i class="el-icon-delete" @click="del"></i>
+                      <!--<i class="el-icon-copy-document" @click="copy"></i>-->
+                        <i class="el-icon-close" @click="del(id)"></i>
                       </div>
-                      <!--<base-component :atom="obj"></base-component>-->
+                      <form-design-render :type="cp.name" :config="cp.props"/>
                     </div>
                   </div>
                 </draggable>
@@ -69,53 +72,61 @@
     </el-main>
 
     <el-aside class="layout-param">
-      <div class="tool-nav-r" v-if="select !== null && form[select] !== undefined">
-        <i :class="form[select].icon" style="margin-right: 5px; font-size: medium"></i>
-        <span>{{ form[select].text }}</span>
+      <div class="tool-nav-r" v-if="select !== null && forms[select] !== undefined">
+        <i :class="forms[select].icon" style="margin-right: 5px; font-size: medium"></i>
+        <span>{{ forms[select].title }}</span>
       </div>
-      <div v-if="select === null || form.length === 0" class="tip">
+      <div v-if="select === null || forms.length === 0" class="tip">
         😀 选中控件后在这里进行编辑
       </div>
       <div style="text-align:left; padding: 10px" v-else>
-        <form-component-config/>
+        <form-component-config :formSelected="select"/>
       </div>
     </el-aside>
+    <el-dialog title="表单预览" :visible.sync="viewFormVisible">
+      <el-form label-width="100px">
+        <el-form-item :label="item.title" v-for="(item, index) in forms" :key="item.name + index">
+          <form-design-render :type="item.name" mode="PC" :config="item.props"/>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </el-container>
 </template>
 
 <script>
 import draggable from "vuedraggable";
+import FormDesignRender from '@/views/admin/layout/form/FormDesignRender.vue'
 import FormComponentConfig from '@/views/common/form/config/FormComponentConfig.vue'
 
 export default {
   name: "FormDesign",
-  components: {draggable, FormComponentConfig},
+  components: {draggable, FormComponentConfig, FormDesignRender},
   data() {
     return {
       libSelect: 0,
+      viewFormVisible: false,
       isStart: false,
       showMobile: true,
       components: [
-        {title: '单行输入框', name: '', icon: 'el-icon-edit', props: {required: false, isDesign: true}},
-        {title: '数字输入框', name: '', icon: 'el-icon-edit-outline', props: {required: false, isDesign: true}},
-        {title: '多行输入框', name: '', icon: 'el-icon-more-outline', props: {required: false, isDesign: true}},
-        {title: '选择框', name: '', icon: 'el-icon-menu', props: {required: false, isDesign: true}},
-        {title: '日期时间点', name: '', icon: 'el-icon-date', props: {required: false, isDesign: true}},
-        {title: '日期时间区间', name: '', icon: 'el-icon-c-scale-to-original', props: {required: false, isDesign: true}},
-        {title: '上传图片', name: '', icon: 'el-icon-picture-outline', props: {required: false, isDesign: true}},
-        {title: '上传附件', name: '', icon: 'el-icon-upload', props: {required: false, isDesign: true}},
-        {title: '人员选择', name: '', icon: 'el-icon-user', props: {required: false, isDesign: true}},
-        {title: '部门选择', name: '', icon: 'el-icon-takeaway-box', props: {required: false, isDesign: true}},
-        {title: '说明文字', name: '', icon: 'el-icon-warning-outline', props: {required: false, isDesign: true}},
-        {title: '签字画押', name: '', icon: 'el-icon-edit', props: {required: false, isDesign: true}},
-        {title: '金额', name: '', icon: 'el-icon-coin', props: {required: false, isDesign: true}},
+        {title: '单行文本输入', name: 'TextInput', icon: 'el-icon-edit', props: {required: false}},
+        {title: '数字输入框', name: 'NumberInput', icon: 'el-icon-edit-outline', props: {required: false}},
+        {title: '多行文本输入', name: 'TextareaInput', icon: 'el-icon-more-outline', props: {required: false}},
+        {title: '选择框', name: 'SelectInput', icon: 'el-icon-menu', props: {required: false}},
+        {title: '日期时间点', name: 'DateTime', icon: 'el-icon-date', props: {required: false}},
+        {title: '日期时间区间', name: 'DateTimeRange', icon: 'el-icon-c-scale-to-original', props: {required: false}},
+        {title: '上传图片', name: 'ImageUpload', icon: 'el-icon-picture-outline', props: {required: false}},
+        {title: '上传附件', name: 'FileUpload', icon: 'el-icon-upload', props: {required: false}},
+        {title: '人员选择', name: 'OrgPicker', icon: 'el-icon-user', props: {required: false}},
+        {title: '部门选择', name: 'OrgPicker', icon: 'el-icon-takeaway-box', props: {required: false}},
+        {title: '说明文字', name: 'Description', icon: 'el-icon-warning-outline', props: {required: false}},
+        {title: '金额', name: 'MoneyInput', icon: 'el-icon-coin', props: {required: false}},
       ],
       select: null,
       drag: false,
     }
   },
   computed: {
-    form() {
+    forms() {
       return this.$store.state.design.formItems;
     }
   },
@@ -128,11 +139,14 @@ export default {
           + new Date().getTime().toString().substring(5);
     },
     del(index) {
-      this.form.splice(index, 1)
+      this.forms.splice(index, 1)
     },
     clone(obj) {
       obj.id = this.getId()
       return JSON.parse(JSON.stringify(obj));
+    },
+    viewForms(){
+      this.viewFormVisible = true
     }
   }
 }
@@ -410,25 +424,14 @@ export default {
 
   .option {
     position: absolute;
-    top: 5px;
-    right: 5px;
-    border-radius: 15px;
-    background-color: #eceded;
-    padding: 3px 6px;
-
-    i:first-child {
-      margin-right: 8px;
-    }
-
+    top: -10px;
+    right: -10px;
     i {
-      color: #737373;
+      font-size: large;
       cursor: pointer;
-
-      &:first-child:hover {
-        color: #1890FF;
-      }
-
-      &:last-child:hover {
+      color: #8c8c8c;
+      padding: 5px;
+      &:hover{
         color: #f56c6c;
       }
     }
