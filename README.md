@@ -439,4 +439,6 @@ function getDomTree(h, node) {
 }
 ```
 
-喜欢就点个⭐吧 😀
+
+ **开源不易，需要鼓励，如果觉得这个项目有帮助到了你请我喝杯咖啡吧😋** 
+<img src="https://pic.rmb.bdstatic.com/bjh/a4a29377ac6ae1f8d4ea4a513a5c5129.png" alt="支持作者" style="zoom:60%;" />
