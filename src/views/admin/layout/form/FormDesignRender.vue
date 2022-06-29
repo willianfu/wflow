@@ -1,18 +1,14 @@
 <template>
-  <component :is="type" :mode="mode" v-bind="config"/>
+  <component :is="config.name" :mode="mode" v-model="config.value" v-bind="config.props"/>
 </template>
 <script>
 
-import cp from '@/views/common/form/ComponentExport'
+import components from '@/views/common/form/ComponentExport'
 
 export default {
   name: "FormRender",
-  components: cp,
+  components: components,
   props:{
-    type:{
-      type: String,
-      default: 'div'
-    },
     mode:{
       type: String,
       default: 'DESIGN'
@@ -20,10 +16,7 @@ export default {
     config:{
       type: Object,
       default: ()=>{
-        return {
-          required: false,
-          //mode: 'DESIGN'
-        }
+        return {}
       }
     }
   },

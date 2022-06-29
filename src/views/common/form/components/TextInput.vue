@@ -4,7 +4,7 @@
       <el-input disabled :placeholder="placeholder"/>
     </div>
     <div v-else>
-      <el-input :placeholder="placeholder"/>
+      <el-input v-model="value" :placeholder="placeholder"/>
     </div>
   </div>
 </template>
@@ -29,10 +29,6 @@ export default {
     value:{
       type: String,
       default: ''
-    },
-    attr:{
-      type: Boolean,
-      default: false
     }
   },
   data() {

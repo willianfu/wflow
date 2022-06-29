@@ -60,7 +60,7 @@
                       <!--<i class="el-icon-copy-document" @click="copy"></i>-->
                         <i class="el-icon-close" @click="del(id)"></i>
                       </div>
-                      <form-design-render :type="cp.name" :config="cp.props"/>
+                      <form-design-render :config="cp"/>
                     </div>
                   </div>
                 </draggable>
@@ -84,9 +84,9 @@
       </div>
     </el-aside>
     <el-dialog title="表单预览" :visible.sync="viewFormVisible">
-      <el-form label-width="100px">
+      <el-form label-width="150px">
         <el-form-item :label="item.title" v-for="(item, index) in forms" :key="item.name + index">
-          <form-design-render :type="item.name" mode="PC" :config="item.props"/>
+          <form-design-render mode="PC" :config="item"/>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -96,7 +96,8 @@
 <script>
 import draggable from "vuedraggable";
 import FormDesignRender from '@/views/admin/layout/form/FormDesignRender.vue'
-import FormComponentConfig from '@/views/common/form/config/FormComponentConfig.vue'
+import FormComponentConfig from '@/views/common/form/FormComponentConfig.vue'
+import components from '@/views/common/form/ComponentsConfigExport'
 
 export default {
   name: "FormDesign",
@@ -107,20 +108,7 @@ export default {
       viewFormVisible: false,
       isStart: false,
       showMobile: true,
-      components: [
-        {title: '单行文本输入', name: 'TextInput', icon: 'el-icon-edit', props: {required: false}},
-        {title: '数字输入框', name: 'NumberInput', icon: 'el-icon-edit-outline', props: {required: false}},
-        {title: '多行文本输入', name: 'TextareaInput', icon: 'el-icon-more-outline', props: {required: false}},
-        {title: '选择框', name: 'SelectInput', icon: 'el-icon-menu', props: {required: false}},
-        {title: '日期时间点', name: 'DateTime', icon: 'el-icon-date', props: {required: false}},
-        {title: '日期时间区间', name: 'DateTimeRange', icon: 'el-icon-c-scale-to-original', props: {required: false}},
-        {title: '上传图片', name: 'ImageUpload', icon: 'el-icon-picture-outline', props: {required: false}},
-        {title: '上传附件', name: 'FileUpload', icon: 'el-icon-upload', props: {required: false}},
-        {title: '人员选择', name: 'OrgPicker', icon: 'el-icon-user', props: {required: false}},
-        {title: '部门选择', name: 'OrgPicker', icon: 'el-icon-takeaway-box', props: {required: false}},
-        {title: '说明文字', name: 'Description', icon: 'el-icon-warning-outline', props: {required: false}},
-        {title: '金额', name: 'MoneyInput', icon: 'el-icon-coin', props: {required: false}},
-      ],
+      components,
       select: null,
       drag: false,
     }
