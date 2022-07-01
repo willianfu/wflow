@@ -25,10 +25,10 @@
       </el-form-item>
     </el-form>
     <div>
-      <el-button type="primary" size="mini" icon="el-icon-plus" style="margin-bottom: 15px" round @click="addConditionGroup">
+      <el-button type="primary" size="mini" icon="el-icon-plus" style="margin: 0 15px 15px 0" round @click="addConditionGroup">
         添加条件组
       </el-button>
-      <span style="font-size: small; color: #7a7a7a; margin-left: 20px">只有必填选项才能作为审批条件</span>
+      <span class="item-desc">只有必填选项才能作为审批条件</span>
     </div>
     <group-item/>
   </div>
@@ -82,6 +82,7 @@ export default {
   methods: {
     addConditionGroup() {
       this.config.groups.push({
+        cids:[],
         groupType: "OR",
         conditions:[]
       })

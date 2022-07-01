@@ -1,3 +1,13 @@
+export const ValueType = {
+  string: 'String',
+  object: 'Object',
+  array: 'Array',
+  number: 'Number',
+  date: 'Date',
+  user: 'User',
+  dept: 'Dept',
+  dateRange: 'DateRange'
+}
 //导出所有组件及配置
 export default [
   {
@@ -5,6 +15,7 @@ export default [
     name: 'TextInput',
     icon: 'el-icon-edit',
     value: '',
+    valueType: ValueType.string,
     props: {
       required: false,
       enablePrint: true
@@ -15,6 +26,7 @@ export default [
     name: 'NumberInput',
     icon: 'el-icon-edit-outline',
     value: '',
+    valueType: ValueType.number,
     props: {
       required: false,
       enablePrint: true
@@ -25,6 +37,7 @@ export default [
     name: 'TextareaInput',
     icon: 'el-icon-more-outline',
     value: '',
+    valueType: ValueType.string,
     props: {
       required: false,
       enablePrint: true
@@ -35,6 +48,7 @@ export default [
     name: 'SelectInput',
     icon: 'el-icon-menu',
     value: '',
+    valueType: ValueType.string,
     props: {
       required: false,
       enablePrint: true,
@@ -46,6 +60,7 @@ export default [
     name: 'SelectsInput',
     icon: 'el-icon-menu',
     value: [],
+    valueType: ValueType.array,
     props: {
       required: false,
       enablePrint: true,
@@ -57,6 +72,7 @@ export default [
     name: 'DateTime',
     icon: 'el-icon-date',
     value: '',
+    valueType: ValueType.date,
     props: {
       required: false,
       enablePrint: true,
@@ -67,6 +83,7 @@ export default [
     title: '日期时间区间',
     name: 'DateTimeRange',
     icon: 'el-icon-c-scale-to-original',
+    valueType: ValueType.dateRange,
     props: {
       required: false,
       enablePrint: true,
@@ -79,6 +96,7 @@ export default [
     name: 'ImageUpload',
     icon: 'el-icon-picture-outline',
     value: [],
+    valueType: ValueType.array,
     props: {
       required: false,
       enablePrint: true
@@ -89,6 +107,7 @@ export default [
     name: 'FileUpload',
     icon: 'el-icon-upload',
     value: [],
+    valueType: ValueType.array,
     props: {
       required: false,
       enablePrint: true
@@ -99,6 +118,7 @@ export default [
     name: 'OrgPicker',
     icon: 'el-icon-user',
     value: [],
+    valueType: ValueType.user,
     props: {
       required: false,
       enablePrint: true
@@ -109,6 +129,7 @@ export default [
     name: 'OrgPicker',
     icon: 'el-icon-takeaway-box',
     value: [],
+    valueType: ValueType.dept,
     props: {
       required: false,
       enablePrint: true
@@ -119,6 +140,7 @@ export default [
     name: 'Description',
     icon: 'el-icon-warning-outline',
     value: '',
+    valueType: ValueType.string,
     props: {
       required: false,
       enablePrint: true
@@ -129,6 +151,7 @@ export default [
     name: 'MoneyInput',
     icon: 'el-icon-coin',
     value: '',
+    valueType: ValueType.number,
     props: {
       required: false,
       enablePrint: true

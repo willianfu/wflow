@@ -47,10 +47,9 @@ export const CONDITION_PROPS = {
   groupsType:"OR", //条件组逻辑关系 OR、AND
   groups:[
     {
-      name: "A", //组名 A B C D....依次递增
       groupType:"AND", //条件组内条件关系 OR、AND
-      //组内子条件
-      conditions:[]
+      cids:[], //条件ID集合
+      conditions:[] //组内子条件
     }
   ],
   expression: "" //自定义表达式，灵活构建逻辑关系
