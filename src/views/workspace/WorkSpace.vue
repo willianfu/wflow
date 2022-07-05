@@ -68,7 +68,7 @@
 </template>
 
 <script>
-  import {getTemplateGroups, getFormDetail} from '@/api/setting'
+  import {getTemplateGroups, getFormDetail} from '@/api/design'
 
   export default {
     name: "workSpace",

@@ -13,10 +13,14 @@ Vue.use(ElementUI);
 
 Vue.config.productionTip = false
 
-Vue.prototype.BASE_URL = 'http://' + (process.env.NODE_ENV === 'development-' ? "localhost" : "47.100.202.245");
+Vue.prototype.BASE_URL = 'http://' + (process.env.NODE_ENV === 'development' ? "localhost" : "47.100.202.245");
 
 Vue.prototype.$isNotEmpty = function(obj){
   return (obj !== undefined && obj !== null && obj !== '' && obj !== 'null')
+}
+
+Vue.prototype.$isEmpty = val => {
+  return !val || val === '' || val === 'undefined' || val === 'null'
 }
 
 Vue.prototype.$getDefalut = function(obj, key, df){

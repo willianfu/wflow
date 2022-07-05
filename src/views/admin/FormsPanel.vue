@@ -31,8 +31,8 @@
           <div :class="{'form-group-item':true, 'undrag': item.isStop}" v-for="(item, index) in group.items"
                :key="index" title="长按0.5S后可拖拽表单进行排序">
             <div>
-              <i :class="item.icon" :style="'background: '+item.background"></i>
-              <span>{{item.name}}</span><br>
+              <i :class="item.logo.icon" :style="'background: '+item.logo.background"></i>
+              <span>{{item.formName}}</span><br>
             </div>
             <div class="desp">{{item.remark}}</div>
             <div>
@@ -60,7 +60,7 @@
           </div>
         </draggable>
         <div style="text-align: center" v-if="group.items === undefined || group.items.length === 0">
-          <el-button style="padding-top: 0" type="text" icon="el-icon-plus" @click="newProcess">创建新表单</el-button>
+          <el-button style="padding-top: 0" type="text" icon="el-icon-plus" @click="newProcess(group.id)">创建新表单</el-button>
         </div>
       </div>
     </draggable>
@@ -70,9 +70,9 @@
 <script>
 import draggable from "vuedraggable";
 import {
-  getTemplateGroups, groupItemsSort,
-  getFormDetail, updateGroup, updateTemplate
-} from '@/api/setting'
+  getFormGroups, groupItemsSort,
+  getFormDetail, updateGroup, updateForm
+} from '@/api/design'
 
 export default {
   name: "FormsPanel",
@@ -90,14 +90,19 @@ export default {
   },
   methods: {
     getGroups() {
-      getTemplateGroups().then(rsp => {
+      getFormGroups().then(rsp => {
         this.groups = rsp.data
+        this.groups.forEach(group => {
+          group.items.forEach(item => {
+            item.logo = JSON.parse(item.logo)
+          })
+        })
       }).catch(err => this.$message.error('获取分组异常'))
     },
-    newProcess() {
+    newProcess(groupId) {
       this.$store.commit("setTemplate", this.getTemplateData());
       this.$store.commit("setIsEdit", false);
-      this.$router.push("/admin/design/baseSetting");
+      this.$router.push("/admin/design/baseSetting?groupId=" + groupId);
     },
     groupSort() {
       this.groupsSort = false
@@ -151,7 +156,7 @@ export default {
       })
     },
     updateForm(item, type) {
-      updateTemplate({templateId: item.id, type: type}).then(rsp => {
+      updateForm({templateId: item.id, type: type}).then(rsp => {
         this.$message.success(rsp.data)
         this.getGroups()
       }).catch(err => this.$message.error(err.response.data))
@@ -160,14 +165,7 @@ export default {
       return data
     },
     editFrom(item, group) {
-      getFormDetail({templateId: item.id}).then(rsp => {
-        let data = rsp.data;
-        this.$store.commit("setIsEdit", true);
-        this.$store.commit("setTemplate", this.getTemplateData(data, group));
-        this.$router.push("/admin/design/baseSetting");
-      }).catch(err => {
-        this.$message.error(err.response.data)
-      });
+      this.$router.push("/admin/design/baseSetting?code=" + item.formId);
     },
     stopFrom(item) {
       let tip = item.isStop ? ' 启用后将会进入 “其他” 分组，是否继续？' : ' 停用后将会被转移到 “已停用” 分组，您可以再次启用或者删除它，是否继续?';
@@ -193,7 +191,7 @@ export default {
           this.$message.error('请选择分组')
           return;
         }
-        updateTemplate({templateId: item.id, type: 'move', groupId: this.moveSelect}).then(rsp => {
+        updateForm({templateId: item.id, type: 'move', groupId: this.moveSelect}).then(rsp => {
           this.$message.success(rsp.data)
           this.getGroups()
           this.moveSelect = null

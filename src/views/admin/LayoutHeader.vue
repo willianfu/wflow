@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import {updateFormDetail, updateTemplate} from '@/api/setting'
 
 export default {
   name: "LayoutHeader",
@@ -57,38 +56,7 @@ export default {
   },
   methods: {
     publish() {
-      this.$confirm('您确定审批流程已配置完毕,并需要将其发布，发布后立即生效，是否继续?', '提示', {
-        confirmButtonText: '发布',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        console.log(this.setup)
-        let template = {
-          formId: this.setup.formId,
-          formName: this.setup.formName,
-          logo: JSON.stringify(this.setup.logo),
-          settings: JSON.stringify(this.setup.settings),
-          group: 0,
-          formItems: JSON.stringify(this.setup.formItems),
-          process: JSON.stringify(this.setup.process),
-          remark: "备注说明"
-        }
-        if (this.valid()) {
-          updateFormDetail(template).then(rsp => {
-            let isAdd = this.setup.formId === undefined
-            let params = {
-              formId: isAdd ? rsp.data : this.setup.formId,
-              type: 'move',
-              groupId: this.setup.group
-            }
-            updateTemplate(params).then(rsp => {
-              this.$message.success(rsp.data)
-              this.$store.commit('clearTemplate')
-              this.$router.push('/admin/formsPanel')
-            }).catch(err => this.$message.error(err.response.data))
-          }).catch(err => this.$message.error(err.response.data))
-        }
-      })
+      this.$emit('publish')
     },
     preview() {
       //this.
@@ -108,10 +76,9 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        //sessionStorage.setItem('router-path','/formListPanel')
         //window.location.reload()
-        this.$store.commit('clearTemplate')
-        this.$router.push('/formListPanel')
+        //this.$store.commit('clearTemplate')
+        this.$router.push('/formsPanel')
       })
     },
     to(path) {

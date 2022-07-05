@@ -26,7 +26,7 @@
         <el-input v-model="setup.formName" size="medium"></el-input>
       </el-form-item>
       <el-form-item label="所在分组" class="group">
-        <el-select v-model="setup.group" placeholder="请选择分组" size="medium">
+        <el-select v-model="setup.groupId" placeholder="请选择分组" size="medium">
           <el-option v-for="(op, index) in fromGroup" :key="index" v-show="op.id > 1"
                      :label="op.name" :value="op.id"></el-option>
         </el-select>
@@ -39,8 +39,7 @@
       </el-form-item>
       <el-form-item label="表单说明">
         <el-input placeholder="请输入表单说明" v-model="setup.remark" type="textarea" show-word-limit
-                  :autosize="{ minRows: 2, maxRows: 5}" maxlength="500"
-        ></el-input>
+                  :autosize="{ minRows: 2, maxRows: 5}" maxlength="500"></el-input>
       </el-form-item>
 
       <el-form-item label="消息通知方式">
@@ -53,14 +52,14 @@
       </el-form-item>
 
       <el-form-item label="谁可以发起提交">
-        <el-select v-model="setup.settings.commiter" @click.native="selectUser('whoCommit')" value-key="name"
+        <el-select v-model="setup.settings.commiter" @click.native="selectUser('commiter')" value-key="name"
                    class="select-u" placeholder="请选择可以发起提交的人员"
                    size="medium" clearable multiple>
           <el-option v-for="(wc, index) in setup.settings.commiter" :label="wc.name" :key="index" :value="wc"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="谁可以管理此表单">
-        <el-select v-model="setup.settings.admin" @click.native="selectUser('whoEdit')" value-key="name"
+        <el-select v-model="setup.settings.admin" @click.native="selectUser('admin')" value-key="name"
                    class="select-u" placeholder="请选择可以管理此表单的人员"
                    size="medium" clearable multiple>
           <el-option v-for="(wc, index) in setup.settings.admin" :label="wc.name" :key="index" :value="wc"></el-option>
@@ -80,7 +79,7 @@
 
 <script>
 import orgPicker from '@/components/common/organizationPicker'
-import {getTemplateGroups, updateGroup} from '@/api/setting'
+import {getFormGroups, updateGroup} from '@/api/design'
 
 export default {
   name: "FormBaseSetting",
@@ -145,7 +144,7 @@ export default {
   },
   methods: {
     getGroups(){
-      getTemplateGroups().then(rsp => {
+      getFormGroups().then(rsp => {
         this.fromGroup = rsp.data
       }).catch(err => this.$message.error('获取分组异常'))
     },
@@ -164,11 +163,11 @@ export default {
     selected(select) {
       console.log(select)
       this.showUserSelect = false
-      this.$store.commit("set" + this.nowUserSelect, select);
+      this.$set(this.setup.settings, this.nowUserSelect, select)
       //this.setup[this.nowUserSelect] = select
     },
     selectUser(key) {
-      this.select = this.setup[key]
+      this.select = this.setup.settings[key]
       this.nowUserSelect = key
       this.showUserSelect = true
     },

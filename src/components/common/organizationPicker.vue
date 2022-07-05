@@ -28,12 +28,10 @@
 								<el-checkbox v-model="node.selected" :disabled="disableDept(node)"></el-checkbox>
 								<span style="margin-left: 10px">
                     <i class="el-icon-folder-opened" v-if="node.type === 'dept'"></i>
-                    <div class="avt" :style="'background: ' + getAvatarColor()"
-                         v-else-if="node.avatar === undefined || node.avatar === ''">
-                      {{node.name.length > 2 ? node.name.substring(1,3) : node.name}}
+                    <div class="avt" :style="'background: ' + getAvatarColor()" v-else-if="$isEmpty(node.avatar)">
+                      {{getShortName(node.name)}}
                     </div>
-										<img :src="node.avatar" style="border-radius: 50%; display:inline-block;" width="35" height="35"
-										     v-else/>
+										<img :src="node.avatar" style="border-radius: 50%; display:inline-block;" width="35" height="35" v-else/>
                     <span style="margin-left: 10px">{{node.name}}</span>
                     <span :class="{'next-dept-disable': node.selected, 'next-dept': !node.selected,}"
                           v-if="node.type === 'dept'" @click.stop="nextNode(node)">
@@ -43,10 +41,10 @@
 							</div>
 						</div>
 					</div>
-				
+
 				</div>
 			</div>
-			
+
 			<div style="float:right;">
 				<p>已选</p>
 				<div class="box">
@@ -55,8 +53,8 @@
                 <span style="margin-left: 10px">
                     <i class="el-icon-folder-opened" v-if="node.type === 'dept'"></i>
                      <div class="avt" :style="'background: ' + getAvatarColor()"
-                          v-else-if="node.avatar === undefined || node.avatar === ''">
-                      {{node.name.length > 2 ? node.name.substring(1,3) : node.name}}
+                          v-else-if="$isEmpty(node.avatar)">
+                      {{getShortName(node.name)}}
                     </div>
 										<img :src="node.avatar" width="35" height="35" v-else/>
                     <span style="margin-left: 10px">{{node.name}}</span>
@@ -78,7 +76,7 @@
 </template>
 
 <script>
-  import {getOrgTree, getUserByName} from '@/api/common'
+  import {getOrgTree, getUserByName} from '@/api/org'
 
   export default {
     name: "organizationPicker",
@@ -141,7 +139,7 @@
     mounted() {
     },
 	  computed:{
-   
+
 	  },
     methods: {
       disableDept(node){
@@ -152,6 +150,12 @@
           this.nodes = rsp.data
           this.selectToLeft()
         }).catch(err => this.$message.error(err.response.data))
+      },
+      getShortName(name){
+        if (name){
+          return name.length > 2 ? name.substring(1, 3) : name;
+        }
+        return '**'
       },
       searchUser() {
         let userName = this.search.trim()
@@ -300,29 +304,29 @@
 		z-index: 99999;
 		border-radius: 13px;
 		overflow: hidden;
-		
+
 		.el-dialog__header {
 			background: #f7f7f7;
 		}
-		
+
 		.el-dialog__body {
 			padding-top: 0;
 		}
-		
+
 		.el-dialog__footer {
 			margin-top: 450px;
 		}
 	}
-	
+
 	.line {
 		width: 290px;
 		height: 35px;
 		line-height: 35px;
-		
+
 		&:hover {
 			background: #e9e9ea;
 		}
-		
+
 		.avt {
 			width: 33px;
 			height: 33px;
@@ -332,17 +336,17 @@
 			border-radius: 50%;
 			color: #ffffff;
 		}
-		
+
 		i:first-child {
 			font-size: large;
 		}
-		
+
 		.next-dept {
 			cursor: pointer;
 			float: right;
 			color: #38adff;
 		}
-		
+
 		.next-dept-disable {
 			//pointer-events: none;
 			cursor: not-allowed;
@@ -350,12 +354,12 @@
 			color: #cccccd;
 		}
 	}
-	
+
 	.picker {
 		p {
 			font-size: larger;
 		}
-		
+
 		/deep/ .box {
 			overflow-y: auto;
 			overflow-x: hidden;
@@ -365,20 +369,20 @@
 			border-radius: 5px;
 			border: 1px solid #d4d4d5;
 			background: #f7f7f7;
-			
+
 			.el-breadcrumb {
 				margin: 10px 0;
 			}
 		}
 	}
-	
+
 	::-webkit-scrollbar {
 		float: right;
 		width: 4px;
 		height: 4px;
 		background-color: #f8f8f8;
 	}
-	
+
 	::-webkit-scrollbar-thumb {
 		border-radius: 16px;
 		background-color: #e8e8e8;
