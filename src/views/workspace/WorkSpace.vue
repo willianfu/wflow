@@ -18,9 +18,9 @@
                             v-show="group.items.length > 0 && group.id > 0">
             <div>
               <div v-for="(item, index) in group.items" :key="index" class="form-item" @click="enterItem(item)">
-                <i :class="item.icon" :style="'background: '+item.background"></i>
+                <i :class="item.logo.icon" :style="'background: '+item.logo.background"></i>
                 <div>
-                  <span>{{item.name}}</span>
+                  <span>{{ item.formName }}</span>
                   <span>发起审批</span>
                 </div>
               </div>
@@ -28,10 +28,10 @@
           </el-collapse-item>
         </el-collapse>
         <div>
-          <div v-for="(item, index) in formList.searchResult" :key="index" class="form-item" @click="">
+          <div v-for="(item, index) in formList.searchResult" :key="index" class="form-item" @click="enterItem(item)">
             <i :class="item.icon" :style="'background: '+item.background"></i>
             <div>
-              <span>{{item.name}}</span>
+              <span>{{ item.formName }}</span>
               <span>发起审批</span>
             </div>
           </div>
@@ -52,165 +52,172 @@
     </el-tabs>
 
     <el-dialog title="发起审批" width="800px" :visible.sync="openItemDl" :close-on-click-modal="false">
-			<div>
-				<el-form label-width="100px">
-					<el-form-item v-for="item in formItem.formItems" :key="item.id" :label="item.text">
-
-					</el-form-item>
-				</el-form>
-			</div>
-			<span slot="footer" class="dialog-footer">
+      <initiate-process ref="processForm" :code="selectForm.formId" v-if="openItemDl"></initiate-process>
+      <span slot="footer" class="dialog-footer">
 				<el-button size="mini" @click="openItemDl = false">取 消</el-button>
-				<el-button size="mini" type="primary" @click="">提 交</el-button>
+				<el-button size="mini" type="primary" @click="submitForm">提 交</el-button>
 			</span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import {getTemplateGroups, getFormDetail} from '@/api/design'
+import {getFormGroups} from '@/api/design'
+import InitiateProcess from "./InitiateProcess";
 
-  export default {
-    name: "workSpace",
-		components:{},
-    data() {
-      return {
-        openItemDl: false,
-				formItem: {},
-        actives: [],
-        formList: {
-          list: [],
-          inputs: '',
-          searchResult: []
-        },
-        pending: {
-          list: []
-        }
-      }
-    },
-    mounted() {
-      this.getGroups()
-    },
-    methods: {
-      getGroups() {
-        getTemplateGroups().then(rsp => {
-          this.formList.list = rsp.data
-          this.formList.list.forEach(g => this.actives.push(g.name))
-        }).catch(err => this.$message.error('获取分组异常'))
+export default {
+  name: "workSpace",
+  components: {InitiateProcess},
+  data() {
+    return {
+      openItemDl: false,
+      selectForm: {},
+      formItem: {},
+      actives: [],
+      formList: {
+        list: [],
+        inputs: '',
+        searchResult: []
       },
-      enterItem(item) {
-        getFormDetail({templateId: item.id}).then(rsp => {
-          this.openItemDl = true
-					this.formItem = rsp.data
-					this.formItem.process = JSON.parse(this.formItem.process)
-					this.formItem.formItems = JSON.parse(this.formItem.formItems)
-        }).catch(err => this.$message.error('获取表单详情失败'))
+      pending: {
+        list: []
       }
     }
+  },
+  mounted() {
+    this.getGroups()
+  },
+  methods: {
+    getGroups() {
+      getFormGroups().then(rsp => {
+        this.formList.list = rsp.data
+        this.formList.list.forEach(group => {
+          this.actives.push(group.name)
+          group.items.forEach(item => {
+            item.logo = JSON.parse(item.logo)
+          })
+        })
+        this.groups = rsp.data
+      }).catch(err => this.$message.error('获取分组异常'))
+    },
+    enterItem(item) {
+      this.selectForm = item
+      this.openItemDl = true
+    },
+    submitForm(){
+      this.$refs.processForm.validate(valid => {
+        if (valid) {
+          this.$message.success("表单填写OK了，提交功能还在开发哦")
+        } else {
+          this.$message.warning("请完善表单😥")
+        }
+      })
+    }
   }
+}
 </script>
 
 <style lang="less" scoped>
-  .workspace {
-    padding: 50px 20px;
-    position: relative;
+.workspace {
+  padding: 50px 20px;
+  position: relative;
 
-    .back {
-      position: absolute;
-      left: 20px;
-      top: 13px;
+  .back {
+    position: absolute;
+    left: 20px;
+    top: 13px;
+  }
+
+  .no-data {
+    text-align: center;
+    padding: 50px 0;
+    color: #656565;
+    margin: 0 auto;
+  }
+
+  /deep/ .el-collapse {
+    padding: 0 15px;
+    background: #ffffff;
+
+    .el-collapse-item__header {
+      font-size: medium;
     }
 
-    .no-data {
-      text-align: center;
-      padding: 50px 0;
-      color: #656565;
-      margin: 0 auto;
+    .el-collapse-item__wrap {
+      padding: 20px 10px;
     }
 
-    /deep/ .el-collapse {
-      padding: 0 15px;
-      background: #ffffff;
+    .el-tabs--border-card .el-tabs__content {
+      padding: 40px 15px;
+    }
+  }
 
-      .el-collapse-item__header {
-        font-size: medium;
-      }
+  .form-item {
+    padding: 15px 10px;
+    width: 200px;
+    cursor: pointer;
+    border: 1px solid #d9dada;
+    border-radius: 5px;
+    float: left;
+    margin: 5px 10px;
 
-      .el-collapse-item__wrap {
-        padding: 20px 10px;
-      }
+    &:hover {
+      border: 1px solid #448ed7;
 
-      .el-tabs--border-card .el-tabs__content {
-        padding: 40px 15px;
+      span {
+        display: inline-block !important;
       }
     }
 
-    .form-item {
-      padding: 15px 10px;
-      width: 200px;
-      cursor: pointer;
-      border: 1px solid #d9dada;
-      border-radius: 5px;
+    i {
+      padding: 8px;
+      border-radius: 8px;
       float: left;
-      margin: 5px 10px;
+      font-size: 20px;
+      color: #ffffff;
+      background: #38adff;
+    }
 
-      &:hover {
-        border: 1px solid #448ed7;
+    div {
+      height: 35px;
+      line-height: 35px;
 
-        span {
-          display: inline-block !important;
-        }
+      span:nth-child(1) {
+        margin-left: 10px;
       }
 
-      i {
-        padding: 8px;
-        border-radius: 8px;
-        float: left;
-        font-size: 20px;
-        color: #ffffff;
-        background: #38adff;
-      }
-
-      div {
-        height: 35px;
-        line-height: 35px;
-
-        span:nth-child(1) {
-          margin-left: 10px;
-        }
-
-        span:nth-child(2) {
-          display: none;
-          float: right;
-          color: #38adff;
-          font-size: 12px;
-        }
-      }
-
-      /*span:nth-child(1) {
-        float: left;
-        margin: 5px 0 0 10px;
-      }*/
-      /*span:nth-child(1) {
+      span:nth-child(2) {
+        display: none;
         float: right;
-        color: #448ed7;
-        font-size: x-small;
-        margin: 5px 0 5px 0;
-      }*/
+        color: #38adff;
+        font-size: 12px;
+      }
     }
+
+    /*span:nth-child(1) {
+      float: left;
+      margin: 5px 0 0 10px;
+    }*/
+    /*span:nth-child(1) {
+      float: right;
+      color: #448ed7;
+      font-size: x-small;
+      margin: 5px 0 5px 0;
+    }*/
   }
+}
 
-  @media screen and (max-width: 800px) {
-    .form-item {
-      padding: 12px 10px !important;
-      width: 150px !important;
-      margin: 5px !important;
+@media screen and (max-width: 800px) {
+  .form-item {
+    padding: 12px 10px !important;
+    width: 150px !important;
+    margin: 5px !important;
 
-      &:hover {
-        span:last-child {
-          display: none !important;
-        }
+    &:hover {
+      span:last-child {
+        display: none !important;
       }
     }
   }
+}
 </style>

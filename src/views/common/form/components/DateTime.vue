@@ -1,27 +1,22 @@
 <template>
   <div>
     <div v-if="mode === 'DESIGN'" >
-      <el-date-picker disabled :type="type" :placeholder="placeholder"></el-date-picker>
+      <el-date-picker  size="medium" disabled :type="type" :placeholder="placeholder"></el-date-picker>
     </div>
     <div v-else>
-      <el-date-picker :type="type" :placeholder="placeholder"></el-date-picker>
+      <el-date-picker v-model="_value" :value-format="format" size="medium" clearable :type="type" :placeholder="placeholder"></el-date-picker>
     </div>
   </div>
 </template>
 
 <script>
+import componentMinxins from '../ComponentMinxins'
+
 export default {
+  mixins: [componentMinxins],
   name: "DateTime",
   components: {},
   props:{
-    mode:{
-      type: String,
-      default: 'DESIGN'
-    },
-    required:{
-      type: Boolean,
-      default: false
-    },
     format:{
       type: String,
       default: 'yyyy-MM-dd HH:mm'

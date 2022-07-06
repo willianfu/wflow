@@ -1,5 +1,5 @@
 <template>
-  <component :is="config.name" :mode="mode" v-model="config.value" v-bind="config.props"/>
+  <component :is="config.name" :mode="mode" v-model="_value" v-bind="config.props"/>
 </template>
 <script>
 
@@ -13,10 +13,23 @@ export default {
       type: String,
       default: 'DESIGN'
     },
+    value: {
+      default: undefined
+    },
     config:{
       type: Object,
       default: ()=>{
         return {}
+      }
+    }
+  },
+  computed: {
+    _value: {
+      get() {
+        return this.value;
+      },
+      set(val) {
+        this.$emit("input", val);
       }
     }
   },

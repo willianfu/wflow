@@ -1,27 +1,22 @@
 <template>
   <div>
     <div v-if="mode === 'DESIGN'" style="max-width: 300px">
-      <el-date-picker disabled style="width: 100%;" :type="type" :start-placeholder="placeholder[0]" :end-placeholder="placeholder[1]"/>
+      <el-date-picker  size="medium" disabled style="width: 100%;" :type="type" :start-placeholder="placeholder[0]" :end-placeholder="placeholder[1]"/>
     </div>
     <div v-else>
-      <el-date-picker :value-format="format" :type="type" :start-placeholder="placeholder[0]" :end-placeholder="placeholder[1]"/>
+      <el-date-picker v-model="_value" size="medium" clearable :value-format="format" :type="type" :start-placeholder="placeholder[0]" :end-placeholder="placeholder[1]"/>
     </div>
   </div>
 </template>
 
 <script>
+import componentMinxins from '../ComponentMinxins'
+
 export default {
+  mixins: [componentMinxins],
   name: "DateTimeRange",
   components: {},
   props:{
-    mode:{
-      type: String,
-      default: 'DESIGN'
-    },
-    required:{
-      type: Boolean,
-      default: false
-    },
     format:{
       type: String,
       default: 'yyyy-MM-dd HH:mm'

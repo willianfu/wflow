@@ -7,14 +7,13 @@
 </template>
 
 <script>
+import componentMinxins from '../ComponentMinxins'
+
 export default {
+  mixins: [componentMinxins],
   name: "Description",
   components: {},
   props: {
-    mode: {
-      type: String,
-      default: 'DESIGN'
-    },
     color:{
       type: String,
       default: '#868686'

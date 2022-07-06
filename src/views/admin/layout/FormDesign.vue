@@ -95,8 +95,8 @@
 
 <script>
 import draggable from "vuedraggable";
-import FormDesignRender from '@/views/admin/layout/form/FormDesignRender.vue'
-import FormComponentConfig from '@/views/common/form/FormComponentConfig.vue'
+import FormDesignRender from '@/views/admin/layout/form/FormDesignRender'
+import FormComponentConfig from '@/views/common/form/FormComponentConfig'
 import components from '@/views/common/form/ComponentsConfigExport'
 
 export default {
@@ -123,7 +123,7 @@ export default {
       this.form.splice(index + 1, 0, Object.assign({}, node))
     },
     getId() {
-      return (Math.floor(Math.random() * (99999 - 10000)) + 10000).toString()
+      return 'field' + (Math.floor(Math.random() * (99999 - 10000)) + 10000).toString()
           + new Date().getTime().toString().substring(5);
     },
     del(index) {

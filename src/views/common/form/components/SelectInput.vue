@@ -1,10 +1,10 @@
 <template>
   <div style="max-width: 500px">
     <div v-if="mode === 'DESIGN'">
-      <el-select disabled :placeholder="placeholder"/>
+      <el-select size="medium" disabled :placeholder="placeholder"/>
     </div>
     <div v-else>
-      <el-select :multiple="multiple" clearable :placeholder="placeholder">
+      <el-select v-model="_value" size="medium" :multiple="multiple" clearable :placeholder="placeholder">
         <el-option v-for="(op, index) in options" :key="index" :value="op" :label="op"></el-option>
       </el-select>
     </div>
@@ -12,18 +12,13 @@
 </template>
 
 <script>
+import componentMinxins from '../ComponentMinxins'
+
 export default {
+  mixins: [componentMinxins],
   name: "SelectInput",
   components: {},
   props:{
-    mode:{
-      type: String,
-      default: 'DESIGN'
-    },
-    required:{
-      type: Boolean,
-      default: false
-    },
     placeholder:{
       type: String,
       default: '请选择选项'
