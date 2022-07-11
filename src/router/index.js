@@ -9,7 +9,7 @@ const viewport = {
 
 const router = new Router({
   //mode: 'history',
-  base: __dirname,
+  //base: __dirname,
   routes: [
     {
       path: '/',

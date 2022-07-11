@@ -1,39 +1,47 @@
-## jw-workflow-engine 前端
-
-由 `Vue2`  + `ElementUI`  构建，仿钉钉风格
-
-新版本开发中，见dev分支
-
-- 优化渲染算法及代码结构，修复流程设计器所有已知Bug（已完成）
-- 精简代码，规范命名及处理流程
-- 删除条件出现异常，分支残缺
-- 宽度过大时，左侧无法全预览
-- 新增并行分支，延时节点（已完成）
-  - 并行分支，所有分支同时无条件进入，直到所有分支全部处理结束进入下一个节点。
-  - 延时节点，延时阻塞流程一段时间再进入下一个流程
-  - 触发器节点，流程经过此处时触发一个动作（发送请求/邮件），并能传递流程数据
-- 优化表单组件结构（开发中）
-- 新增流程发起，在线提交流程，根据设计器渲染表单，根据表单内容条件渲染流程执行树（开发中）
-- 流程数据管理，表单关联（开发中）
-- 表单打印，审批结束后，前端直接生成最终单据（开发中）
-- 开发完整配套工作流后端功能，基于Activity实现（计划中）
+## wflow-web 前端
 
 
-**感兴趣的小伙伴可以加我微信 `willianfu_`进群交流**
+
+![](doc/image/README/流程.png)
 
 
-  👉 在线体验地址(此为旧版，dev分支为新版，可拉取代码后自行运行)： [戳我打开演示页面](http://47.100.202.245:83) 👈
+
+<h1 align="center">wflow 工作流</h1>
+
+[![star](https://gitee.com/willianfu/jw-workflow-engine/badge/star.svg?theme=dark)](https://gitee.com/willianfu/jw-workflow-engine/stargazers)[![fork](https://gitee.com/willianfu/jw-workflow-engine/badge/fork.svg?theme=dark)](https://gitee.com/willianfu/jw-workflow-engine/members) <img src="https://img.shields.io/badge/release-v0.0.1-brightgreen.svg"><img src="https://shields.io/badge/license-APACHE2.0-blue">
 
 
 
 ## 简介
 
+`wflow-web` 是 `wflow工作流` 项目的前端设计器，免费且开源，本设计器包含表单设计，审批流程设计。
+
+> 区别于传统Bpmn自带流程设计器，传统设计器晦涩难懂，对于普通企业用户使用门槛偏高，没有经过专业培训根本无从下手，需要相关专业人员辅助来创建流程。而本设计器界面简单，符合普通大众的思维逻辑，易于理解和上手使用。
+
+
+
+**感兴趣的小伙伴可以加我微信 `willianfu_`进群交流**
+
+<p style="color: red">请务必备注： wflow </p>
+
+
+  👉 在线体验地址： [戳我打开演示页面](http://47.100.202.245:83) 👈
+
+
+
+## 界面一览
+
 ###  **工作区面板** 
 
 <img src="https://images.gitee.com/uploads/images/2020/1005/140253_39e3f2d5_4928216.png" alt="输入图片说明" title="屏幕截图.png" style="zoom: 50%;" />
+
 <img src="https://images.gitee.com/uploads/images/2020/1005/140329_89cd5aac_4928216.png" alt="输入图片说明" title="屏幕截图.png" style="zoom:50%;" />
 
-[演示视频](https://www.bilibili.com/video/BV1Vh41197Pw/)
+**设计器表单回显**
+
+![image-20220711112958351](doc/image/README/image-20220711112958351.png)
+
+
 
 ### 表单管理
 
@@ -44,42 +52,35 @@
 <img src="https://images.gitee.com/uploads/images/2020/1005/140502_bdc2ea04_4928216.png" alt="输入图片说明" title="屏幕截图.png" style="zoom:50%;" />
 
 
-👉 [演示视频](https://www.bilibili.com/video/BV1dT4y1c7md/)
-
-👉 [演示视频](https://www.bilibili.com/video/BV1Kk4y1C7F5/)
-
-
 ---------
 
 ####  **表单基本设置** 
 
 <img src="https://images.gitee.com/uploads/images/2020/1005/140559_5c51a89b_4928216.png" alt="输入图片说明" title="屏幕截图.png" style="zoom: 50%;" />
 
-👉 [演示视频](https://www.bilibili.com/video/BV1Th41197LS/)
+
 
 
 --------
 
 ####  **表单布局设计器**
 
-<img src="https://images.gitee.com/uploads/images/2020/1005/140740_832d5c2f_4928216.png" alt="输入图片说明" title="屏幕截图.png" style="zoom:50%;" />
-
-👉 [演示视频](https://www.bilibili.com/video/BV1Xi4y1E7gb/)
+![image-20220711111255178](doc/image/README/image-20220711111255178.png)
 
 
 ---------
 
  #### 流程设计器
 
-> 任意条件层级审批流程设计， 审批节点支持多种业务类型设置
+> 任意条件层级审批流程设计， 审批节点支持多种业务类型设置，支持流程校验
 
-<img src="https://images.gitee.com/uploads/images/2020/1005/141042_119eafd6_4928216.png" alt="输入图片说明" title="屏幕截图.png" style="zoom:50%;" />
+![image-20220711111351476](doc/image/README/image-20220711111351476.png)
 
-<img src="https://images.gitee.com/uploads/images/2020/1005/141155_c6fa5f02_4928216.png" alt="输入图片说明" title="屏幕截图.png" style="zoom:50%;" />
+**支持无限层级嵌套**
+
+![image-20220711111911427](doc/image/README/image-20220711111911427.png)
 
 
-
-👉 [演示视频](https://www.bilibili.com/video/BV1Nz4y1f7kS/)
 
 
 ---------
@@ -92,7 +93,10 @@
 
 ---------
 
+
+
  **支持多种类型业务节点，支持配置校验，灵活配置，赋予无限可能** 
+
 ![输入图片说明](https://pic.rmb.bdstatic.com/bjh/5393cbdcb4d01fe35a994b87b5488dcc.png)
 ---------
 
@@ -105,6 +109,34 @@
 ## 开发
 
 ### 项目结构
+
+```
+├─api 接口
+├─assets
+│  └─image
+├─components 通用组件
+│  └─common
+├─router 路由
+├─store vuex，设计器数据存储
+├─utils
+└─views 主要页面及视图
+    ├─admin
+    │  └─layout
+    │      ├─form 表单设计
+    │      └─process 流程设计
+    ├─common
+    │  ├─form 表单
+    │  │  ├─components 表单组件
+    │  │  ├─config 表单组件配置
+    │  │  ├─expand 扩展组件
+    │  │  └─settings 设置
+    │  └─process 流程
+    │      ├─config 流程节点设置
+    │      └─nodes 流程节点
+    └─workspace 工作区
+```
+
+
 
 ### 设计器数据
 
@@ -139,8 +171,6 @@
 
 ### 基础设置
 
-
-
 ### 表单数据结构
 
 > 利用 vue render() 函数，可以通过js动态渲染表单，参见：[渲染函数 & JSX — Vue.js (vuejs.org)](https://cn.vuejs.org/v2/guide/render-function.html)
@@ -153,45 +183,52 @@
 
 > 为了方便存储和解析，仍然使用json来描述一个组件
 
-```json
+```javascript
 {
-	"name":"my-number-input", //组件名称，项目内应当有此组件
-    "isDesign": true, //是否是设计状态，在表单设计时应当为设计状态，发起审批时应当为正常状态
-    "required": false, //是否必填项，作为流程条件的话需要必填
-    "enablePrint": true, //是否允许打印时显示在表单中
-    
-    //vue createElement 函数内数据对象(第二个参数)，参见 https://cn.vuejs.org/v2/guide/render-function.html
-    "config":{
-        "props": {}, //组件的属性，符合vue规范
-        "style":{}, //样式
-        "class":{} //css类名
-        //.....
+	"name":"TextInput", //组件名称，项目内应当有此组件对应的.vue文件
+    "title": '单行文本输入', //组件别名
+    "icon": 'el-icon-edit', //组件在组件库显示的图标
+    "value": '', //组件绑定的值
+    "valueType": 'string', //组件值对应的类型 String, Number,Array, Object, Date, Dept, User
+    "props":{
+        "mode": 'DESIGN', //组件模式，默认设计模式，DESIGN、PC、MOBILE，根据组件模式渲染不同状态
+        "required": false, //是否必填项，作为流程条件的话需要必填
+        "enablePrint": true,
+        // ....自行扩展其他属性
     }
 }
 ```
 
-不同的组件，它的 `config` 字段内容是不同的，注意还有一个`isDesign` ，默认为设计状态，在设计表单时，组件的样式和预览表单时正常显示是不一样的，设计的时候显示的都需要很简洁，预览时才是组件真实的样子。
+不同的组件，它的 `mode` 字段内容是不同的，默认为设计状态，在设计表单时，组件的样式和预览表单时正常显示是不一样的，设计的时候显示的都需要很简洁，预览时才是组件真实的样子。
 
 ```vue
 <template>
-	<div>
-        <div v-if="isDesign">设计状态</div>
-        <div v-else>状态预览</div>
+  <div>
+    <div v-if="mode === 'DESIGN'">
+      <el-input size="medium" disabled :placeholder="placeholder"/>
     </div>
+    <div v-else>
+      <el-input size="medium" clearable v-model="_value" :placeholder="placeholder"/>
+    </div>
+  </div>
 </template>
+
 <script>
-    export default {
-      props:[
-          isDesign:{
-          	type: Boolean,
-          	defalut: true
-          }
-      ],
-      data() {
-        return {};
-      }
-	};
+import componentMinxins from '../ComponentMinxins'
+
+export default {
+  mixins: [componentMinxins],
+  name: "TextInput",
+  components: {},
+  props: {
+    placeholder: {
+      type: String,
+      default: '请输入内容'
+    }
+  }
+}
 </script>
+
 ```
 
 
@@ -202,7 +239,7 @@
 
 > 流程设计器中，每一个可视化元素块都是一个节点，渲染器根据节点类型渲染不同组件
 
-```json
+```js
 {
     //节点ID，当前流程内唯一，由前端随机生成
 	"id": "90aasvbsh8a0a7f", 
@@ -228,7 +265,7 @@
 
 > 根节点是最顶层节点，发起人节点
 
-```json
+```js
 {
     //发起人权限，哪些 人/部门 可以发起这个审批
    "assignedUser": [
@@ -250,7 +287,7 @@
 
 > 审批节点设置审批人及审批规则
 
-```json
+```js
 {
     //审批处理的类型 ASSIGN_USER 指定人员、SELF_SELECT 发起人自选、LEADER_TOP 连续多级主管、LEADER 主管、ROLE 指定角色、SELF 发起人自己、REFUSE 自动拒绝
     "assignedType": "类型",
@@ -302,7 +339,7 @@
 
 > 条件选项节点是 CONDITIONS  的子节点，存在于 branchs 子分支内，用来设置条件
 
-```json
+```js
 {
     "groupsType":"OR", //条件组逻辑关系 OR、AND
     "groups":[
@@ -314,7 +351,7 @@
                {
                    "cid": "d78s96fd9s", //组件ID，通过组件ID索引到表单设计器中的组件
                    "compare": ">=", //比较运算符 >大于 <小于 大于等于 小于等于 范围
-                   "values": [], //比较值，如果只需要比较一个值，那么只取value[0] 
+                   "value": [], //比较值，如果只需要比较一个值，那么只取value[0] 
                }
             ]
         }
@@ -328,7 +365,7 @@
 
 > CONCURRENT是CONCURRENTS的字节点，无条件流转，多路分支同时并行进入
 
-```json
+```js
 无属性设置
 ```
 
@@ -338,7 +375,7 @@
 
 > 当到达此节点时，流程状态会被发送给指定的用户
 
-```json
+```js
 {
     "assignedUser":[], //指定抄送人员
 }
@@ -350,7 +387,7 @@
 
 > 流程到达此节点时，会被阻塞一段时间才被放行
 
-```json
+```js
 {
     "type": "FIXED", //延时类型 FIXED:到达当前节点后延时固定时长 、AUTO:延时到 dateTime设置的时间
     "time": 30, //延时时间
@@ -363,7 +400,7 @@
 
 > 流程到达此节点时，会触发一个提前设置好的动作，用来与外部系统对接
 
-```json
+```js
 {
   type: 'WEBHOOK', //触发的动作类型 WEBHOOK、EMAIL
   http:{
@@ -440,6 +477,60 @@ function getDomTree(h, node) {
 }
 ```
 
+ ### 进阶
 
- **开源不易，需要鼓励，如果觉得这个项目有帮助到了你请我喝杯咖啡吧😋** 
+#### 如何开发新表单组件
+
+1、先在 `@/views/common/form/components/` 目录下创建一个`.vue` 组件，此为组件为表单组件
+
+2、再在 `@/views/common/form/config/` 目录下创建一个`.vue` 组件，此为组件为表单组件的配置面板
+
+3、编写代码，绘制组件
+
+```vue
+<template>
+  <div>
+    <div v-if="mode === 'DESIGN'">
+      <!--组件在设计器中的样子-->
+    </div>
+    <div v-else>
+      <!--组件在预览及真实显示的样子-->
+    </div>
+  </div>
+</template>
+import componentMinxins from '../ComponentMinxins'
+
+<script>
+//混入配置
+import componentMinxins from '../ComponentMinxins'
+
+export default {
+  mixins: [componentMinxins],
+  name: "组件名称",
+  components: {},
+  props: {
+    placeholder: {
+      type: String,
+      default: '请输入内容'
+    }
+  },
+  data() {
+    return {}
+  },
+  methods: {}
+}
+</script>
+```
+
+最简单的一个组件架子就做完了，其他内部功能自行实现，本组件可以在外部使用 v-model 绑定
+
+
+
+#### 如何扩展新流程设计器节点
+
+
+
+
+
+**开源不易，需要鼓励，如果觉得这个项目有帮助到了你请我喝杯咖啡吧😋** 
 <img src="https://pic.rmb.bdstatic.com/bjh/a4a29377ac6ae1f8d4ea4a513a5c5129.png" alt="支持作者" style="zoom:60%;" />
