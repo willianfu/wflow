@@ -1,10 +1,10 @@
 <p align="center">
-<img src="https://gitee.com/willianfu/jw-workflow-engine/blob/master/doc/image/README/%E6%B5%81%E7%A8%8B.png" width="100px">
+<img src="https://gitee.com/willianfu/jw-workflow-engine/blob/master/doc/image/README/logo.png" width="100px">
 </p>
 
 <h1 align="center">wflow 工作流</h1>
 
-[![star](https://gitee.com/willianfu/jw-workflow-engine/badge/star.svg?theme=dark)](https://gitee.com/willianfu/jw-workflow-engine/stargazers)[![fork](https://gitee.com/willianfu/jw-workflow-engine/badge/fork.svg?theme=dark)](https://gitee.com/willianfu/jw-workflow-engine/members) <img src="https://img.shields.io/badge/release-v0.0.1-brightgreen.svg"> <img src="https://shields.io/badge/license-APACHE2.0-blue">
+[![star](https://gitee.com/willianfu/jw-workflow-engine/badge/star.svg?theme=dark)](https://gitee.com/willianfu/jw-workflow-engine/stargazers) [![fork](https://gitee.com/willianfu/jw-workflow-engine/badge/fork.svg?theme=dark)](https://gitee.com/willianfu/jw-workflow-engine/members) <img src="https://img.shields.io/badge/release-v0.0.1-brightgreen.svg"> <img src="https://shields.io/badge/license-APACHE2.0-blue">
 
 
 ## 简介
