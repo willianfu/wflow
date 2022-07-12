@@ -22,17 +22,6 @@ export default [
     }
   },
   {
-    title: '数字输入框',
-    name: 'NumberInput',
-    icon: 'el-icon-edit-outline',
-    value: '',
-    valueType: ValueType.number,
-    props: {
-      required: false,
-      enablePrint: true
-    }
-  },
-  {
     title: '多行文本输入',
     name: 'TextareaInput',
     icon: 'el-icon-more-outline',
@@ -44,6 +33,29 @@ export default [
     }
   },
   {
+    title: '数字输入框',
+    name: 'NumberInput',
+    icon: 'el-icon-edit-outline',
+    value: '',
+    valueType: ValueType.number,
+    props: {
+      required: false,
+      enablePrint: true,
+    }
+  },
+  {
+    title: '金额输入框',
+    name: 'AmountInput',
+    icon: 'el-icon-coin',
+    value: '',
+    valueType: ValueType.number,
+    props: {
+      required: false,
+      enablePrint: true,
+      showChinese: true
+    }
+  },
+  {
     title: '单选框',
     name: 'SelectInput',
     icon: 'el-icon-menu',
@@ -52,18 +64,20 @@ export default [
     props: {
       required: false,
       enablePrint: true,
+      expanding: false,
       options:['选项1', '选项2']
     }
   },
   {
     title: '多选框',
-    name: 'SelectsInput',
+    name: 'MultipleSelect',
     icon: 'el-icon-menu',
     value: [],
     valueType: ValueType.array,
     props: {
       required: false,
       enablePrint: true,
+      expanding: false,
       options:['选项1', '选项2']
     }
   },
@@ -88,7 +102,8 @@ export default [
       required: false,
       enablePrint: true,
       placeholder:['开始时间','结束时间'],
-      format: 'yyyy-MM-dd HH:mm'
+      format: 'yyyy-MM-dd HH:mm',
+      showLength: false
     }
   },
   {
@@ -121,18 +136,20 @@ export default [
     valueType: ValueType.user,
     props: {
       required: false,
-      enablePrint: true
+      enablePrint: true,
+      multiple: false
     }
   },
   {
     title: '部门选择',
-    name: 'OrgPicker',
-    icon: 'el-icon-takeaway-box',
+    name: 'DeptPicker',
+    icon: 'el-icon-folder-opened',
     value: [],
     valueType: ValueType.dept,
     props: {
       required: false,
-      enablePrint: true
+      enablePrint: true,
+      multiple: false
     }
   },
   {

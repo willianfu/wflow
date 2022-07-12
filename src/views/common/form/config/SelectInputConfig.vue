@@ -18,6 +18,10 @@
                  style="float:right;"
                  @click="value.options.push('新选项')">新增选项</el-button>
     </el-form-item>
+    <el-form-item label="选项展开">
+      <el-switch v-model="value.expanding"></el-switch>
+    </el-form-item>
+
   </div>
 </template>
 

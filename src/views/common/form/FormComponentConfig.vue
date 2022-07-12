@@ -16,7 +16,9 @@
 <script>
 import TextInput from './config/TextInputConfig.vue'
 import NumberInput from './config/NumberInputConfig.vue'
+import AmountInput from './config/AmountInputConfig.vue'
 import TextareaInput from './config/TextareaInputConfig.vue'
+import MultipleSelect from './config/SelectInputConfig.vue'
 import SelectInput from './config/SelectInputConfig.vue'
 import DateTime from './config/DateTimeConfig.vue'
 import DateTimeRange from './config/DateTimeRangeConfig.vue'
@@ -24,20 +26,26 @@ import ImageUpload from './config/ImageUploadConfig.vue'
 import FileUpload from './config/FileUploadConfig.vue'
 import Description from './config/DescriptionConfig.vue'
 import MoneyInput from './config/MoneyInputConfig.vue'
+import DeptPicker from './config/OrgPickerConfig.vue'
+import UserPicker from './config/OrgPickerConfig.vue'
 
 export default {
   name: "FormComponentConfig",
   components: {
     TextInput,
     NumberInput,
+    AmountInput,
     TextareaInput,
     SelectInput,
+    MultipleSelect,
     DateTime,
     DateTimeRange,
     ImageUpload,
     FileUpload,
     Description,
-    MoneyInput
+    MoneyInput,
+    DeptPicker,
+    UserPicker
   },
   props:{
     formSelected:{

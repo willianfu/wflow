@@ -10,7 +10,7 @@ import Empty from '@/views/common/process/nodes/EmptyNode.vue'
 import Root from '@/views/common/process/nodes/RootNode.vue'
 import Node from '@/views/common/process/nodes/Node.vue'
 
-import DefaultProps, {TRIGGER_PROPS} from "./DefaultNodeProps"
+import DefaultProps from "./DefaultNodeProps"
 
 export default {
   name: "ProcessTree",
@@ -121,7 +121,15 @@ export default {
     },
     copyBranch(node){
       let parentNode = this.nodeMap.get(node.parentId)
-      parentNode.branchs.splice(parentNode.branchs.indexOf(node), 0, this.$deepCopy(node))
+      let branchNode = this.$deepCopy(node)
+      branchNode.name = branchNode.name + '-copy'
+      this.forEachNode(parentNode, branchNode, (parent, node) => {
+        let id = this.getRandomId()
+        console.log(node, '新id =>'+ id, '老nodeId:' + node.id )
+        node.id = id
+        node.parentId = parent.id
+      })
+      parentNode.branchs.splice(parentNode.branchs.indexOf(node), 0, branchNode)
       this.$forceUpdate()
     },
     branchMove(node, offset){
@@ -148,6 +156,10 @@ export default {
     //是分支节点
     isConditionNode(node){
       return node.type === 'CONDITIONS';
+    },
+    //是分支节点
+    isBranchSubNode(node){
+      return node && (node.type === 'CONDITION' || node.type === 'CONCURRENT');
     },
     isConcurrentNode(node){
       return node.type === 'CONCURRENTS'
@@ -264,6 +276,7 @@ export default {
         node.branchs.push({
           id: this.getRandomId(),
           parentId: node.id,
+          name: (this.isConditionNode(node) ? '条件':'分支') + (node.branchs.length + 1),
           props: this.isConditionNode(node) ? this.$deepCopy(DefaultProps.CONDITION_PROPS):{},
           type: this.isConditionNode(node) ? "CONDITION":"CONCURRENT",
           children:{}
@@ -334,6 +347,20 @@ export default {
     //更新指定节点的dom
     nodeDomUpdate(node){
       this.$refs[node.id].$forceUpdate()
+    },
+    //给定一个起始节点，遍历内部所有节点
+    forEachNode(parent, node, callback){
+      if (this.isBranchNode(node)){
+        callback(parent, node)
+        this.forEachNode(node, node.children, callback)
+        node.branchs.map(branchNode => {
+          callback(node, branchNode)
+          this.forEachNode(branchNode, branchNode.children, callback)
+        })
+      }else if (this.isPrimaryNode(node) || this.isEmptyNode(node) || this.isBranchSubNode(node)){
+        callback(parent, node)
+        this.forEachNode(node, node.children, callback)
+      }
     },
     //校验所有节点设置
     validate(node){

@@ -1,18 +1,18 @@
 <template>
   <div style="max-width: 500px">
     <div v-if="mode === 'DESIGN'">
-      <el-select v-if="!expanding" size="medium" v-model="_value" disabled :placeholder="placeholder"/>
-      <el-radio-group v-model="_value" v-else>
-        <el-radio disabled v-for="(op, index) in options" :key="index" :label="op">{{op}}</el-radio>
-      </el-radio-group>
+      <el-select v-if="!expanding" size="medium" multiple v-model="_value" disabled :placeholder="placeholder"/>
+      <el-checkbox-group v-else v-model="_value">
+        <el-checkbox disabled v-for="(op, index) in options" :key="index" :label="op">{{op}}</el-checkbox>
+      </el-checkbox-group>
     </div>
     <div v-else>
-      <el-select v-if="!expanding" v-model="_value" size="medium" clearable :placeholder="placeholder">
+      <el-select v-if="!expanding" v-model="_value" multiple size="medium" clearable :placeholder="placeholder">
         <el-option v-for="(op, index) in options" :key="index" :value="op" :label="op"></el-option>
       </el-select>
-      <el-radio-group v-model="_value" v-else>
-        <el-radio v-for="(op, index) in options" :key="index" :label="op">{{op}}</el-radio>
-      </el-radio-group>
+      <el-checkbox-group v-else v-model="_value">
+        <el-checkbox v-for="(op, index) in options" :key="index" :label="op">{{op}}</el-checkbox>
+      </el-checkbox-group>
     </div>
   </div>
 </template>
@@ -22,12 +22,18 @@ import componentMinxins from '../ComponentMinxins'
 
 export default {
   mixins: [componentMinxins],
-  name: "SelectInput",
+  name: "MultipleSelect",
   components: {},
   props:{
     placeholder:{
       type: String,
       default: '请选择选项'
+    },
+    value:{
+      type: Array,
+      default: () => {
+        return []
+      }
     },
     expanding:{
       type: Boolean,

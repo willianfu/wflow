@@ -12,6 +12,9 @@
         <el-option value="yyyy-MM-dd HH:mm" label="年-月-日 时:分"></el-option>
       </el-select>
     </el-form-item>
+    <el-form-item label="展示时长">
+      <el-switch v-model="value.showLength"></el-switch>
+    </el-form-item>
   </div>
 </template>
 
