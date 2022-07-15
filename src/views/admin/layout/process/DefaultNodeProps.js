@@ -33,6 +33,10 @@ export const APPROVAL_PROPS = {
     level: 1
   },
   role:[],
+  refuse: {
+    toEnd: true, //驳回直接结束流程
+    target: 'end' //驳回到指定ID的节点
+  },
   formUser: ''
 }
 

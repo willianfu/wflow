@@ -112,6 +112,12 @@
 						</span>
         </div>
       </el-form-item>
+      <el-form-item label="如果审批被驳回 👇">
+        <el-switch active-text="直接结束流程" inactive-text="转到到指定步骤" v-model="nodeProps.refuse.toEnd"></el-switch>
+        <el-select style="margin-left: 10px; width: 150px;" placeholder="选择跳转步骤" v-if="!nodeProps.refuse.toEnd" size="small" v-model="nodeProps.refuse.target">
+          <el-option v-for="(node, i) in nodeOptions" :key="i" :label="node.name" :value="node.id"></el-option>
+        </el-select>
+      </el-form-item>
     </el-form>
   </div>
 </template>
@@ -157,6 +163,16 @@ export default {
           return f;
         }
       })
+    },
+    nodeOptions(){
+      let values = []
+      const excType = ['ROOT', 'EMPTY', "CONDITION", "CONDITIONS", "CONCURRENT", "CONCURRENTS"]
+      this.$store.state.nodeMap.forEach((v) => {
+        if (excType.indexOf(v.type) === -1){
+          values.push({id: v.id, name: v.name})
+        }
+      })
+      return values
     },
     showMode() {
       switch (this.nodeProps.assignedType) {
