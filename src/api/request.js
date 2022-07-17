@@ -10,7 +10,7 @@ Vue.prototype.$axios = axios;
 // 字体图标
 
 const service = axios.create({
-	baseURL: Vue.prototype.BASE_URL + ":10000",
+	baseURL: 'http://' + (process.env.NODE_ENV === 'development-' ? "localhost:10000" : "47.100.202.245:10000"),
 	timeout: 50000
 });
 

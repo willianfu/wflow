@@ -1,15 +1,13 @@
 <template>
 	<div id="app">
-		<transition name="router-fade" mode="out-in">
-			<router-view v-if="!$route.meta.keepAlive"/>
-		</transition>
+    <process-design/>
 	</div>
 </template>
 
 <script>
-  //import layout from './components/layout'
+  import ProcessDesign from './views/process/ProcessDesign'
   export default {
-    components: {},
+    components: {ProcessDesign},
     data() {
       return {}
     },
