@@ -8,8 +8,10 @@ import "element-ui/lib/theme-chalk/index.css";
 
 import "@/assets/theme.less";
 import "@/assets/global.css";
+import Ellipsis from '@/components/common/Ellipsis'
 
 Vue.use(ElementUI);
+Vue.use(Ellipsis);
 
 Vue.config.productionTip = false
 

@@ -13,7 +13,7 @@ body{
 }
 
 .router-fade-enter {
-    transform: translateX(-10px);
+    transform: translateX(0px);
     opacity: 0;
 }
 

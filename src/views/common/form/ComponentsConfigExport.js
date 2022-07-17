@@ -130,7 +130,7 @@ export default [
   },
   {
     title: '人员选择',
-    name: 'OrgPicker',
+    name: 'UserPicker',
     icon: 'el-icon-user',
     value: [],
     valueType: ValueType.user,

@@ -18,9 +18,19 @@ export default {
       }
     }
   },
+  computed:{
+    content(){
+      if (this.config.props.assignedUser.length > 0){
+        let texts = []
+        this.config.props.assignedUser.forEach(org => texts.push(org.name))
+        return String(texts).replaceAll(',', '、')
+      } else {
+        return '所有人'
+      }
+    }
+  },
   data() {
     return {
-      content: '所有人'
     }
   },
   methods: {}

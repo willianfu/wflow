@@ -10,7 +10,7 @@
         <div class="node-body-content">
           <i :class="leftIcon" v-if="leftIcon"></i>
           <span class="placeholder" v-if="(content || '').trim() === ''">{{placeholder}}</span>
-          <span v-else>{{content}}</span>
+          <ellipsis :row="3" :content="content" v-else/>
           <i class="el-icon-arrow-right"></i>
         </div>
         <div class="node-error" v-if="showError">
@@ -152,7 +152,7 @@ export default {
       i{
         position: absolute;
         top: 55%;
-        right: 10px;
+        right: 5px;
         font-size: medium;
       }
       .placeholder{

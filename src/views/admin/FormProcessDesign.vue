@@ -1,15 +1,15 @@
 <template>
   <el-container>
     <el-header style="background: white">
-      <layout-header @publish="publishProcess"></layout-header>
+      <layout-header v-model="activeSelect" @publish="publishProcess"></layout-header>
     </el-header>
     <div class="layout-body">
-      <transition name="router-fade" mode="out-in">
-        <keep-alive>
-          <router-view v-if="!$route.meta.keepAlive"/>
-        </keep-alive>
-      </transition>
+      <form-base-setting ref="baseSetting" v-show="activeSelect === 'baseSetting'"/>
+      <form-design ref="formSetting" v-show="activeSelect === 'formSetting'"/>
+      <process-design ref="processDesign" v-show="activeSelect === 'processDesign'"/>
+      <form-pro-setting ref="proSetting" v-show="activeSelect === 'proSetting'"/>
     </div>
+
   </el-container>
 
 </template>
@@ -17,13 +17,18 @@
 <script>
 import LayoutHeader from './LayoutHeader'
 import {getFormDetail, createForm, updateFormDetail} from '@/api/design'
+import FormBaseSetting from '@/views/admin/layout/FormBaseSetting'
+import FormDesign from '@/views/admin/layout/FormDesign'
+import ProcessDesign from '@/views/admin/layout/ProcessDesign'
+import FormProSetting from '@/views/admin/layout/FormProSetting'
 
 export default {
   name: "FormProcessDesign",
-  components: {LayoutHeader},
+  components: {LayoutHeader, FormBaseSetting, FormDesign, ProcessDesign, FormProSetting},
   data() {
     return {
-      isNew: true
+      isNew: true,
+      activeSelect: 'baseSetting'
     }
   },
   computed:{

@@ -102,7 +102,7 @@ export default {
     newProcess(groupId) {
       this.$store.commit("setTemplate", this.getTemplateData());
       this.$store.commit("setIsEdit", false);
-      this.$router.push("/admin/design/baseSetting?groupId=" + groupId);
+      this.$router.push("/admin/design?groupId=" + groupId);
     },
     groupSort() {
       this.groupsSort = false
@@ -165,7 +165,7 @@ export default {
       return data
     },
     editFrom(item, group) {
-      this.$router.push("/admin/design/baseSetting?code=" + item.formId);
+      this.$router.push("/admin/design?code=" + item.formId);
     },
     stopFrom(item) {
       let tip = item.isStop ? ' 启用后将会进入 “其他” 分组，是否继续？' : ' 停用后将会被转移到 “已停用” 分组，您可以再次启用或者删除它，是否继续?';

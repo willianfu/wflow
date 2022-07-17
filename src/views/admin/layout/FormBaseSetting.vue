@@ -19,8 +19,6 @@
             <!--<i :class="setup.icon" @click.stop="showIconSelect = true"></i>-->
 					</span>
 				</span>
-
-
       </el-form-item>
       <el-form-item label="表单名称">
         <el-input v-model="setup.formName" size="medium"></el-input>
@@ -41,7 +39,6 @@
         <el-input placeholder="请输入表单说明" v-model="setup.remark" type="textarea" show-word-limit
                   :autosize="{ minRows: 2, maxRows: 5}" maxlength="500"></el-input>
       </el-form-item>
-
       <el-form-item label="消息通知方式">
         <el-select v-model="setup.settings.notify.types" value-key="name"
                    placeholder="选择消息通知方式" style="width: 30%;"
@@ -171,6 +168,9 @@ export default {
       this.nowUserSelect = key
       this.showUserSelect = true
     },
+    validate(){
+
+    }
   }
 }
 </script>

@@ -37,8 +37,8 @@ const router = new Router({
       path: "/admin/design",
       name: "design",
       component: () => import("@/views/admin/FormProcessDesign.vue"),
-      meta: {title: '表单流程设计', viewport: viewport},
-      children: [
+      meta: {title: '表单流程设计', viewport: viewport}
+   /*   children: [
         {
           path: "baseSetting",
           name: "baseSetting",
@@ -60,7 +60,7 @@ const router = new Router({
           component: () => import("@/views/admin/layout/FormProSetting.vue"),
           meta: {title: '高级设置'}
         }
-      ]
+      ]*/
     }
   ]
 })

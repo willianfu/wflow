@@ -1,13 +1,13 @@
 <template>
   <div>
     <div class="header">
-      <el-menu :default-active="activeIndex" active-text-color="#409eff" class="el-menu-demo" mode="horizontal"
+      <el-menu :default-active="value" active-text-color="#409eff" class="el-menu-demo" mode="horizontal"
                @select="handleSelect">
-        <el-menu-item index="/admin/design/baseSetting" @click="to('/admin/design/baseSetting')">① 基础设置</el-menu-item>
-        <el-menu-item index="/admin/design/formSetting" @click="to('/admin/design/formSetting')">② 表单设计</el-menu-item>
-        <el-menu-item index="/admin/design/processDesign" @click="to('/admin/design/processDesign')">③ 流程设计
+        <el-menu-item index="baseSetting" @click="to('baseSetting')">① 基础信息</el-menu-item>
+        <el-menu-item index="formSetting" @click="to('formSetting')">② 审批表单</el-menu-item>
+        <el-menu-item index="processDesign" @click="to('processDesign')">③ 审批流程
         </el-menu-item>
-        <el-menu-item index="/admin/design/proSetting" @click="to('/admin/design/proSetting')">④ 高级设置</el-menu-item>
+        <el-menu-item index="proSetting" @click="to('proSetting')">④ 扩展设置</el-menu-item>
       </el-menu>
       <div class="publish">
         <el-button size="mini" @click="preview"><i class="el-icon-view"></i>预览</el-button>
@@ -32,9 +32,14 @@
 
 export default {
   name: "LayoutHeader",
+  props:{
+    value: {
+      type: String,
+      default: 'baseSetup'
+    }
+  },
   data() {
     return {
-      activeIndex: '/layout/baseSetup',
       viewCode: false,
     };
   },
@@ -47,7 +52,6 @@ export default {
     this.check()
   },
   mounted() {
-    this.activeIndex = this.$route.path
     console.log(document.body.offsetWidth)
     if (document.body.offsetWidth <= 970) {
       this.$msgbox.alert("本设计器未适配中小屏幕，建议您在PC电脑端浏览器进行操作")
@@ -82,9 +86,7 @@ export default {
       })
     },
     to(path) {
-      if (path !== this.$route.path) {
-        this.$router.push(path);
-      }
+      this.$emit('input', path)
     },
     handleSelect(key, keyPath) {
       console.log(key, keyPath);

@@ -158,10 +158,8 @@ export default {
       return this.config.assignedUser || []
     },
     forms(){
-      return this.$store.state.design.formItems.map(f => {
-        if (f.type === 'USER'){
-          return f;
-        }
+      return this.$store.state.design.formItems.filter(f => {
+        return f.name === 'UserPicker'
       })
     },
     nodeOptions(){
