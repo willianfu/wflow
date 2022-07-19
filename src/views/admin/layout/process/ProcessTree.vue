@@ -182,7 +182,7 @@ export default {
         id: this.getRandomId(),
         parentId: parentNode.id,
         props: {},
-        type: type
+        type: type,
       }
       switch (type){
         case 'APPROVAL': this.insertApprovalNode(parentNode, afterNode); break;
@@ -195,9 +195,9 @@ export default {
       }
       //拼接后续节点
       if (this.isBranchNode({type: type})){
-        parentNode.children.children.children = afterNode
+        this.$set(parentNode.children.children, 'children', afterNode)
       }else {
-        parentNode.children.children = afterNode
+        this.$set(parentNode.children, 'children', afterNode)
       }
       this.$forceUpdate()
     },
@@ -219,11 +219,11 @@ export default {
     },
     insertConditionsNode(parentNode){
       this.$set(parentNode.children, "name", "条件分支")
-      parentNode.children.children = {
+      this.$set(parentNode.children, 'children', {
         id: this.getRandomId(),
         parentId: parentNode.children.id,
         type: "EMPTY"
-      }
+      })
       this.$set(parentNode.children, "branchs", [
         {
           id: this.getRandomId(),
@@ -231,39 +231,41 @@ export default {
           type: "CONDITION",
           props: this.$deepCopy(DefaultProps.CONDITION_PROPS),
           name: "条件1",
+          children:{}
         },{
           id: this.getRandomId(),
           parentId: parentNode.children.id,
           type: "CONDITION",
           props: this.$deepCopy(DefaultProps.CONDITION_PROPS),
           name: "条件2",
+          children:{}
         }
       ])
-      this.$forceUpdate()
     },
     insertConcurrentsNode(parentNode){
       this.$set(parentNode.children, "name", "并行分支")
-      parentNode.children.children = {
+      this.$set(parentNode.children, 'children',{
         id: this.getRandomId(),
         parentId: parentNode.children.id,
         type: "EMPTY"
-      }
+      })
       this.$set(parentNode.children, "branchs", [
         {
           id: this.getRandomId(),
+          name: "分支1",
           parentId: parentNode.children.id,
           type: "CONCURRENT",
           props: {},
-          name: "分支1",
+          children:{}
         },{
           id: this.getRandomId(),
+          name: "分支2",
           parentId: parentNode.children.id,
           type: "CONCURRENT",
           props: {},
-          name: "分支2",
+          children:{}
         }
       ])
-      this.$forceUpdate()
     },
     getBranchEndNode(conditionNode){
       if (!conditionNode.children || !conditionNode.children.id){
@@ -281,7 +283,6 @@ export default {
           type: this.isConditionNode(node) ? "CONDITION":"CONCURRENT",
           children:{}
         })
-        this.$forceUpdate()
       }else {
         this.$message.warning("最多只能添加 8 项😥")
       }

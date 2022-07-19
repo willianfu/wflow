@@ -47,14 +47,6 @@
         </el-select>
         <el-input size="medium" v-model="setup.settings.notify.title" style="width: 68%; float:right;" placeholder="消息通知标题"></el-input>
       </el-form-item>
-
-      <el-form-item label="谁可以发起提交">
-        <el-select v-model="setup.settings.commiter" @click.native="selectUser('commiter')" value-key="name"
-                   class="select-u" placeholder="请选择可以发起提交的人员"
-                   size="medium" clearable multiple>
-          <el-option v-for="(wc, index) in setup.settings.commiter" :label="wc.name" :key="index" :value="wc"></el-option>
-        </el-select>
-      </el-form-item>
       <el-form-item label="谁可以管理此表单">
         <el-select v-model="setup.settings.admin" @click.native="selectUser('admin')" value-key="name"
                    class="select-u" placeholder="请选择可以管理此表单的人员"
@@ -62,13 +54,6 @@
           <el-option v-for="(wc, index) in setup.settings.admin" :label="wc.name" :key="index" :value="wc"></el-option>
         </el-select>
       </el-form-item>
-<!--      <el-form-item label="谁可以查看并导出数据">
-        <el-select v-model="setup.whoExport" @click.native="selectUser('whoExport')" value-key="name"
-                   class="select-u" placeholder="请选择可以查看并导出数据的人员"
-                   size="medium" clearable multiple>
-          <el-option v-for="(wc, index) in setup.whoExport" :label="wc.name" :key="index" :value="wc"></el-option>
-        </el-select>
-      </el-form-item>-->
     </el-form>
     <org-picker :show="showUserSelect" @close="closeSelect" :selected="select" @selectOver="selected"></org-picker>
   </div>

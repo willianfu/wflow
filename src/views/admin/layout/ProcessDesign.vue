@@ -61,13 +61,13 @@ export default {
     }
   },
   watch:{
-    selectedNode:{
+    /*selectedNode:{
       deep: true,
       handler(node){
         console.log("更新")
         this.$refs["process-tree"].nodeDomUpdate(node)
       }
-    }
+    }*/
   }
 }
 </script>
