@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>流程设计 | wflow文档</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="icon" href="/favicon.ico">
+    <meta name="description" content="wflow工作流">
+    
+    <link rel="preload" href="/assets/css/0.styles.ce1b68d2.css" as="style"><link rel="preload" href="/assets/js/app.5597d7ea.js" as="script"><link rel="preload" href="/assets/js/2.55e01133.js" as="script"><link rel="preload" href="/assets/js/12.eaf3ad2b.js" as="script"><link rel="prefetch" href="/assets/js/10.a0f5f85b.js"><link rel="prefetch" href="/assets/js/11.e142bee0.js"><link rel="prefetch" href="/assets/js/13.69edbca2.js"><link rel="prefetch" href="/assets/js/14.a398dcf5.js"><link rel="prefetch" href="/assets/js/15.f57efa7f.js"><link rel="prefetch" href="/assets/js/16.6e62d6c4.js"><link rel="prefetch" href="/assets/js/3.006c0914.js"><link rel="prefetch" href="/assets/js/4.9591ee34.js"><link rel="prefetch" href="/assets/js/5.d03914b4.js"><link rel="prefetch" href="/assets/js/6.7037ec4a.js"><link rel="prefetch" href="/assets/js/7.2bcf5791.js"><link rel="prefetch" href="/assets/js/8.e0421f00.js"><link rel="prefetch" href="/assets/js/9.47c392ae.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.ce1b68d2.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/logo.png" alt="wflow文档" class="logo"> <span class="site-name can-hide">wflow文档</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  指南
+</a></div><div class="nav-item"><a href="https://gitee.com/willianfu/jw-workflow-engine" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  码云gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="http:/47.100.202.245:83" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  访问 wflow在线演示
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="/pro.html" class="nav-link">
+  wflow-pro
+</a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  指南
+</a></div><div class="nav-item"><a href="https://gitee.com/willianfu/jw-workflow-engine" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  码云gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="http:/47.100.202.245:83" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  访问 wflow在线演示
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="/pro.html" class="nav-link">
+  wflow-pro
+</a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>🚀 快速入门</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/start/quickStart.html" class="sidebar-link">开始</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>✍ 开发</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/dev/project.html" class="sidebar-link">项目介绍</a></li><li><a href="/dev/form.html" class="sidebar-link">表单设计</a></li><li><a href="/dev/process.html" aria-current="page" class="active sidebar-link">流程设计</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/dev/process.html#流程节点数据结构" class="sidebar-link">流程节点数据结构</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/dev/process.html#节点数据" class="sidebar-link">节点数据</a></li><li class="sidebar-sub-header"><a href="/dev/process.html#节点props设置项" class="sidebar-link">节点props设置项</a></li><li class="sidebar-sub-header"><a href="/dev/process.html#表单权限设置" class="sidebar-link">表单权限设置</a></li></ul></li></ul></li><li><a href="/dev/server.html" class="sidebar-link">服务端开发指南</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>❓ FAQ</span> <!----></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="流程设计"><a href="#流程设计" class="header-anchor">#</a> 流程设计</h1> <p>流程设计器是用来设计审批流程的，也就是绘制流程图</p> <blockquote><p>📢 鉴于部分同学针对流程设计器的需求，把流程设计器单独抽取出来，放在 <code>master-processDesign</code> 分支</p></blockquote> <p>📋 流程设计器核心文件为 <code>src\views\admin\layout\process\ProcessTree.vue</code>，整个流程设计器都是基于此组件渲染。</p> <h2 id="流程节点数据结构"><a href="#流程节点数据结构" class="header-anchor">#</a> 流程节点数据结构</h2> <h3 id="节点数据"><a href="#节点数据" class="header-anchor">#</a> 节点数据</h3> <p>整个流程设计器数据存放于 vuex <code>$store.state.design.process</code> 中，是一个以根节点为起始的深层嵌套对象，结构如下：</p> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token punctuation">{</span>
+	id<span class="token operator">:</span> <span class="token string">&quot;90aasvbsh8a0a7f&quot;</span><span class="token punctuation">,</span> 
+    parentId<span class="token operator">:</span> <span class="token string">&quot;7d89sf7d8sasf&quot;</span><span class="token punctuation">,</span>
+    type<span class="token operator">:</span><span class="token string">&quot;ROOT&quot;</span><span class="token punctuation">,</span> 
+    name<span class="token operator">:</span> <span class="token string">&quot;发起人&quot;</span><span class="token punctuation">,</span>
+    props<span class="token operator">:</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token comment">//节点属性，见下方props说明</span>
+    children<span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span> 
+    branchs<span class="token operator">:</span><span class="token punctuation">[</span><span class="token punctuation">]</span> 
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br></div></div><table><thead><tr><th>字段名</th> <th>类型</th> <th>含义</th> <th>说明</th></tr></thead> <tbody><tr><td>id</td> <td>String</td> <td>节点ID</td> <td>当前流程内唯一，由前端随机生成</td></tr> <tr><td>parentId</td> <td>String</td> <td>父级节点ID</td> <td>用来向上搜索，关联子父</td></tr> <tr><td>type</td> <td>String</td> <td>节点类型</td> <td>ROOT(发起人，根节点)、APPROVAL(审批)、CC(抄送)、CONDITIONS(条件组)、CONCURRENTS（并行节点组）、CONDITION(条件子分支)、CONCURRENT（并行子分支）、DELAY(延时节点)、TRIGGER(触发器)、EMPTY(空节点，占位)</td></tr> <tr><td>name</td> <td>String</td> <td>节点名称</td> <td>显示在设计器中卡片头部名称</td></tr> <tr><td>props</td> <td>Object</td> <td>节点属性设置</td> <td>节点的设置项内容</td></tr> <tr><td>children</td> <td>Object</td> <td>子节点项</td> <td>节点下方的子节点，无限嵌套，内部字段与当前结构相同</td></tr> <tr><td>branchs</td> <td>Array</td> <td>子分支项</td> <td>当type 为 CONDITIONS / CONCURRENTS 时，该项存在，内容为条件或并行节点内的所有分支</td></tr></tbody></table> <h3 id="节点props设置项"><a href="#节点props设置项" class="header-anchor">#</a> 节点props设置项</h3> <blockquote><p>每种节点的props设置项结构是不一样的，各自如下</p></blockquote> <h5 id="root-根节点"><a href="#root-根节点" class="header-anchor">#</a> ROOT (根节点)</h5> <blockquote><p>根节点是最顶层节点，发起人节点</p></blockquote> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token punctuation">{</span>
+    <span class="token comment">//发起人权限，哪些 人/部门 可以发起这个审批</span>
+   assignedUser<span class="token operator">:</span> <span class="token punctuation">[</span>
+    	<span class="token punctuation">{</span>
+    		<span class="token string">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;user_id_001&quot;</span><span class="token punctuation">,</span>
+    		<span class="token string">&quot;name&quot;</span><span class="token operator">:</span><span class="token string">&quot;张三&quot;</span><span class="token punctuation">,</span>
+    		<span class="token string">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;user&quot;</span> <span class="token comment">//根据类型判断是人或者部门</span>
+		<span class="token punctuation">}</span><span class="token punctuation">,</span>
+		<span class="token punctuation">{</span>
+    		<span class="token string">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;dept_id_001&quot;</span><span class="token punctuation">,</span>
+    		<span class="token string">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;研发部&quot;</span><span class="token punctuation">,</span>
+    		<span class="token string">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;dept&quot;</span> <span class="token comment">////根据类型判断是人或者部门</span>
+		<span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    formPerms<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token comment">//表单权限设置</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br></div></div><h5 id="approval-审批节点"><a href="#approval-审批节点" class="header-anchor">#</a> APPROVAL（审批节点）</h5> <blockquote><p>审批节点设置审批人及审批规则</p></blockquote> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token punctuation">{</span>
+    <span class="token comment">//审批处理的类型 ASSIGN_USER 指定人员、SELF_SELECT 发起人自选、LEADER_TOP 连续多级主管、LEADER 主管、ROLE 指定角色、SELF 发起人自己、REFUSE 自动拒绝、FORM_USER指定表单联系人</span>
+    assignedType<span class="token operator">:</span> <span class="token string">&quot;类型&quot;</span><span class="token punctuation">,</span>
+    mode<span class="token operator">:</span> <span class="token string">&quot;AND&quot;</span><span class="token punctuation">,</span> <span class="token comment">//多人审批时的审批模式，AND 会签、OR 或签、NEXT 顺序依次审批</span>
+    sign<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token comment">//审批同意时是否需要签字</span>
+    formPerms<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">//表单权限设置</span>
+    <span class="token comment">//审批人为空时的规则</span>
+    nobady<span class="token operator">:</span> <span class="token punctuation">{</span>
+       handler<span class="token operator">:</span> <span class="token string">&quot;PASS&quot;</span><span class="token punctuation">,</span> <span class="token comment">//PASS 直接通过、 TO_ADMIN 转交主管理员、TO_USER 转交指定人员</span>
+        assignedUser<span class="token operator">:</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token comment">//TO_USER 时的指定人员</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token comment">//审批超时限制设置</span>
+    timeLimit<span class="token operator">:</span><span class="token punctuation">{</span>
+        <span class="token comment">//超时时间限制</span>
+        timeout<span class="token operator">:</span><span class="token punctuation">{</span>
+            unit<span class="token operator">:</span> <span class="token string">&quot;H&quot;</span><span class="token punctuation">,</span> <span class="token comment">//时间单位 M分钟、H小时、D天,</span>
+            value<span class="token operator">:</span> <span class="token number">2</span> <span class="token comment">//时间值</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token comment">//超时后的处理规则</span>
+        handler<span class="token operator">:</span><span class="token punctuation">{</span>
+            type<span class="token operator">:</span> <span class="token string">&quot;REFUSE&quot;</span><span class="token punctuation">,</span> <span class="token comment">//PASS 自动通过、REFUSE 自动驳回、NOTIFY 发送通知进行提醒</span>
+            notify<span class="token operator">:</span><span class="token punctuation">{</span>
+                once<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment">//是否只提醒一次</span>
+                hour<span class="token operator">:</span> <span class="token number">1</span> <span class="token comment">//重复提醒，几小时提醒一次</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    assignedUser<span class="token operator">:</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">//指定审批人员 ASSIGN_USER 时不为空</span>
+    <span class="token comment">//发起人自选</span>
+    selfSelect<span class="token operator">:</span> <span class="token punctuation">{</span>
+    	multiple<span class="token operator">:</span> <span class="token boolean">true</span> <span class="token comment">// 是否多选 true/false</span>
+	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token comment">//连续多级主管</span>
+    leaderTop<span class="token operator">:</span> <span class="token punctuation">{</span>
+        endCondition<span class="token operator">:</span> <span class="token string">&quot;TOP&quot;</span><span class="token punctuation">,</span> <span class="token comment">//结束条件 TOP 直到最上级主管、 LEVEL 指定不超过多少级主管</span>
+        endLevel<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token comment">//指定级别主管审批后结束本节点</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token comment">//指定主管审批</span>
+    leader<span class="token operator">:</span><span class="token punctuation">{</span>
+        level<span class="token operator">:</span> <span class="token number">1</span> <span class="token comment">//发起人指定级别主管</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token comment">//指定角色审批</span>
+    role<span class="token operator">:</span><span class="token punctuation">[</span><span class="token string">&quot;admin&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;leader&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;hr&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">//指定审批人为系统角色</span>
+    refuse<span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token comment">//驳回设置</span>
+        toEnd<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment">//驳回直接结束流程</span>
+        target<span class="token operator">:</span> <span class="token string">'end'</span> <span class="token comment">//驳回到指定ID的节点</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    formUser<span class="token operator">:</span> <span class="token string">''</span><span class="token comment">//类型为指定表单联系人时，对应表单组件ID</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br></div></div><h5 id="condition-条件节点"><a href="#condition-条件节点" class="header-anchor">#</a> CONDITION (条件节点)</h5> <blockquote><p>条件选项节点是 CONDITIONS  的子节点，存在于 branchs 子分支内，用来设置条件</p></blockquote> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token punctuation">{</span>
+    groupsType<span class="token operator">:</span><span class="token string">&quot;OR&quot;</span><span class="token punctuation">,</span> <span class="token comment">//条件组逻辑关系 OR、AND</span>
+    groups<span class="token operator">:</span><span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            groupType<span class="token operator">:</span><span class="token string">&quot;AND&quot;</span><span class="token punctuation">,</span> <span class="token comment">//条件组内条件关系 OR、AND</span>
+            <span class="token comment">//组内子条件</span>
+            conditions<span class="token operator">:</span><span class="token punctuation">[</span> 
+               <span class="token punctuation">{</span>
+                   cid<span class="token operator">:</span> <span class="token string">&quot;d78s96fd9s&quot;</span><span class="token punctuation">,</span> <span class="token comment">//组件ID，通过组件ID索引到表单设计器中的组件</span>
+                   compare<span class="token operator">:</span> <span class="token string">&quot;&gt;=&quot;</span><span class="token punctuation">,</span> <span class="token comment">//比较运算符 &gt;大于 &lt;小于 大于等于 小于等于 范围</span>
+                   value<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">//比较值，如果只需要比较一个值，那么只取value[0] </span>
+               <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    expression<span class="token operator">:</span> <span class="token string">&quot;(A AND B) OR C&quot;</span> <span class="token comment">//自定义表达式，灵活构建逻辑关系</span>
+<span class="token punctuation">}</span>
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br></div></div><h5 id="concurrent-并行节点"><a href="#concurrent-并行节点" class="header-anchor">#</a> CONCURRENT（并行节点）</h5> <blockquote><p>CONCURRENT是CONCURRENTS的字节点，无条件流转，多路分支同时并行进入</p></blockquote> <div class="language-js line-numbers-mode"><pre class="language-js"><code>无属性设置
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><h5 id="cc-抄送节点"><a href="#cc-抄送节点" class="header-anchor">#</a> CC（抄送节点）</h5> <blockquote><p>当到达此节点时，流程状态会被发送给指定的用户</p></blockquote> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token punctuation">{</span>
+    assignedUser<span class="token operator">:</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">//指定抄送人员</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><h5 id="delay-延时处理节点"><a href="#delay-延时处理节点" class="header-anchor">#</a> DELAY（延时处理节点）</h5> <blockquote><p>流程到达此节点时，会被阻塞一段时间才被放行</p></blockquote> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token punctuation">{</span>
+    type<span class="token operator">:</span> <span class="token string">&quot;FIXED&quot;</span><span class="token punctuation">,</span> <span class="token comment">//延时类型 FIXED:到达当前节点后延时固定时长 、AUTO:延时到 dateTime设置的时间</span>
+    time<span class="token operator">:</span> <span class="token number">30</span><span class="token punctuation">,</span> <span class="token comment">//延时时间</span>
+    unit<span class="token operator">:</span> <span class="token string">&quot;M&quot;</span><span class="token punctuation">,</span> <span class="token comment">//时间单位 D天 H小时 M分钟</span>
+    dateTime<span class="token operator">:</span> <span class="token string">&quot;18:34:00&quot;</span> <span class="token comment">//如果当天没有超过设置的此时间点，就延时到这个指定的时间，到了就直接跳过不延时</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><h5 id="trigger-触发器节点"><a href="#trigger-触发器节点" class="header-anchor">#</a> TRIGGER（触发器节点）</h5> <blockquote><p>流程到达此节点时，会触发一个提前设置好的动作，用来与外部系统对接</p></blockquote> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token punctuation">{</span>
+  type<span class="token operator">:</span> <span class="token string">'WEBHOOK'</span><span class="token punctuation">,</span> <span class="token comment">//触发的动作类型 WEBHOOK、EMAIL</span>
+  http<span class="token operator">:</span><span class="token punctuation">{</span>
+    method<span class="token operator">:</span> <span class="token string">'GET'</span><span class="token punctuation">,</span> <span class="token comment">//请求方法 支持GET/POST</span>
+    url<span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span> <span class="token comment">//URL地址，可以直接带参数</span>
+    headers<span class="token operator">:</span> <span class="token punctuation">[</span> <span class="token comment">//http header</span>
+      <span class="token punctuation">{</span>
+        name<span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+        isField<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        value<span class="token operator">:</span> <span class="token string">''</span> <span class="token comment">//支持表达式 ${xxx} xxx为表单字段名称</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    contentType<span class="token operator">:</span> <span class="token string">'FORM'</span><span class="token punctuation">,</span> <span class="token comment">//请求参数类型</span>
+    params<span class="token operator">:</span><span class="token punctuation">[</span> <span class="token comment">//请求参数</span>
+      <span class="token punctuation">{</span>
+        name<span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+        isField<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment">//是表单字段还是自定义</span>
+        value<span class="token operator">:</span> <span class="token string">''</span> <span class="token comment">//支持表达式 ${xxx} xxx为表单字段名称</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    retry<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token comment">//重试次数</span>
+    handlerByScript<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token comment">//是否使用脚本处理请求结果</span>
+    success<span class="token operator">:</span> <span class="token string">'function resHandler(res) {\n  return true;\n}'</span><span class="token punctuation">,</span>
+    fail<span class="token operator">:</span> <span class="token string">'function resHandler(res) {\n  return true;\n}'</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  email<span class="token operator">:</span><span class="token punctuation">{</span>
+    subject<span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+    to<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    content<span class="token operator">:</span> <span class="token string">''</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br></div></div><h5 id="empty-空节点"><a href="#empty-空节点" class="header-anchor">#</a> EMPTY (空节点）</h5> <blockquote><p>空节点时用来在设计器中每一个子分支末尾占位的，辅助UI构建，无设置项，处理时直接忽略</p></blockquote> <h3 id="表单权限设置"><a href="#表单权限设置" class="header-anchor">#</a> 表单权限设置</h3> <p>表单权限设置目前只存在于两种节点，<code>APPROVEL</code> 和<code>ROOR</code>，都在这俩节点的<code>props</code>字段内的 <code>formPerms</code>中</p> <p>🔓 表单权限对应三种类型</p> <ul><li>👀 只读：R  （该表单项节点关联人员只能看表单结果，不能修改）</li> <li>✍ 可编辑：R （该表单项节点关联人员可以修改表单内容）</li> <li>😎 隐藏：H  （该表单项对该节点关联人员隐藏，不展示）</li></ul> <p><code>formPerms</code> 的内容如下：</p> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+        id<span class="token operator">:</span> <span class="token string">&quot;field3781138962528&quot;</span><span class="token punctuation">,</span>  <span class="token comment">//表单字段ID</span>
+        perm<span class="token operator">:</span> <span class="token string">&quot;R&quot;</span><span class="token punctuation">,</span> <span class="token comment">//权限标识</span>
+        title<span class="token operator">:</span> <span class="token string">&quot;单行文本输入&quot;</span><span class="token punctuation">,</span> <span class="token comment">///表单名称</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><p>❗ 请注意，如果没有手动修改表单权限设置的话，<code>formPerms</code>  内是默认为空的</p> <p>因此约定 <code>APPROVEL</code> 节点默认所有表单权限为只读，<code>ROOR</code>节点默认所有权限为可编辑</p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/dev/form.html" class="prev">
+        表单设计
+      </a></span> <span class="next"><a href="/dev/server.html">
+        服务端开发指南
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.5597d7ea.js" defer></script><script src="/assets/js/2.55e01133.js" defer></script><script src="/assets/js/12.eaf3ad2b.js" defer></script>
+  </body>
+</html>
