@@ -20,7 +20,8 @@
     "vue": "^2.6.11",
     "vue-router": "^3.4.3",
     "vuedraggable": "^2.24.1",
-    "vuex": "^3.5.1"
+    "vuex": "^3.5.1",
+    "clipboard": "^2.0.6"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
