@@ -11,7 +11,7 @@
     "axios": "^0.20.0",
     "codemirror": "^6.0.0",
     "core-js": "^3.6.5",
-    "element-ui": "^2.13.2",
+    "element-ui": "^2.15.7",
     "less": "^3.12.2",
     "less-loader": "^7.0.1",
     "moment": "^2.29.4",

@@ -1,7 +1,7 @@
 module.exports = {
   title: 'wflow文档',
   description: 'wflow工作流',
-  base: '/',
+  base: '/wflow/',
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }]
   ],
@@ -11,7 +11,7 @@ module.exports = {
     sidebarDepth: 4,
     logo: '/logo.png',
     //repo: 'willianfu/wlink-iot',
-    docsDir: 'doc',
+    docsDir: 'docs',
     editLinks: false,
     //editLinkText: '在 Github 上帮助我们编辑此页',
     nav: [
@@ -50,7 +50,7 @@ module.exports = {
     nextLinks: true,
     prevLinks: true,
   },
-  plugins: ['@vuepress/back-to-top'/*, require('./plugins/alert')*/],
+  plugins: ['@vuepress/back-to-top', require('./plugins/alert')],
   markdown: {
     lineNumbers: true
   }

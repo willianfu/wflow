@@ -4,7 +4,7 @@
 
     <div class="work-panel">
       <div class="user">
-        <el-button type="primary" round size="small" @click="showUserSelect = true" icon="el-icon-user">选择本次登录者</el-button>
+        <el-button type="primary" round size="small" @click="$refs.orgPicker.show()" icon="el-icon-user">选择本次登录者</el-button>
         <div v-if="loginUser !== '' && loginUser !== null">
           <span>{{loginUser.name}}</span>
         </div>
@@ -30,20 +30,18 @@
         </div>
       </div>
     </div>
-
-    <org-picker :show="showUserSelect" single onlyUser @close="showUserSelect = false" :selected="select" @selectOver="selected"></org-picker>
+    <org-picker type="user" ref="orgPicker" :selected="select" @ok="selected"></org-picker>
   </div>
 </template>
 
 <script>
-import orgPicker from "@/components/common/organizationPicker";
+import OrgPicker from "@/components/common/OrgPicker";
 
 export default {
   name: "Index",
-  components:{orgPicker},
+  components:{OrgPicker},
   data(){
     return{
-      showUserSelect: false,
       select:[],
       loginUser: ''
     }

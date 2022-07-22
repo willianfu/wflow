@@ -54,6 +54,9 @@ export default {
       if (Array.isArray(this.value)){
         let start = moment(this.value[0]).format(this.format.replaceAll('dd', 'DD'))
         let end = moment(this.value[1]).format(this.format.replaceAll('dd', 'DD'))
+        if (start === end){
+          return '0 （时长为0，请确认）'
+        }
         let mstart = moment(start);
         let mend = moment(end)
         let years = mend.diff(start, 'years')
@@ -79,7 +82,7 @@ export default {
         return `${years > 0 ? years + '年 ': ' '}${months > 0 ? months + '个月 ': ' '}
                 ${days > 0 ? days + '天 ': ' '}${hours > 0 ? hours + '小时 ': ' '}
                 ${minutes > 0 ? minutes + '分钟 ': ' '}`
-      }else {
+      } else {
         return '先选择时间哦'
       }
     }

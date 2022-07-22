@@ -1,12 +1,13 @@
 <template>
   <div>
     <el-form label-position="top" label-width="90px">
-      <el-form-item label="选择审批对象" prop="text" class="user-type">
+      <el-form-item label="⚙ 选择审批对象" prop="text" class="user-type">
         <el-radio-group v-model="nodeProps.assignedType">
           <el-radio v-for="t in approvalTypes" :label="t.type" :key="t.type">{{ t.name }}</el-radio>
         </el-radio-group>
         <div v-if="nodeProps.assignedType === 'ASSIGN_USER'">
           <el-button size="mini" icon="el-icon-plus" type="primary" @click="selectUser" round>选择人员</el-button>
+          <org-items v-model="nodeProps.assignedUser"/>
         </div>
         <div v-else-if="nodeProps.assignedType === 'SELF_SELECT'">
           <el-radio-group size="mini" v-model="nodeProps.selfSelect.multiple">
@@ -39,8 +40,8 @@
           </el-form-item>
         </div>
         <div v-else-if="nodeProps.assignedType === 'ROLE'">
-          <el-button size="mini" icon="el-icon-plus" type="primary" @click="selectUser" round>选择系统角色</el-button>
-
+          <el-button size="mini" icon="el-icon-plus" type="primary" @click="selectRole" round>选择系统角色</el-button>
+          <org-items v-model="nodeProps.role"/>
         </div>
         <div v-else-if="nodeProps.assignedType === 'FORM_USER'">
           <el-form-item label="选择表单联系人项" prop="text" class="approve-end">
@@ -56,7 +57,7 @@
       </el-form-item>
 
       <el-divider></el-divider>
-      <el-form-item label="审批人为空时" prop="text" class="line-mode">
+      <el-form-item label="👤 审批人为空时" prop="text" class="line-mode">
         <el-radio-group v-model="nodeProps.nobody.handler">
           <el-radio label="TO_PASS">自动通过</el-radio>
           <el-radio label="TO_REFUSE">自动驳回</el-radio>
@@ -65,16 +66,17 @@
         </el-radio-group>
 
         <div style="margin-top: 10px" v-if="nodeProps.nobody.handler === 'TO_USER'">
-          <el-button size="mini" icon="el-icon-plus" type="primary" @click="selectUser" round>选择人员</el-button>
+          <el-button size="mini" icon="el-icon-plus" type="primary" @click="selectNoSetUser" round>选择人员</el-button>
+          <org-items v-model="nodeProps.assignedUser"/>
         </div>
 
       </el-form-item>
 
       <div v-if="showMode">
         <el-divider/>
-        <el-form-item label="多人审批时审批方式" prop="text" class="approve-mode">
+        <el-form-item label="👩‍👦‍👦 多人审批时审批方式" prop="text" class="approve-mode">
           <el-radio-group v-model="nodeProps.mode">
-            <el-radio label="NEXT">按选择顺序依次审批</el-radio>
+            <el-radio label="NEXT">会签 （按选择顺序审批，每个人必须同意）</el-radio>
             <el-radio label="AND">会签（可同时审批，每个人必须同意）</el-radio>
             <el-radio label="OR">或签（有一人同意即可）</el-radio>
           </el-radio-group>
@@ -82,14 +84,15 @@
       </div>
 
       <el-divider>高级设置</el-divider>
-      <el-form-item label="审批同意时是否需要签字" prop="text">
+      <el-form-item label="✍ 审批同意时是否需要签字" prop="text">
         <el-switch inactive-text="不用" active-text="需要" v-model="nodeProps.sign"></el-switch>
         <el-tooltip class="item" effect="dark" content="如果全局设置了需要签字，则此处不生效" placement="top-start">
           <i class="el-icon-question" style="margin-left: 10px; font-size: medium; color: #b0b0b1"></i>
         </el-tooltip>
       </el-form-item>
-      <el-form-item label="审批期限（为 0 则不生效）" prop="timeLimit">
-        <el-input style="width: 180px;" placeholder="时长" size="small" type="number" v-model="nodeProps.timeLimit.timeout.value">
+      <el-form-item label="⏱ 审批期限（为 0 则不生效）" prop="timeLimit">
+        <el-input style="width: 180px;" placeholder="时长" size="small" type="number"
+                  v-model="nodeProps.timeLimit.timeout.value">
           <el-select style="width: 75px;" v-model="nodeProps.timeLimit.timeout.unit" slot="append" placeholder="请选择">
             <el-option label="天" value="D"></el-option>
             <el-option label="小时" value="H"></el-option>
@@ -107,27 +110,39 @@
           <el-switch inactive-text="循环" active-text="一次" v-model="nodeProps.timeLimit.handler.notify.once"></el-switch>
           <span style="margin-left: 20px" v-if="!nodeProps.timeLimit.handler.notify.once">
 							每隔
-							<el-input-number :min="0" :max="10000" :step="1" size="mini" v-model="nodeProps.timeLimit.handler.notify.hour"/>
+							<el-input-number :min="0" :max="10000" :step="1" size="mini"
+                               v-model="nodeProps.timeLimit.handler.notify.hour"/>
 							小时提醒一次
 						</span>
         </div>
       </el-form-item>
-      <el-form-item label="如果审批被驳回 👇">
-        <el-switch active-text="直接结束流程" inactive-text="转到到指定步骤" v-model="nodeProps.refuse.toEnd"></el-switch>
-        <el-select style="margin-left: 10px; width: 150px;" placeholder="选择跳转步骤" v-if="!nodeProps.refuse.toEnd" size="small" v-model="nodeProps.refuse.target">
-          <el-option v-for="(node, i) in nodeOptions" :key="i" :label="node.name" :value="node.id"></el-option>
-        </el-select>
+      <el-form-item label="🙅‍ 如果审批被驳回 👇">
+        <el-radio-group v-model="nodeProps.refuse.type">
+          <el-radio label="TO_END">直接结束流程</el-radio>
+          <el-radio label="TO_BEFORE">驳回到上级审批节点</el-radio>
+          <el-radio label="TO_NODE">驳回到指定节点</el-radio>
+        </el-radio-group>
+        <div v-if="nodeProps.refuse.type === 'TO_NODE'">
+          <span>指定节点:</span>
+          <el-select style="margin-left: 10px; width: 150px;" placeholder="选择跳转步骤" size="small" v-model="nodeProps.refuse.target">
+            <el-option v-for="(node, i) in nodeOptions" :key="i" :label="node.name" :value="node.id"></el-option>
+          </el-select>
+        </div>
+
       </el-form-item>
     </el-form>
+    <org-picker :title="pickerTitle" multiple :type="orgPickerType" ref="orgPicker" :selected="orgPickerSelected"
+                @ok="selected"/>
   </div>
 </template>
 
 <script>
-import orgPicker from '@/components/common/organizationPicker'
+import OrgPicker from "@/components/common/OrgPicker";
+import OrgItems from "../OrgItems";
 
 export default {
   name: "ApprovalNodeConfig",
-  components: {orgPicker},
+  components: {OrgPicker, OrgItems},
   props: {
     config: {
       type: Object,
@@ -139,6 +154,8 @@ export default {
   data() {
     return {
       showOrgSelect: false,
+      orgPickerSelected: [],
+      orgPickerType: 'user',
       approvalTypes: [
         {name: '指定人员', type: 'ASSIGN_USER'},
         {name: '发起人自选', type: 'SELF_SELECT'},
@@ -157,16 +174,26 @@ export default {
     select() {
       return this.config.assignedUser || []
     },
-    forms(){
+    forms() {
       return this.$store.state.design.formItems.filter(f => {
         return f.name === 'UserPicker'
       })
     },
-    nodeOptions(){
+    pickerTitle() {
+      switch (this.orgPickerType) {
+        case 'user':
+          return '请选择人员';
+        case 'role':
+          return '请选择系统角色';
+        default:
+          return null;
+      }
+    },
+    nodeOptions() {
       let values = []
       const excType = ['ROOT', 'EMPTY', "CONDITION", "CONDITIONS", "CONCURRENT", "CONCURRENTS"]
       this.$store.state.nodeMap.forEach((v) => {
-        if (excType.indexOf(v.type) === -1){
+        if (excType.indexOf(v.type) === -1) {
           values.push({id: v.id, name: v.name})
         }
       })
@@ -190,16 +217,25 @@ export default {
     }
   },
   methods: {
-    closeSelect() {
-
-    },
     selectUser() {
-      this.showOrgSelect = true
+      this.orgPickerSelected = this.select
+      this.orgPickerType = 'user'
+      this.$refs.orgPicker.show()
+    },
+    selectNoSetUser() {
+      this.orgPickerSelected = this.config.nobody.assignedUser
+      this.orgPickerType = 'user'
+      this.$refs.orgPicker.show()
+    },
+    selectRole() {
+      this.orgPickerSelected = this.select
+      this.orgPickerType = 'role'
+      this.$refs.orgPicker.show()
     },
     selected(select) {
       console.log(select)
-      this.showOrgSelect = false
-      select.forEach(val => this.select.push(val))
+      this.orgPickerSelected.length = 0
+      select.forEach(val => this.orgPickerSelected.push(val))
     },
     removeOrgItem(index) {
       this.select.splice(index, 1)
@@ -217,14 +253,14 @@ export default {
   }
 }
 
-/deep/ .line-mode{
-  .el-radio{
+/deep/ .line-mode {
+  .el-radio {
     width: 150px;
     margin: 5px;
   }
 }
 
-/deep/ .el-form-item__label{
+/deep/ .el-form-item__label {
   line-height: 25px;
 }
 

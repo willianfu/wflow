@@ -87,9 +87,6 @@ export default {
         conditions:[]
       })
     },
-    closeSelect() {
-
-    },
     selectUser() {
       this.showOrgSelect = true
     },

@@ -10,6 +10,14 @@ export function getOrgTree(param) {
   })
 }
 
+// 查询系统角色
+export function getRole() {
+  return request({
+    url: 'oa/org/role',
+    method: 'get'
+  })
+}
+
 // 搜索人员
 export function getUserByName(param) {
   return request({
@@ -20,5 +28,5 @@ export function getUserByName(param) {
 }
 
 export default {
-  getOrgTree, getUserByName
+  getOrgTree, getUserByName, getRole
 }

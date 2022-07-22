@@ -4,12 +4,13 @@
       <el-button icon="el-icon-plus" size="small" @click="scale += 10" :disabled="scale >= 150" circle></el-button>
       <span>{{ scale }}%</span>
       <el-button icon="el-icon-minus" size="small" @click="scale -= 10" :disabled="scale <= 40" circle></el-button>
-      <el-button @click="validate">校验流程</el-button>
+<!--      <el-button @click="validate">校验流程</el-button>-->
     </div>
     <div class="design" :style="'transform: scale('+ scale / 100 +');'">
       <process-tree ref="process-tree" @selectedNode="nodeSelected"/>
     </div>
     <el-drawer :title="selectedNode.name" :visible.sync="showConfig"
+               :modal-append-to-body="false"
                :size="selectedNode.type === 'CONDITION' ? '600px':'500px'"
                direction="rtl" :modal="false" destroy-on-close>
       <div slot="title">

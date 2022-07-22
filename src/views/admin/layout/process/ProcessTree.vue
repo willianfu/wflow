@@ -195,8 +195,14 @@ export default {
       }
       //拼接后续节点
       if (this.isBranchNode({type: type})){
+        if (afterNode && afterNode.id){
+          afterNode.parentId = parentNode.children.children.id
+        }
         this.$set(parentNode.children.children, 'children', afterNode)
       }else {
+        if (afterNode && afterNode.id){
+          afterNode.parentId = parentNode.children.id
+        }
         this.$set(parentNode.children, 'children', afterNode)
       }
       this.$forceUpdate()

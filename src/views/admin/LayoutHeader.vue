@@ -63,6 +63,7 @@ export default {
       this.$emit('publish')
     },
     preview() {
+      this.$emit('preview')
       //this.
       this.viewCode = true;
     },

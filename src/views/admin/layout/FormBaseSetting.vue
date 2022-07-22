@@ -10,7 +10,7 @@
 					</span>
 					<span>
 						<span>选择图标</span>
-						<el-popover placement="bottom-start" width="200" trigger="click">
+						<el-popover placement="bottom-start" width="390" trigger="click">
 							<div class="icon-select">
 								<i :class="i" v-for="(i, id) in icons" :key="id" @click="setup.logo.icon = i"></i>
 							</div>
@@ -55,21 +55,21 @@
         </el-select>
       </el-form-item>
     </el-form>
-    <org-picker :show="showUserSelect" @close="closeSelect" :selected="select" @selectOver="selected"></org-picker>
+    <org-picker title="请选择发起本审批的人员/部门" multiple ref="orgPicker" :selected="select" @ok="selected"></org-picker>
   </div>
 </template>
 
 <script>
-import orgPicker from '@/components/common/organizationPicker'
+import OrgPicker from "@/components/common/OrgPicker";
 import {getFormGroups, updateGroup} from '@/api/design'
+import iconfont from '@/assets/iconfont/iconfont.json'
 
 export default {
   name: "FormBaseSetting",
-  components: {orgPicker},
+  components: {OrgPicker},
   data() {
     return {
       nowUserSelect: null,
-      showUserSelect: false,
       showIconSelect: false,
       select: [],
       newGroup: '',
@@ -96,14 +96,11 @@ export default {
         '#c7158577'
       ],
       icons: [
-        'el-icon-eleme',
         'el-icon-delete-solid',
         'el-icon-s-tools',
-        'el-icon-phone',
         'el-icon-s-goods',
         'el-icon-warning',
         'el-icon-circle-plus',
-        'el-icon-s-help',
         'el-icon-camera-solid',
         'el-icon-s-promotion',
         'el-icon-s-cooperation',
@@ -112,7 +109,6 @@ export default {
         'el-icon-s-data',
         'el-icon-s-check',
         'el-icon-s-claim',
-        'el-icon-location'
       ]
     }
   },
@@ -121,10 +117,20 @@ export default {
       return this.$store.state.design;
     }
   },
+  created() {
+    this.loadIconfont()
+  },
   mounted(){
     this.getGroups()
   },
   methods: {
+    loadIconfont(){
+      if (iconfont && iconfont.id){
+        iconfont.glyphs.forEach(icon => {
+          this.icons.push(`${iconfont.font_family} ${iconfont.css_prefix_text}${icon.font_class}`)
+        })
+      }
+    },
     getGroups(){
       getFormGroups().then(rsp => {
         this.fromGroup = rsp.data
@@ -151,7 +157,7 @@ export default {
     selectUser(key) {
       this.select = this.setup.settings[key]
       this.nowUserSelect = key
-      this.showUserSelect = true
+      this.$refs.orgPicker.show()
     },
     validate(){
 
@@ -166,11 +172,13 @@ export default {
 }
 
 .icon-select {
+  display: flex;
+  flex-wrap: wrap;
   i {
     cursor: pointer;
     font-size: large;
     padding: 10px;
-
+    max-width: 38px !important;
     &:hover {
       box-shadow: 0 0 10px 2px #C2C2C2;
     }

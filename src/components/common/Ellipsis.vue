@@ -2,6 +2,7 @@
   <div :class="{'line': row === 1, 'lines': row > 1}"
        :title="hoverTip ? content: null"
        :style="{'--row':row}">
+    <slot name="pre"></slot>
     {{content}}
   </div>
 </template>

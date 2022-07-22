@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header style="background: white">
-      <layout-header v-model="activeSelect" @publish="publishProcess"></layout-header>
+      <layout-header v-model="activeSelect" @publish="publishProcess" @preview="preview"></layout-header>
     </el-header>
     <div class="layout-body">
       <form-base-setting ref="baseSetting" v-show="activeSelect === 'baseSetting'"/>
@@ -9,7 +9,7 @@
       <process-design ref="processDesign" v-show="activeSelect === 'processDesign'"/>
       <form-pro-setting ref="proSetting" v-show="activeSelect === 'proSetting'"/>
     </div>
-
+    <org-picker multiple type="role" ref="picker" title="选择人员"/>
   </el-container>
 
 </template>
@@ -21,14 +21,16 @@ import FormBaseSetting from '@/views/admin/layout/FormBaseSetting'
 import FormDesign from '@/views/admin/layout/FormDesign'
 import ProcessDesign from '@/views/admin/layout/ProcessDesign'
 import FormProSetting from '@/views/admin/layout/FormProSetting'
+import OrgPicker from "../../components/common/OrgPicker";
 
 export default {
   name: "FormProcessDesign",
-  components: {LayoutHeader, FormBaseSetting, FormDesign, ProcessDesign, FormProSetting},
+  components: {OrgPicker, LayoutHeader, FormBaseSetting, FormDesign, ProcessDesign, FormProSetting},
   data() {
     return {
       isNew: true,
-      activeSelect: 'baseSetting'
+      activeSelect: 'baseSetting',
+      validVisible: false
     }
   },
   computed:{
@@ -94,6 +96,13 @@ export default {
         },
         remark: "备注说明"
       })
+    },
+    validateDesign(){
+      //this.$refs.picker.show()
+      this.validVisible = true
+    },
+    preview(){
+      this.validateDesign()
     },
     publishProcess(){
       this.$confirm('您确定审批流程已配置完毕,并需要将其发布，发布后立即生效，是否继续?', '提示', {

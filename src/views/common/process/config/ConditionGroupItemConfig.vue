@@ -85,17 +85,17 @@
         </div>
       </div>
     </div>
-    <org-picker :type="orgType" :show="showOrgSelect" @close="closeSelect" :selected="users" @selectOver="selected"></org-picker>
+    <org-picker :type="orgType" multiple ref="orgPicker" :selected="users" @ok="selected"></org-picker>
   </div>
 </template>
 
 <script>
-import orgPicker from '@/components/common/organizationPicker'
+import OrgPicker from "@/components/common/OrgPicker";
 import {ValueType} from '@/views/common/form/ComponentsConfigExport'
 
 export default {
   name: "ConditionGroupItemConfig",
-  components: {orgPicker},
+  components: {OrgPicker},
   data() {
     return {
       ValueType,
@@ -150,18 +150,15 @@ export default {
         default: return 2;
       }
     },
-    closeSelect() {
-      this.showOrgSelect = false
-    },
     selectUser(value, orgType) {
       this.orgType = orgType
       this.users = value
-      this.showOrgSelect = true
+      this.$refs.orgPicker.show()
     },
     selected(select) {
       console.log(select)
-      this.showOrgSelect = false
-      select.forEach(val => this.users.push(val))
+      this.users.length = 0
+      select.forEach(u => this.users.push(u))
     },
     removeOrgItem(values, index) {
       values.splice(index, 1)

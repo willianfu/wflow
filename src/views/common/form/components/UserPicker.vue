@@ -5,9 +5,8 @@
       <span class="placeholder"> {{placeholder}}</span>
     </div>
     <div v-else>
-      <el-button icon="el-icon-coin" type="primary" size="mini" round @click="showOrgSelect = true">选择部门</el-button>
-      <org-picker type="user" :single="!multiple" :show="showOrgSelect" @close="showOrgSelect = false"
-                  :selected="_value" @selectOver="selected"></org-picker>
+      <el-button icon="el-icon-coin" type="primary" size="mini" round @click="$refs.orgPicker.show()">选择部门</el-button>
+      <org-picker type="user" :multiple="multiple" ref="orgPicker" :selected="_value" @ok="selected"/>
       <span class="placeholder"> {{placeholder}}</span>
       <div style="margin-top: 5px">
         <el-tag size="mini" style="margin: 5px" closable v-for="(dept, i) in _value" @close="delDept(i)">{{dept.name}}</el-tag>
@@ -18,7 +17,7 @@
 
 <script>
 import componentMinxins from '../ComponentMinxins'
-import OrgPicker from '@/components/common/organizationPicker'
+import OrgPicker from "@/components/common/OrgPicker";
 
 export default {
   mixins: [componentMinxins],

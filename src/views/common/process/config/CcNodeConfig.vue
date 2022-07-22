@@ -5,22 +5,18 @@
       允许发起人添加抄送人:
       <el-switch v-model="config.shouldAdd"/>
     </div>
-    <div style="margin-top: 20px">
-      <el-tag class="org-item" :type="org.type === 'dept'?'':'info'"
-              v-for="(org, index) in select" :key="index + '_org'"
-              closable size="mini" @close="removeOrgItem(index)">
-        {{org.name}}
-      </el-tag>
-    </div>
-    <org-picker :show="showOrgSelect" @close="closeSelect" :selected="select" @selectOver="selected"></org-picker>
+    <org-items v-model="select"/>
+    <org-picker multiple ref="orgPicker" :selected="select" @ok="selected"/>
   </div>
 </template>
 
 <script>
-import orgPicker from '@/components/common/organizationPicker'
+import OrgPicker from "@/components/common/OrgPicker";
+import OrgItems from "../OrgItems";
+
 export default {
   name: "CcNodeConfig.vue",
-  components: {orgPicker},
+  components: {OrgPicker, OrgItems},
   props:{
     config:{
       type: Object,
@@ -30,26 +26,25 @@ export default {
     }
   },
   computed:{
-    select(){
-      return this.config.assignedUser || []
+    select: {
+      get(){
+        return this.config.assignedUser || []
+      },
+      set(val){
+        this.config.assignedUser = val
+      }
     }
   },
   data() {
-    return {
-      showOrgSelect: false
-    }
+    return {}
   },
   methods: {
-    closeSelect(){
-
-    },
     selectOrg() {
-      this.showOrgSelect = true
+      this.$refs.orgPicker.show()
     },
     selected(select) {
       console.log(select)
-      this.showOrgSelect = false
-      select.forEach(val => this.select.push(val))
+      this.select = Object.assign([], select)
     },
     removeOrgItem(index){
       this.select.splice(index, 1)

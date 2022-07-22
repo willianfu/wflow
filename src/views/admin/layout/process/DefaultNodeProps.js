@@ -34,8 +34,8 @@ export const APPROVAL_PROPS = {
   },
   role:[],
   refuse: {
-    toEnd: true, //驳回直接结束流程
-    target: 'end' //驳回到指定ID的节点
+    type: 'TO_END', //驳回规则 TO_END  TO_NODE  TO_BEFORE
+    target: '' //驳回到指定ID的节点
   },
   formUser: ''
 }

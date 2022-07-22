@@ -8,10 +8,14 @@ import "element-ui/lib/theme-chalk/index.css";
 
 import "@/assets/theme.less";
 import "@/assets/global.css";
+import "@/assets/iconfont/iconfont.css"
+
 import Ellipsis from '@/components/common/Ellipsis'
+import WDialog from '@/components/common/WDialog'
 
 Vue.use(ElementUI);
 Vue.use(Ellipsis);
+Vue.use(WDialog);
 
 Vue.config.productionTip = false
 

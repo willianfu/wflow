@@ -3,6 +3,7 @@
     <div class="from-title">
       <el-button icon="el-icon-back" type="info" size="mini" circle plain style="margin-right: 15px" @click="$router.push('/')"></el-button>
       <span>流程面板</span>
+      <span style="color: #c75450; margin-left: 20px">📢 大家要体验的话，尽量使用已有的分组和流程进行编辑，不要随意新建，数据有点乱哈，谢谢了❤</span>
       <div>
         <el-button type="primary" icon="el-icon-plus" size="mini" @click="newProcess">新建表单</el-button>
         <el-button icon="el-icon-plus" @click="addGroup" size="mini">新建分组</el-button>
