@@ -16,11 +16,13 @@
 
 
 
-**感兴趣的小伙伴可以加我微信 `willianfu_`进群交流**
+👩‍👦‍👦大家感兴趣的话可扫码加入交流群， 如果二维码失效了，可以加我微信 `willianfu_` 备注`wflow` 拉你入群
 
-<p style="color: red">请务必备注： wflow </p>
+<img src="https://pic.rmb.bdstatic.com/bjh/4fc44115a4e25e8e968a72fd53f38973.png" alt="image-20220724230831144" style="zoom: 50%;" />       <img src="https://pic.rmb.bdstatic.com/bjh/ed2fd88694486bc83c56e08b83d44205.png" alt="image-20220724230928104" style="zoom:20%;" />
 
- 😋  [github地址](https://github.com/willianfu/wflow)   [码云gitee](https://gitee.com/willianfu/jw-workflow-engine)
+
+
+ 😋  [github地址](https://github.com/willianfu/wflow)  |   [码云gitee](https://gitee.com/willianfu/jw-workflow-engine)
 
   👉 在线体验地址： [戳我打开演示页面](http://47.100.202.245:83) 👈
 
