@@ -9,6 +9,7 @@ export default new Vuex.Store({
     nodeMap: new Map(),
     isEdit: null,
     selectedNode: {},
+    selectFormItem: null,
     design:{},
   },
   mutations: {

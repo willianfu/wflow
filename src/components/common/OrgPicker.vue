@@ -7,7 +7,7 @@
                     clearable placeholder="搜索人员，支持拼音、姓名" prefix-icon="el-icon-search"/>
           <div v-show="!showUsers">
             <ellipsis hoverTip style="height: 18px; color: #8c8c8c; padding: 5px 0 0" :row="1" :content="deptStackStr">
-              <i slot="pre" class="iconfont icon-a-11Cfenzuzuzhishu"></i>
+              <i slot="pre" class="el-icon-office-building"></i>
             </ellipsis>
             <div style="margin-top: 5px">
               <el-checkbox v-model="checkAll" @change="handleCheckAllChange" :disabled="!multiple">全选</el-checkbox>
@@ -19,7 +19,7 @@
           <div>系统角色</div>
         </div>
         <div class="org-items" :style="type === 'role' ? 'height: 350px':''">
-          <el-empty :image-size="100" description="似乎没有数据" v-if="orgs.length === 0"/>
+          <el-empty :image-size="100" description="似乎没有数据" v-show="orgs.length === 0"/>
           <div v-for="(org, index) in orgs" :key="index" :class="orgItemClass(org)" @click="selectChange(org)">
             <el-checkbox v-model="org.selected" :disabled="disableDept(org)"></el-checkbox>
             <div v-if="org.type === 'dept'">
@@ -47,6 +47,7 @@
           <span @click="clearSelected">清空</span>
         </div>
         <div class="org-items" style="height: 350px;">
+          <el-empty :image-size="100" description="请点击左侧列表选择数据" v-show="select.length === 0"/>
           <div v-for="(org, index) in select" :key="index" :class="orgItemClass(org)" >
             <div v-if="org.type === 'dept'">
               <i class="el-icon-folder-opened"></i>

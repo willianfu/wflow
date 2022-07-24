@@ -1,16 +1,20 @@
 <template>
-  <el-form>
-    <el-form-item label="表单名称">
-      <el-input size="small" clearable v-model="form.title"/>
-    </el-form-item>
-    <component :is="form.name" v-model="form.props"/>
-    <el-form-item label="必填项">
-      <el-switch v-model="form.props.required"></el-switch>
-    </el-form-item>
-    <el-form-item label="可打印">
-      <el-switch v-model="form.props.enablePrint"></el-switch>
-    </el-form-item>
-  </el-form>
+  <div>
+    <el-form v-if="form.name !== 'SpanLayout'">
+      <el-form-item label="表单名称">
+        <el-input size="small" clearable v-model="form.title"/>
+      </el-form-item>
+      <component :is="form.name" v-model="form.props"/>
+      <el-form-item label="必填项">
+        <el-switch v-model="form.props.required"></el-switch>
+      </el-form-item>
+      <el-form-item label="可打印">
+        <el-switch v-model="form.props.enablePrint"></el-switch>
+      </el-form-item>
+    </el-form>
+    <el-empty v-else description="当前组件不支持配置"></el-empty>
+  </div>
+
 </template>
 
 <script>
@@ -28,6 +32,7 @@ import Description from './config/DescriptionConfig.vue'
 import MoneyInput from './config/MoneyInputConfig.vue'
 import DeptPicker from './config/OrgPickerConfig.vue'
 import UserPicker from './config/OrgPickerConfig.vue'
+import TableList from './config/TableListConfig.vue'
 
 export default {
   name: "FormComponentConfig",
@@ -45,17 +50,13 @@ export default {
     Description,
     MoneyInput,
     DeptPicker,
-    UserPicker
+    UserPicker,
+    TableList
   },
-  props:{
-    formSelected:{
-      type: Number,
-      default: 0
-    }
-  },
+  props:{},
   computed:{
     form(){
-      return this.$store.state.design.formItems[this.formSelected]
+      return this.$store.state.selectFormItem
     }
   },
   data() {

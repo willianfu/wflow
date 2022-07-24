@@ -1,7 +1,7 @@
 <template>
-  <div style="max-width: 200px">
+  <div>
     <div v-if="mode === 'DESIGN'">
-      <el-input  size="medium" disabled :placeholder="placeholder" type="number"/>
+      <el-input size="medium" disabled :placeholder="placeholder" type="number"/>
     </div>
     <div v-else>
       <el-input v-model="_value" size="medium" clearable :placeholder="placeholder" type="number"/>

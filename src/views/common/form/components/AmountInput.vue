@@ -1,5 +1,5 @@
 <template>
-  <div style="max-width: 350px">
+  <div>
     <div v-if="mode === 'DESIGN'">
       <el-input size="medium" disabled :placeholder="placeholder"/>
       <div style="margin-top: 15px" v-show="showChinese">
@@ -9,7 +9,7 @@
 
     </div>
     <div v-else>
-      <el-input-number :min="0" controls-position="right" :precision="precision" size="medium" clearable v-model="_value" :placeholder="placeholder"/>
+      <el-input-number style="width: 100%;" :min="0" controls-position="right" :precision="precision" size="medium" clearable v-model="_value" :placeholder="placeholder"/>
       <div v-show="showChinese">
         <span>大写：</span>
         <span class="chinese">{{chinese}}</span>
@@ -139,9 +139,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .chinese{
   color: #afadad;
   font-size: smaller;
 }
+ /deep/ .el-input__inner{
+   text-align: left;
+ }
 </style>

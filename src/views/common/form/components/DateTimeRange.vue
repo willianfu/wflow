@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div v-if="mode === 'DESIGN'" style="max-width: 300px">
-      <el-date-picker size="medium" disabled style="width: 100%;" :type="type" :start-placeholder="placeholder[0]" :end-placeholder="placeholder[1]"/>
+    <div v-if="mode === 'DESIGN'">
+      <el-date-picker size="medium" disabled :type="type" :start-placeholder="placeholder[0]" :end-placeholder="placeholder[1]"/>
       <div v-show="showLength" class="length">
         <span>时长：</span>
         <span>{{timeLength}}</span>
@@ -100,5 +100,9 @@ export default {
 }
 .length:nth-child(2){
   color: #8c8c8c;
+}
+/deep/ .el-date-editor--datetimerange.el-input__inner{
+  width: 100%;
+  max-width: 400px;
 }
 </style>

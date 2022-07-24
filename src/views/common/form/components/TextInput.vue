@@ -1,5 +1,5 @@
 <template>
-  <div style="max-width: 350px">
+  <div>
     <div v-if="mode === 'DESIGN'">
       <el-input size="medium" disabled :placeholder="placeholder"/>
     </div>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="mode === 'DESIGN'" >
-      <el-date-picker  size="medium" disabled :type="type" :placeholder="placeholder"></el-date-picker>
+      <el-date-picker size="medium" disabled :type="type" :placeholder="placeholder"></el-date-picker>
     </div>
     <div v-else>
       <el-date-picker v-model="_value" :value-format="format" size="medium" clearable :type="type" :placeholder="placeholder"></el-date-picker>

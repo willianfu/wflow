@@ -2,22 +2,26 @@
   <el-container style="height: calc(100vh - 65px);">
     <el-aside>
       <div class="components-nav">
-        <span :class="{'selected': libSelect === 0}" @click="libSelect = 0">基础组件</span>
-        <span :class="{'border': true, 'selected': libSelect === 1}" @click="libSelect = 1">扩展组件</span>
-        <span :class="{'selected': libSelect === 2}" @click="libSelect = 2">关联组件</span>
+        <span @click="libSelect = 0">组件库</span>
+<!--        <span :class="{'border': true, 'selected': libSelect === 1}" @click="libSelect = 1">扩展组件</span>
+        <span :class="{'selected': libSelect === 2}" @click="libSelect = 2">关联组件</span>-->
       </div>
-      <div class="components">
-        <ul>
-          <draggable class="drag" :list="components" :options="{sort: false}"
-                     :group="{ name: 'form', pull: 'clone', put: false }"
-                     @start="isStart = true" @end="isStart = false" :clone="clone">
-            <li v-for="(cp, id) in components" :key="id">
-              <i :class="cp.icon"></i>
-              <span>{{ cp.title }}</span>
-            </li>
-          </draggable>
-        </ul>
+      <div>
+        <div class="components" v-for="(group, i) in baseComponents" :key="i">
+          <p>{{group.name}}</p>
+          <ul>
+            <draggable class="drag" :list="group.components" :options="{sort: false}"
+                       :group="{ name: 'form', pull: 'clone', put: false }"
+                       @start="isStart = true" @end="isStart = false" :clone="clone">
+              <li v-for="(cp, id) in group.components" :key="id">
+                <i :class="cp.icon"></i>
+                <span>{{ cp.title }}</span>
+              </li>
+            </draggable>
+          </ul>
+        </div>
       </div>
+
     </el-aside>
 
     <el-main class="layout-main">
@@ -50,10 +54,9 @@
                 <div class="tip" v-show="forms.length === 0 && !isStart">👈 请在左侧选择控件并拖至此处</div>
                 <draggable class="drag-from" :list="forms" group="form"
                            :options="{animation: 300, chosenClass:'choose', sort:true}"
-                           @start="drag = true, select = null" @end="drag = false">
+                           @start="drag = true; selectFormItem = null" @end="drag = false">
 
-                  <div v-for="(cp, id) in forms" :key="id" class="form-item"
-                       @click="select = id" :style="select === id ?'border-left: 4px solid #F56C6C':''">
+                  <div v-for="(cp, id) in forms" :key="id" class="form-item" @click="selectItem(cp)" :style="getSelectedClass(cp)">
                     <div class="form-header">
                       <p><span v-if="cp.props.required">*</span>{{ cp.title }}</p>
                       <div class="option">
@@ -72,24 +75,25 @@
     </el-main>
 
     <el-aside class="layout-param">
-      <div class="tool-nav-r" v-if="select !== null && forms[select] !== undefined">
-        <i :class="forms[select].icon" style="margin-right: 5px; font-size: medium"></i>
-        <span>{{ forms[select].title }}</span>
+      <div class="tool-nav-r" v-if="selectFormItem">
+        <i :class="selectFormItem.icon" style="margin-right: 5px; font-size: medium"></i>
+        <span>{{ selectFormItem.title }}</span>
       </div>
-      <div v-if="select === null || forms.length === 0" class="tip">
+      <div v-if="!selectFormItem || forms.length === 0" class="tip">
         😀 选中控件后在这里进行编辑
       </div>
       <div style="text-align:left; padding: 10px" v-else>
-        <form-component-config :formSelected="select"/>
+        <form-component-config />
       </div>
     </el-aside>
-    <el-dialog title="表单预览" :visible.sync="viewFormVisible">
-      <el-form label-width="150px">
-        <el-form-item :label="item.title" v-for="(item, index) in forms" :key="item.name + index">
-          <form-design-render mode="PC" :config="item"/>
+    <w-dialog clickClose closeFree :showFooter="false" :border="false" title="表单预览" v-model="viewFormVisible">
+      <el-form class="process-form" label-position="top">
+        <el-form-item v-if="item.name !== 'SpanLayout'" :label="item.title" v-for="(item, index) in forms" :key="item.name + index">
+          <form-design-render v-model="previewValue[item.name]" mode="PC" :config="item"/>
         </el-form-item>
+        <form-design-render v-else v-model="previewValue[item.name]" mode="PC" :config="item"/>
       </el-form>
-    </el-dialog>
+    </w-dialog>
   </el-container>
 </template>
 
@@ -97,18 +101,19 @@
 import draggable from "vuedraggable";
 import FormDesignRender from '@/views/admin/layout/form/FormDesignRender'
 import FormComponentConfig from '@/views/common/form/FormComponentConfig'
-import components from '@/views/common/form/ComponentsConfigExport'
+import {baseComponents} from '@/views/common/form/ComponentsConfigExport'
 
 export default {
   name: "FormDesign",
   components: {draggable, FormComponentConfig, FormDesignRender},
   data() {
     return {
+      previewValue:{},
       libSelect: 0,
       viewFormVisible: false,
       isStart: false,
       showMobile: true,
-      components,
+      baseComponents,
       select: null,
       drag: false,
     }
@@ -116,6 +121,14 @@ export default {
   computed: {
     forms() {
       return this.$store.state.design.formItems;
+    },
+    selectFormItem: {
+      get(){
+        return this.$store.state.selectFormItem
+      },
+      set(val){
+        this.$store.state.selectFormItem = val
+      },
     }
   },
   methods: {
@@ -135,6 +148,13 @@ export default {
     },
     viewForms(){
       this.viewFormVisible = true
+    },
+    selectItem(cp){
+      this.selectFormItem = cp
+    },
+    getSelectedClass(cp){
+      return this.selectFormItem && this.selectFormItem.id === cp.id ?
+          'border-left: 4px solid #409eff':''
     }
   }
 }
@@ -145,6 +165,12 @@ export default {
 
 .choose {
   border: 1px dashed @primary !important;
+}
+
+.process-form{
+  /deep/ .el-form-item__label{
+    padding: 0 0;
+  }
 }
 
 .components-nav {
@@ -186,12 +212,14 @@ export default {
 .components {
   overflow-x: hidden;
   overflow-y: scroll;
-  margin-top: 20px;
+  //margin-top: 20px;
   //padding: 0 20px;
   font-size: 12px;
   width: 100%;
   color: rgba(17, 31, 44, 0.85);
-
+  &>p{
+    padding: 0 20px;
+  }
   .drag {
     margin-left: 20px;
     display: flex;
@@ -396,7 +424,6 @@ export default {
   text-align: left;
   position: relative;
   background-color: #fff;
-  padding: 10px 15px;
 
   p {
     position: relative;

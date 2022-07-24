@@ -2,8 +2,9 @@
   <div>
     <div>
       <!--渲染表单-->
-      <el-form label-width="150px" ref="form" :rules="formConfig.rules" :model="formConfig.data">
-        <el-form-item :prop="item.id" :label="item.title" v-for="(item, index) in form.formItems" :key="item.name + index">
+      <el-form class="process-form" label-position="top" ref="form" :rules="formConfig.rules" :model="formConfig.data">
+        <el-form-item :prop="item.id" :label="item.title" v-for="(item, index) in form.formItems"
+                      :key="item.name + index">
           <form-design-render v-model="formConfig.data[item.id]" mode="PC" :config="item"/>
         </el-form-item>
       </el-form>
@@ -12,9 +13,9 @@
     <div>
       <!--渲染流程执行过程-->
       <el-timeline :reverse="false">
-      <!--<el-timeline-item v-for="(activity, index) in activities" :key="index">
+        <!--<el-timeline-item v-for="(activity, index) in activities" :key="index">
 
-        </el-timeline-item>-->
+          </el-timeline-item>-->
       </el-timeline>
     </div>
   </div>
@@ -28,26 +29,26 @@ import fromProcessUtil from '@/utils/FromProcessUtil'
 export default {
   name: "InitiateProcess",
   components: {FormDesignRender},
-  props:{
-    code:{
+  props: {
+    code: {
       type: String,
       required: true
     }
   },
   data() {
     return {
-      formConfig:{
+      formConfig: {
         //数据字段
-        data:{},
+        data: {},
         //校验规则
-        rules:{}
+        rules: {}
       },
-      form:{
+      form: {
         formId: '',
-        formName:"",
-        logo:{},
-        formItems:[],
-        process:{},
+        formName: "",
+        logo: {},
+        formItems: [],
+        process: {},
         remark: ""
       }
     }
@@ -55,13 +56,13 @@ export default {
   mounted() {
     this.loadFormInfo(this.code)
   },
-  computed:{
+  computed: {
     forms() {
       return this.$store.state.design.formItems;
     }
   },
   methods: {
-    loadFormInfo(formId){
+    loadFormInfo(formId) {
       getFormDetail(formId).then(rsp => {
         console.log(rsp.data)
         let form = rsp.data;
@@ -76,18 +77,22 @@ export default {
         this.$message.error(err)
       })
     },
-    loadFormConf(formItems){
+    loadFormConf(formItems) {
       const formConf = fromProcessUtil.loadFormConf(formItems)
       this.$set(this.formConfig, 'data', formConf.data)
       this.$set(this.formConfig, 'rules', formConf.rules)
     },
-    validate(call){
+    validate(call) {
       this.$refs.form.validate(call);
     }
   }
 }
 </script>
 
-<style scoped>
-
+<style lang="less" scoped>
+.process-form {
+  /deep/ .el-form-item__label {
+    padding: 0 0;
+  }
+}
 </style>

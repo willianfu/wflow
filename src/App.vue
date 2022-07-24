@@ -58,4 +58,7 @@
     color: #5e5e5e;
   }
 
+  .max-fill{
+    width: 100% !important;
+  }
 </style>
