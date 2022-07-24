@@ -6,7 +6,7 @@
 
 
 
-📋 流程设计器核心文件为 `src\views\admin\layout\process\ProcessTree.vue`，整个流程设计器都是基于此组件渲染。
+📋 流程设计器核心文件为 `src\views\admin\layout\process\ProcessTree.vue`，整个流程设计器都是基于此组件渲染，手撸 vue-render😅。
 
 
 
@@ -118,10 +118,14 @@
         level: 1 //发起人指定级别主管
     },
     //指定角色审批
-    role:["admin", "leader", "hr"], //指定审批人为系统角色
+    role:[
+        {id: 'user', name: '普通用户'},
+        {id: 'admin', name: '管理员'}
+    ], //指定审批人为系统角色
     refuse: { //驳回设置
-        toEnd: true, //驳回直接结束流程
-        target: 'end' //驳回到指定ID的节点
+        //TO_END 驳回直接结束流程、TO_NODE 驳回到指定节点、TO_BEFORE 驳回到上一级
+        type: 'TO_END', 
+        target: '' //驳回到指定ID的节点
     },
     formUser: ''//类型为指定表单联系人时，对应表单组件ID
 }
@@ -170,6 +174,7 @@
 
 ```js
 {
+    shouldAdd: false, //允许发起人自选抄送人
     assignedUser:[], //指定抄送人员
 }
 ```
@@ -235,7 +240,7 @@
 
 ### 表单权限设置
 
-表单权限设置目前只存在于两种节点，`APPROVEL` 和`ROOR`，都在这俩节点的`props`字段内的 `formPerms`中
+表单权限设置目前只存在于两种节点，`APPROVEL` 和`ROOT`，都在这俩节点的`props`字段内的 `formPerms`中
 
 🔓 表单权限对应三种类型 
 
@@ -259,4 +264,4 @@
 
 ❗ 请注意，如果没有手动修改表单权限设置的话，`formPerms`  内是默认为空的
 
-因此约定 `APPROVEL` 节点默认所有表单权限为只读，`ROOR`节点默认所有权限为可编辑
+因此约定 `APPROVEL` 节点默认所有表单权限为只读，`ROOT`节点默认所有权限为可编辑

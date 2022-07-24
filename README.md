@@ -8,7 +8,7 @@
 [![star](https://gitee.com/willianfu/jw-workflow-engine/badge/star.svg?theme=dark)](https://gitee.com/willianfu/jw-workflow-engine/stargazers) [![fork](https://gitee.com/willianfu/jw-workflow-engine/badge/fork.svg?theme=dark)](https://gitee.com/willianfu/jw-workflow-engine/members) <img src="https://img.shields.io/badge/release-v0.0.1-brightgreen.svg"> <img src="https://shields.io/badge/license-APACHE2.0-blue">
 
 
-## 简介
+## 📋 简介
 
 `wflow-web` 是 `wflow工作流` 项目的前端设计器，免费且开源，本设计器包含表单设计，审批流程设计。
 
@@ -20,6 +20,7 @@
 
 <p style="color: red">请务必备注： wflow </p>
 
+ 😋  [github地址](https://github.com/willianfu/wflow)   [码云gitee](https://gitee.com/willianfu/jw-workflow-engine)
 
   👉 在线体验地址： [戳我打开演示页面](http://47.100.202.245:83) 👈
 
@@ -27,17 +28,13 @@
 
 
 
-## 界面一览
+## 👀界面一览
 
 ###  **工作区面板** 
 
 <img src="https://images.gitee.com/uploads/images/2020/1005/140253_39e3f2d5_4928216.png" alt="输入图片说明" title="屏幕截图.png" style="zoom: 50%;" />
 
 <img src="https://images.gitee.com/uploads/images/2020/1005/140329_89cd5aac_4928216.png" alt="输入图片说明" title="屏幕截图.png" style="zoom:50%;" />
-
-**设计器表单回显**
-
-![image-20220711112958351](https://pic.rmb.bdstatic.com/bjh/a8266ac95ccc577c565d6abae7b05588.png)
 
 
 
@@ -61,9 +58,17 @@
 
 --------
 
-####  **表单布局设计器**
+####  **表单设计器**
 
-![image-20220711111255178](https://pic.rmb.bdstatic.com/bjh/abc8f22612e35a4ecc74adf024af3025.png)
+>  支持分栏布局、明细表格、以及多种基础组件，支持自定义开发组件
+
+![image-20220724220114724](https://pic.rmb.bdstatic.com/bjh/b0f1ed22d61ea86b4222b89dbea6ecd1.png)
+
+![image-20220724221040780](https://pic.rmb.bdstatic.com/bjh/73e71e1323812a57802a76beffe27906.png)
+
+
+
+
 
 
 ---------
@@ -93,7 +98,7 @@
 
 
 
- **支持多种类型业务节点，支持配置校验，灵活配置，赋予无限可能** 
+ **支持多种类型业务节点，支持配置校验，灵活配置** 
 
 <img src="https://pic.rmb.bdstatic.com/bjh/e35d8375eae56b4b9bbace88ee2a00fd.png" alt="image-20220722182427315" style="zoom:50%;" />
 
@@ -109,7 +114,7 @@
 
 
 
-## 开发
+## ✍开发
 
 
 
@@ -178,7 +183,19 @@
 
 
 
+## 💗打赏列表
 
+感谢以下朋友的支持，也感谢关注本项目及提出宝贵建议的各位。
+
+| 昵称                                                         | 金额 |
+| ------------------------------------------------------------ | ---- |
+| * 辉                                                         | 50   |
+| <img src="https://pic.rmb.bdstatic.com/bjh/fe814c0dce5be3e134c5230c3d38650b.png" alt="image-20220724214842366" style="zoom: 33%;" /> vincert | 50   |
+| <img src="https://pic.rmb.bdstatic.com/bjh/e6540a7469d393b6f07cf7f4c404a05d.png" alt="image-20220724214503892" style="zoom:25%;" /> 。 | 30   |
+
+
+
+## 💪支持作者
 
 **开源不易，需要鼓励，如果觉得这个项目有帮助到了你请我喝杯咖啡吧😋** 
 <img src="https://pic.rmb.bdstatic.com/bjh/a4a29377ac6ae1f8d4ea4a513a5c5129.png" alt="支持作者" style="zoom:60%;" />

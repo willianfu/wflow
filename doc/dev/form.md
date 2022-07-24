@@ -12,7 +12,7 @@
 
 表单组件是构成表单的基本元素，一个表单可以有多个组件，在UI中体现为如下图
 
-![image-20220720103638125](https://pic.rmb.bdstatic.com/bjh/b55183c6ea60f2c1df1f751537254ca0.png)
+![image-20220724222124900](https://pic.rmb.bdstatic.com/bjh/096e0dacdbc8ced5db475517c325601c.png)
 
 
 
