@@ -126,12 +126,13 @@ export default {
     select() {
       return this.selectedNode.props.assignedUser || []
     },
+    formItems(){
+      return this.$store.state.design.formItems
+    },
     conditionList() {
-      const conditionItems = this.$store.state.design.formItems.filter(f => {
-        if (f.props.required && this.supportTypes.indexOf(f.valueType) !== -1){
-          return {title: f.title, id: f.id, valueType: f.valueType}
-        }
-      })
+      //构造可用条件选项
+      const conditionItems = []
+      this.formItems.forEach(item => this.filterCondition(item, conditionItems))
       if (conditionItems.length === 0 || conditionItems[0].id !== 'root'){
         conditionItems.unshift({id: 'root', title: '发起人', valueType: 'User'})
       }
@@ -154,6 +155,13 @@ export default {
       this.orgType = orgType
       this.users = value
       this.$refs.orgPicker.show()
+    },
+    filterCondition(item, list){
+      if (item.name === 'SpanLayout'){
+        item.props.items.forEach(sub => this.filterCondition(sub, list))
+      }else if (this.supportTypes.indexOf(item.valueType) > -1 && item.props.required){
+        list.push({title: item.title, id: item.id, valueType: item.valueType})
+      }
     },
     selected(select) {
       console.log(select)

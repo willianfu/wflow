@@ -129,6 +129,9 @@ export default {
       set(val){
         this.$store.state.selectFormItem = val
       },
+    },
+    nodeMap(){
+      return this.$store.state.nodeMap
     }
   },
   methods: {
@@ -140,7 +143,40 @@ export default {
           + new Date().getTime().toString().substring(5);
     },
     del(index) {
-      this.forms.splice(index, 1)
+      this.$confirm('删除组件将会连带删除包含该组件的条件以及相关设置，是否继续?', '提示', {
+        confirmButtonText: '确 定',
+        cancelButtonText: '取 消',
+        type: 'warning'
+      }).then(() => {
+        if (this.forms[index].name === 'SpanLayout'){
+          //删除的是分栏则遍历删除分栏内所有子组件
+          this.forms[index].props.items.forEach(item => {
+            this.removeFormItemAbout(item)
+          })
+          this.forms[index].props.items.length = 0
+        }else {
+          this.removeFormItemAbout(this.forms[index])
+        }
+        this.forms.splice(index, 1)
+      })
+    },
+    async removeFormItemAbout(item){
+      this.nodeMap.forEach(node => {
+        //搜寻条件，进行移除
+        if (node.type === 'CONDITION'){
+          node.props.groups.forEach(group => {
+            let i = group.cids.remove(item.id)
+            if (i > -1){
+              //从子条件移除
+              group.conditions.splice(i, 1)
+            }
+          })
+        }
+        //搜寻权限，进行移除
+        if (node.type === 'ROOT' || node.type === 'APPROVAL' || node.type === 'CC'){
+          node.props.formPerms.removeByKey('id', item.id)
+        }
+      })
     },
     clone(obj) {
       obj.id = this.getId()
@@ -155,6 +191,9 @@ export default {
     getSelectedClass(cp){
       return this.selectFormItem && this.selectFormItem.id === cp.id ?
           'border-left: 4px solid #409eff':''
+    },
+    validate(){
+      return true
     }
   }
 }

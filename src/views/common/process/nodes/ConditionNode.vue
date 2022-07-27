@@ -6,7 +6,7 @@
       </div>
       <div class="node-body-main" @click="$emit('selected')">
         <div class="node-body-main-header">
-          <span class="title">{{ config.name ? config.name : ('条件' + level) }}</span>
+          <ellipsis class="title" hover-tip :content="config.name ? config.name : ('条件' + level)"/>
           <span class="level">优先级{{ level }}</span>
           <span class="option">
             <el-tooltip effect="dark" content="复制条件" placement="top">
@@ -217,6 +217,9 @@ export default {
 
         .title {
           color: #15bca3;
+          display: inline-block;
+          height: 14px;
+          width: 125px;
         }
 
         .level {

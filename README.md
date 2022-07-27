@@ -18,9 +18,9 @@
 
 👩‍👦‍👦大家感兴趣的话可扫码加入交流群， 如果二维码失效了，可以加我微信 `willianfu_` 备注`wflow` 拉你入群
 
-<img src="https://pic.rmb.bdstatic.com/bjh/4fc44115a4e25e8e968a72fd53f38973.png" alt="image-20220724230831144" style="zoom: 50%;" />       <img src="https://pic.rmb.bdstatic.com/bjh/ed2fd88694486bc83c56e08b83d44205.png" alt="image-20220724230928104" style="zoom:20%;" />
-
-
+<p style="text-align: left">
+<img src="https://pic.rmb.bdstatic.com/bjh/4fc44115a4e25e8e968a72fd53f38973.png" width="200px" >
+</p> 
 
  😋  [github地址](https://github.com/willianfu/wflow)  |   [码云gitee](https://gitee.com/willianfu/jw-workflow-engine)
 
@@ -191,9 +191,10 @@
 
 | 昵称                                                         | 金额 |
 | ------------------------------------------------------------ | ---- |
-| * 辉                                                         | 50   |
-| <img src="https://pic.rmb.bdstatic.com/bjh/fe814c0dce5be3e134c5230c3d38650b.png" alt="image-20220724214842366" style="zoom: 33%;" /> vincert | 50   |
-| <img src="https://pic.rmb.bdstatic.com/bjh/e6540a7469d393b6f07cf7f4c404a05d.png" alt="image-20220724214503892" style="zoom:25%;" /> 。 | 30   |
+| 刘学龙 | 30   |
+| * 辉                                                       | 50   |
+|  vincert | 50   |
+| 。 | 30   |
 
 
 

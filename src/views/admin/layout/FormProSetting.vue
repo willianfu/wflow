@@ -17,6 +17,14 @@ export default {
     setup() {
       return this.$store.state.design.settings;
     }
+  },
+  data(){
+    return{}
+  },
+  methods:{
+    validate(){
+      return true
+    }
   }
 }
 </script>

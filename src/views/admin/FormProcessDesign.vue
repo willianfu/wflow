@@ -9,7 +9,20 @@
       <process-design ref="processDesign" v-show="activeSelect === 'processDesign'"/>
       <form-pro-setting ref="proSetting" v-show="activeSelect === 'proSetting'"/>
     </div>
-    <org-picker multiple type="role" ref="picker" title="选择人员"/>
+    <w-dialog :showFooter="false" v-model="validVisible" title="设置项检查">
+      <el-steps align-center :active="validStep" finish-status="success">
+        <el-step v-for="(step, i) in validOptions" :title="step.title" :key="i"
+                 :icon="step.icon" :status="step.status" :description="step.description"/>
+      </el-steps>
+      <el-result :icon="validIcon" :title="validResult.title" :subTitle="validResult.desc">
+        <i slot="icon" style="font-size: 30px" v-if="!validResult.finished" class="el-icon-loading"></i>
+        <template slot="extra">
+          <el-button type="primary" v-if="validResult.finished" size="medium" @click="doAfter">
+            {{ validResult.action }}
+          </el-button>
+        </template>
+      </el-result>
+    </w-dialog>
   </el-container>
 
 </template>
@@ -21,36 +34,58 @@ import FormBaseSetting from '@/views/admin/layout/FormBaseSetting'
 import FormDesign from '@/views/admin/layout/FormDesign'
 import ProcessDesign from '@/views/admin/layout/ProcessDesign'
 import FormProSetting from '@/views/admin/layout/FormProSetting'
-import OrgPicker from "../../components/common/OrgPicker";
 
 export default {
   name: "FormProcessDesign",
-  components: {OrgPicker, LayoutHeader, FormBaseSetting, FormDesign, ProcessDesign, FormProSetting},
+  components: {LayoutHeader, FormBaseSetting, FormDesign, ProcessDesign, FormProSetting},
   data() {
     return {
       isNew: true,
+      validStep: 0,
+      timer: null,
       activeSelect: 'baseSetting',
-      validVisible: false
+      validVisible: false,
+      validResult: {},
+      validOptions: [
+        {title: '基础信息', description: '', icon: '', status: ''},
+        {title: '审批表单', description: '', icon: '', status: ''},
+        {title: '审批流程', description: '', icon: '', status: ''},
+        {title: '扩展设置', description: '', icon: '', status: ''}
+      ],
+      validComponents: ['baseSetting', 'formSetting', 'processDesign', 'proSetting'],
     }
   },
-  computed:{
-    setup(){
+  computed: {
+    setup() {
       return this.$store.state.design
+    },
+    validIcon() {
+      if (!this.validResult.finished) {
+        return 'el-icon-loading'
+      } else if (this.validResult.success) {
+        return 'success'
+      } else {
+        return 'warning'
+      }
     }
   },
   created() {
+    this.showValiding()
     let formId = this.$route.query.code
     //判断传参，决定是新建还是加载原始数据
     this.loadInitFrom()
-    if (!this.$isEmpty(formId)){
+    if (!this.$isEmpty(formId)) {
       this.isNew = false
       this.loadFormInfo(formId)
     }
     let group = this.$route.query.group
     this.setup.groupId = this.$isEmpty(group) ? null : parseInt(group)
   },
-  methods:{
-    loadFormInfo(formId){
+  beforeDestroy() {
+    this.stopTimer()
+  },
+  methods: {
+    loadFormInfo(formId) {
       getFormDetail(formId).then(rsp => {
         console.log(rsp.data)
         let form = rsp.data;
@@ -63,32 +98,32 @@ export default {
         this.$message.error(err)
       })
     },
-    loadInitFrom(){
+    loadInitFrom() {
       this.$store.commit('loadForm', {
         formId: null,
-        formName:"未命名表单",
-        logo:{
-          icon:"el-icon-eleme",
-          background:"#1e90ff"
+        formName: "未命名表单",
+        logo: {
+          icon: "el-icon-eleme",
+          background: "#1e90ff"
         },
-        settings:{
+        settings: {
           commiter: [],
-          admin:[],
+          admin: [],
           sign: false,
-          notify:{
+          notify: {
             types: ["APP"],
             title: "消息通知标题"
           }
         },
         groupId: undefined,
-        formItems:[],
-        process:{
+        formItems: [],
+        process: {
           id: "root",
           parentId: null,
           type: "ROOT",
           name: "发起人",
           desc: "任何人",
-          props:{
+          props: {
             assignedUser: [],
             formPerms: []
           },
@@ -97,15 +132,83 @@ export default {
         remark: "备注说明"
       })
     },
-    validateDesign(){
-      //this.$refs.picker.show()
+    validateDesign() {
       this.validVisible = true
+      this.validStep = 0
+      this.showValiding()
+      this.stopTimer()
+      this.timer = setInterval(() => {
+        let err = ''//this.$refs[this.validComponents[this.validStep]].validate()
+        if (!err || err.trim() === '') {
+          this.validStep++;
+          if (this.validStep >= this.validOptions.length) {
+            this.stopTimer()
+            this.showValidFinish(true)
+          }
+        } else {
+          this.stopTimer()
+          this.validOptions[this.validStep].status = 'error'
+          this.showValidFinish(false, err || this.getValidErr())
+        }
+      }, 300)
     },
-    preview(){
+    getValidErr() {
+      switch (this.validStep) {
+        case 0:
+          return '请检查基础设置项';
+        case 1:
+          return '请检查审批表单相关设置'
+        case 2:
+          return '请检查审批流程，查看对应标注节点错误信息'
+        case 3:
+          return '请检查扩展设置'
+        default:
+          return '未知错误'
+      }
+    },
+    showValidFinish(success, err) {
+      this.validResult.success = success
+      this.validResult.finished = true
+      this.validResult.title = success ? '校验完成 😀' : '校验失败 😥'
+      this.validResult.desc = success ? '设置项校验成功，是否提交？' : err
+      this.validResult.action = success ? '提 交' : '去修改'
+    },
+    showValiding() {
+      this.validResult = {
+        finished: false,
+        success: false,
+        title: '检查中...',
+        action: '处理',
+        desc: '正在检查设置项'
+      }
+      this.validStep = 0
+      this.validOptions.forEach(op => {
+        op.status = ''
+        op.icon = ''
+        op.description = ''
+      })
+    },
+    doAfter() {
+      if (this.validResult.success) {
+        this.doPublish()
+      } else {
+        this.activeSelect = this.validComponents[this.validStep]
+        this.validVisible = false
+      }
+    },
+    stopTimer() {
+      if (this.timer) {
+        clearInterval(this.timer)
+      }
+    },
+    preview() {
       this.validateDesign()
     },
-    publishProcess(){
-      this.$confirm('您确定审批流程已配置完毕,并需要将其发布，发布后立即生效，是否继续?', '提示', {
+    publishProcess() {
+      this.validateDesign()
+    },
+    doPublish() {
+      this.$confirm('如果您只想预览请选择预览，确认发布后流程立即生效，是否继续?', '提示', {
         confirmButtonText: '发布',
         cancelButtonText: '取消',
         type: 'warning'
@@ -121,14 +224,14 @@ export default {
           process: JSON.stringify(this.setup.process),
           remark: this.setup.remark
         }
-        if (this.isNew || this.$isEmpty(this.setup.formId)){
+        if (this.isNew || this.$isEmpty(this.setup.formId)) {
           createForm(template).then(rsp => {
-           this.$message.success("创建表单成功")
+            this.$message.success("创建表单成功")
             this.$router.push("/formsPanel")
           }).catch(err => {
             this.$message.error(err)
           })
-        }else {
+        } else {
           updateFormDetail(template).then(rsp => {
             this.$message.success("更新表单成功")
             this.$router.push("/formsPanel")
@@ -144,8 +247,14 @@ export default {
 
 <style lang="less" scoped>
 
-.layout-body{
+.layout-body {
   min-width: 980px;
 }
 
+/deep/ .el-step {
+  .is-success {
+    color: #2a99ff;
+    border-color: #2a99ff;
+  }
+}
 </style>

@@ -62,7 +62,8 @@ export const CONDITION_PROPS = {
 //抄送节点默认属性
 export const CC_PROPS = {
   shouldAdd: false,
-  assignedUser: []
+  assignedUser: [],
+  formPerms:[]
 }
 
 //触发器节点默认属性

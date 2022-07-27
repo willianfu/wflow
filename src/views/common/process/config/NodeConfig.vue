@@ -50,6 +50,8 @@ export default {
           return '设置发起人';
         case 'APPROVAL':
           return '设置审批人';
+        case 'CC':
+          return '设置抄送人';
         default:
           return null;
       }

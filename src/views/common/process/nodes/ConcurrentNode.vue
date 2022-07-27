@@ -8,7 +8,7 @@
         <div class="node-body-main-header">
           <span class="title">
             <i class="el-icon-s-operation"></i>
-            {{config.name ? config.name:('并行任务' + level)}}
+            <ellipsis class="name" hover-tip :content="config.name ? config.name:('并行任务' + level)"/>
           </span>
           <span class="option">
             <el-tooltip effect="dark" content="复制分支" placement="top">
@@ -123,6 +123,12 @@ export default {
         position: relative;
         .title{
           color: #718dff;
+          .name{
+            display: inline-block;
+            height: 14px;
+            width: 130px;
+            margin-left: 2px;
+          }
         }
         .option{
           position: absolute;

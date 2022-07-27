@@ -21,9 +21,10 @@
 <!--      <el-form class="process-form" label-position="top" ref="form" :rules="formConfig.rules" :model="formConfig.data">-->
         <el-row :gutter="20" v-for="(rows, rsi) in __items" :key="rsi + '_rows'">
           <el-col :span="24 / rows.length" v-for="(item, ri) in rows" :key="ri + '_row'">
-            <el-form-item :prop="item.id" :label="item.title" :key="item.name + ri">
+            <el-form-item v-if="item.name !== 'SpanLayout'" :prop="item.id" :label="item.title" :key="item.name + ri">
               <form-design-render v-model="formConfig.data[item.id]" :mode="mode" :config="item"/>
             </el-form-item>
+            <form-design-render v-else v-model="formConfig.data[item.id]" :mode="mode" :config="item"/>
           </el-col>
         </el-row>
 
@@ -79,6 +80,9 @@ export default {
       set(val){
         this.$store.state.selectFormItem = val
       },
+    },
+    nodeMap(){
+      return this.$store.state.nodeMap
     }
   },
   data() {
@@ -102,16 +106,49 @@ export default {
     }
   },
   methods: {
-    delItem(id){
-      this._items.splice(id, 1)
-    },
     selectItem(cp){
       this.selectFormItem = cp
     },
     getSelectedClass(cp){
       return this.selectFormItem && this.selectFormItem.id === cp.id ?
           'border-left: 4px solid #f56c6c':''
-    }
+    },
+    delItem(index) {
+      this.$confirm('删除组件将会连带删除包含该组件的条件以及相关设置，是否继续?', '提示', {
+        confirmButtonText: '确 定',
+        cancelButtonText: '取 消',
+        type: 'warning'
+      }).then(() => {
+        if (this._items[index].name === 'SpanLayout'){
+          //删除的是分栏则遍历删除分栏内所有子组件
+          this._items[index].props.items.forEach(item => {
+            this.removeFormItemAbout(item)
+          })
+          this._items[index].props.items.length = 0
+        }else {
+          this.removeFormItemAbout(this._items[index])
+        }
+        this._items.splice(index, 1)
+      })
+    },
+    async removeFormItemAbout(item){
+      this.nodeMap.forEach(node => {
+        //搜寻条件，进行移除
+        if (node.type === 'CONDITION'){
+          node.props.groups.forEach(group => {
+            let i = group.cids.remove(item.id)
+            if (i > -1){
+              //从子条件移除
+              group.conditions.splice(i, 1)
+            }
+          })
+        }
+        //搜寻权限，进行移除
+        if (node.type === 'ROOT' || node.type === 'APPROVAL' || node.type === 'CC'){
+          node.props.formPerms.removeByKey('id', item.id)
+        }
+      })
+    },
   }
 }
 </script>

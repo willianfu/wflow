@@ -1,6 +1,6 @@
 <template>
   <div class="base-setup" @click="showIconSelect = false">
-    <el-form label-position="top" label-width="80px">
+    <el-form ref="baseSetting" :model="setup" label-position="top" label-width="80px">
       <el-form-item label="表单图标">
         <i :class="setup.logo.icon" :style="'background:' + setup.logo.background"></i>
         <span class="change-icon">
@@ -20,10 +20,10 @@
 					</span>
 				</span>
       </el-form-item>
-      <el-form-item label="表单名称">
+      <el-form-item label="表单名称" :rules="getRule('请输入表单名称')" prop="formName">
         <el-input v-model="setup.formName" size="medium"></el-input>
       </el-form-item>
-      <el-form-item label="所在分组" class="group">
+      <el-form-item label="所在分组" :rules="getRule('请选择表单分组')" class="group" prop="groupId">
         <el-select v-model="setup.groupId" placeholder="请选择分组" size="medium">
           <el-option v-for="(op, index) in fromGroup" :key="index" v-show="op.id > 1"
                      :label="op.name" :value="op.id"></el-option>
@@ -39,7 +39,7 @@
         <el-input placeholder="请输入表单说明" v-model="setup.remark" type="textarea" show-word-limit
                   :autosize="{ minRows: 2, maxRows: 5}" maxlength="500"></el-input>
       </el-form-item>
-      <el-form-item label="消息通知方式">
+      <el-form-item label="消息通知方式" :rules="getRule('请选择消息通知方式')">
         <el-select v-model="setup.settings.notify.types" value-key="name"
                    placeholder="选择消息通知方式" style="width: 30%;"
                    size="medium" clearable multiple collapse-tags>
@@ -55,7 +55,7 @@
         </el-select>
       </el-form-item>
     </el-form>
-    <org-picker title="请选择发起本审批的人员/部门" multiple ref="orgPicker" :selected="select" @ok="selected"></org-picker>
+    <org-picker title="请选择可以管理此表单的人员" multiple ref="orgPicker" :selected="select" @ok="selected"></org-picker>
   </div>
 </template>
 
@@ -109,7 +109,11 @@ export default {
         'el-icon-s-data',
         'el-icon-s-check',
         'el-icon-s-claim',
-      ]
+      ],
+      rules:{
+        formName:[{}],
+        groupId: [],
+      }
     }
   },
   computed: {
@@ -124,6 +128,9 @@ export default {
     this.getGroups()
   },
   methods: {
+    getRule(msg){
+      return [{ required: true, message: msg, trigger: 'blur' }]
+    },
     loadIconfont(){
       if (iconfont && iconfont.id){
         iconfont.glyphs.forEach(icon => {
@@ -160,7 +167,8 @@ export default {
       this.$refs.orgPicker.show()
     },
     validate(){
-
+      this.$refs.baseSetting.validate()
+      return ''
     }
   }
 }

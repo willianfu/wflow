@@ -6,7 +6,7 @@
           <draggable style="width: 100%; min-height:25px" :list="prioritySortList" group="from" :options="sortOption">
             <div :class="{'drag-no-choose': true, 'drag-hover': cd.id === selectedNode.id}"
                  v-for="(cd, index) in prioritySortList">
-              <div>{{ cd.name }}</div>
+              <ellipsis style="width: 160px;" hover-tip :content="cd.name"/>
               <div>优先级 {{ index + 1 }}</div>
             </div>
           </draggable>
@@ -111,32 +111,25 @@ export default {
 }
 
 .drag-hover {
-  background: #79bbff;
   color: #1890FF
 }
 
 .drag-no-choose {
   cursor: move;
-  background: #f4f4f4;
+  background: #f8f8f8;
   border-radius: 5px;
-  position: relative;
-  margin-top: 2px;
+  margin: 5px 0;
+  height: 25px;
+  line-height: 25px;
   padding: 5px 10px;
-  border: 1px solid #bcbcbc;
-  height: 20px;
-
-  div:nth-child(1) {
-    font-size: x-small;
-    position: absolute;
-    width: 160px;
-    left: 10px;
-    height: 20px;
-    overflow: hidden;
+  border: 1px solid #ffffff;
+  div{
+    display: inline-block;
+    font-size: small !important;
   }
 
   div:nth-child(2) {
-    position: absolute;
-    right: 10px;
+    float: right !important;
   }
 }
 </style>

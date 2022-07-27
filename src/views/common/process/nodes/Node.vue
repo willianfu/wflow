@@ -4,7 +4,7 @@
       <div>
         <div class="node-body-header" :style="{'background-color': headerBgc}">
           <i :class="headerIcon" style="margin-right: 5px" v-if="(headerIcon || '') !== ''"></i>
-          <span>{{title}}</span>
+          <ellipsis class="name" hover-tip :content="title"/>
           <i class="el-icon-close" v-if="!isRoot" style="float:right;" @click="$emit('delNode')"></i>
         </div>
         <div class="node-body-content">
@@ -143,6 +143,11 @@ export default {
       font-size: xx-small;
       .el-icon-close{
         display: none;
+      }
+      .name{
+        height: 14px;
+        width: 150px;
+        display: inline-block
       }
     }
     .node-body-content{

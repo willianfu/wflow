@@ -3,8 +3,8 @@
     <el-table :header-cell-style="{background:'#f5f6f6'}" :data="formPerms" border style="width: 100%">
       <el-table-column prop="title" show-overflow-tooltip label="表单字段">
         <template slot-scope="scope">
-          <span v-if="scope.row.required" style="color: #c75450"> * </span>
-          <span>{{scope.row.title}}</span>
+           <span v-if="scope.row.required" style="color: #c75450"> * </span>
+          <span>{{ scope.row.title }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="readOnly" label="只读" width="80">
@@ -15,7 +15,7 @@
           <el-radio v-model="scope.row.perm" label="R" :name="scope.row.id"></el-radio>
         </template>
       </el-table-column>
-      <el-table-column prop="editable" label="可编辑" width="90">
+      <el-table-column prop="editable" label="可编辑" width="90" v-if="nowNode.type !== 'CC'">
         <template slot="header" slot-scope="scope">
           <el-radio label="E" v-model="permSelect" @change="allSelect('E')">可编辑</el-radio>
         </template>
@@ -28,7 +28,7 @@
           <el-radio label="H" v-model="permSelect" @change="allSelect('H')">隐藏</el-radio>
         </template>
         <template slot-scope="scope">
-          <el-radio v-model="scope.row.perm" label="H"  :name="scope.row.id"></el-radio>
+          <el-radio v-model="scope.row.perm" label="H" :name="scope.row.id"></el-radio>
         </template>
       </el-table-column>
     </el-table>
@@ -41,10 +41,10 @@ export default {
   components: {},
   data() {
     return {
-      tableData:[],
-      isIndeterminate:false,
+      tableData: [],
+      isIndeterminate: false,
       permSelect: '',
-      checkStatus:{
+      checkStatus: {
         readOnly: true,
         editable: false,
         hide: false
@@ -52,69 +52,81 @@ export default {
     }
   },
   created() {
-    this.formPermsLoad()
+    //备份
+    let oldPermMap = this.formPerms.toMap('id')
+    //重新清空，按顺序加载权限
+    this.formPerms.length = 0;
+    this.formPermsLoad(oldPermMap, this.formData)
   },
-  computed:{
-    formData(){
+  computed: {
+    nowNode(){
+      return this.$store.state.selectedNode
+    },
+    formData() {
       return this.$store.state.design.formItems
     },
-    formPerms(){
+    formPerms() {
       return this.$store.state.selectedNode.props.formPerms
     }
   },
   methods: {
-    allSelect(type){
+    allSelect(type) {
       this.permSelect = type
       this.formPerms.forEach(f => f.perm = type)
     },
-    formPermsLoad(){
-      let perms = this.$store.state.selectedNode.props.formPerms
-      this.formData.forEach(form => {
-        let isLoad = false
-        for (let i in perms) {
-          if (perms[i].id === form.id){
-            perms[i].title = form.title
-            isLoad = true
-            break;
+    formPermsLoad(oldPermMap, forms) {
+      forms.forEach(form => {
+        if (form.name === 'SpanLayout') {
+          this.formPermsLoad(oldPermMap, form.props.items)
+        } else {
+          //刷新名称
+          let old = oldPermMap.get(form.id)
+          if (old){
+            old.title = form.title
+            old.required = form.props.required
+            this.formPerms.push(old)
+          }else {
+            this.formPerms.push({
+              id: form.id,
+              title: form.title,
+              required: form.props.required,
+              perm: this.$store.state.selectedNode.type === 'ROOT' ? 'E' : 'R'
+            })
           }
-        }
-        if (!isLoad){
-          perms.push({
-            id: form.id,
-            title: form.title,
-            perm: this.$store.state.selectedNode.type === 'ROOT' ? 'E':'R'
-          })
         }
       })
     },
-    handleCheckAllChange(){
+    handleCheckAllChange() {
 
     }
   },
-  watch:{
-    formPerms:{
+  watch: {
+    formPerms: {
       deep: true,
-      handler(){
+      handler() {
         const set = new Set(this.formPerms.map(f => f.perm))
         this.permSelect = set.size === 1 ? set.values()[0] : ''
       }
-    }
+    },
+
   }
 }
 </script>
 
 <style lang="less" scoped>
 
-/deep/ .el-table__row{
-  &>td:first-child{
-    .cell{
+/deep/ .el-table__row {
+  & > td:first-child {
+    .cell {
       text-align: left;
     }
   }
-  .cell{
+
+  .cell {
     text-align: center;
   }
-  .el-radio__label{
+
+  .el-radio__label {
     display: none;
   }
 }
