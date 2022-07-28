@@ -192,8 +192,39 @@ export default {
       return this.selectFormItem && this.selectFormItem.id === cp.id ?
           'border-left: 4px solid #409eff':''
     },
+    validateItem(err, titleSet, item){
+      if (titleSet.has(item.title) && item.name !== 'SpanLayout'){
+        err.push(`表单 ${item.title} 名称重复`)
+      }
+      titleSet.add(item.title)
+      if (item.name === 'SelectInput' || item.name === 'MultipleSelect'){
+        if (item.props.options.length === 0){
+          err.push(`${item.title} 未设置选项`)
+        }
+      }else if (item.name === 'TableList'){
+        if (item.props.columns.length === 0){
+          err.push(`明细表 ${item.title} 内未添加组件`)
+        }
+      }else if (item.name === 'SpanLayout'){
+        if (item.props.items.length === 0){
+          err.push('分栏内未添加组件')
+        }else {
+          item.props.items.forEach(sub => this.validateItem(err, titleSet, sub))
+        }
+      }
+    },
     validate(){
-      return true
+      let err = []
+      if (this.forms.length > 0){
+        let titleSet = new Set()
+        this.forms.forEach(item => {
+          //主要校验表格及分栏/选择器/表单名称/是否设置
+          this.validateItem(err, titleSet, item)
+        })
+      }else {
+        err.push('表单为空，请添加组件')
+      }
+      return err
     }
   }
 }

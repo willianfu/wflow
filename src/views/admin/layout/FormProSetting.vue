@@ -23,7 +23,7 @@ export default {
   },
   methods:{
     validate(){
-      return true
+      return []
     }
   }
 }

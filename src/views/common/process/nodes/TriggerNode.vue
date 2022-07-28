@@ -31,13 +31,27 @@ export default {
   },
   methods: {
     //校验数据配置的合法性
-    validate(){
+    validate(err){
       this.showError = false
-      if(this.config.assignedUser && this.config.assignedUser.length > 0){
-        this.showError = false
-      }else {
-        this.showError = true
-        this.errorInfo = '请设置触发器详情'
+      if (this.config.props.type === 'WEBHOOK'){
+        if(this.$isNotEmpty(this.config.props.http.url)){
+          this.showError = false
+        }else {
+          this.showError = true
+          this.errorInfo = '请设置WEBHOOK的URL地址'
+        }
+      }else if(this.config.props.type === 'EMAIL'){
+        if(!this.$isNotEmpty(this.config.props.email.subject)
+            || this.config.props.email.to.length === 0
+            || !this.$isNotEmpty(this.config.props.email.content)){
+          this.showError = true
+          this.errorInfo = '请设置邮件发送配置'
+        }else {
+          this.showError = false
+        }
+      }
+      if (this.showError){
+        err.push(`${this.config.name} 触发动作未设置完善`)
       }
       return !this.showError
     }

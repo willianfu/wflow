@@ -14,8 +14,13 @@
         <el-step v-for="(step, i) in validOptions" :title="step.title" :key="i"
                  :icon="step.icon" :status="step.status" :description="step.description"/>
       </el-steps>
-      <el-result :icon="validIcon" :title="validResult.title" :subTitle="validResult.desc">
+      <el-result :icon="validIcon" :title="errTitle" :subTitle="validResult.desc">
         <i slot="icon" style="font-size: 30px" v-if="!validResult.finished" class="el-icon-loading"></i>
+        <div slot="subTitle" class="err-info" v-if="validResult.errs.length > 0">
+          <ellipsis hover-tip v-for="(err, i) in validResult.errs" :key="i + '_err'" :content="err">
+            <i slot="pre" class="el-icon-warning-outline"></i>
+          </ellipsis>
+        </div>
         <template slot="extra">
           <el-button type="primary" v-if="validResult.finished" size="medium" @click="doAfter">
             {{ validResult.action }}
@@ -59,6 +64,12 @@ export default {
     setup() {
       return this.$store.state.design
     },
+    errTitle(){
+      if (this.validResult.finished && !this.validResult.success){
+        return this.validResult.title + ` (${this.validResult.errs.length}项错误) 😥`
+      }
+      return this.validResult.title + ' 😥'
+    },
     validIcon() {
       if (!this.validResult.finished) {
         return 'el-icon-loading'
@@ -74,12 +85,12 @@ export default {
     let formId = this.$route.query.code
     //判断传参，决定是新建还是加载原始数据
     this.loadInitFrom()
-    if (!this.$isEmpty(formId)) {
+    if (this.$isNotEmpty(formId)) {
       this.isNew = false
       this.loadFormInfo(formId)
     }
     let group = this.$route.query.group
-    this.setup.groupId = this.$isEmpty(group) ? null : parseInt(group)
+    this.setup.groupId = this.$isNotEmpty(group) ? parseInt(group) : null
   },
   beforeDestroy() {
     this.stopTimer()
@@ -138,8 +149,8 @@ export default {
       this.showValiding()
       this.stopTimer()
       this.timer = setInterval(() => {
-        let err = ''//this.$refs[this.validComponents[this.validStep]].validate()
-        if (!err || err.trim() === '') {
+        this.validResult.errs = this.$refs[this.validComponents[this.validStep]].validate()
+        if (Array.isArray(this.validResult.errs) && this.validResult.errs.length === 0) {
           this.validStep++;
           if (this.validStep >= this.validOptions.length) {
             this.stopTimer()
@@ -148,11 +159,11 @@ export default {
         } else {
           this.stopTimer()
           this.validOptions[this.validStep].status = 'error'
-          this.showValidFinish(false, err || this.getValidErr())
+          this.showValidFinish(false, this.getDefaultValidErr())
         }
       }, 300)
     },
-    getValidErr() {
+    getDefaultValidErr() {
       switch (this.validStep) {
         case 0:
           return '请检查基础设置项';
@@ -169,12 +180,13 @@ export default {
     showValidFinish(success, err) {
       this.validResult.success = success
       this.validResult.finished = true
-      this.validResult.title = success ? '校验完成 😀' : '校验失败 😥'
+      this.validResult.title = success ? '校验完成 😀' : '校验失败 '
       this.validResult.desc = success ? '设置项校验成功，是否提交？' : err
       this.validResult.action = success ? '提 交' : '去修改'
     },
     showValiding() {
       this.validResult = {
+        errs: [],
         finished: false,
         success: false,
         title: '检查中...',
@@ -257,4 +269,32 @@ export default {
     border-color: #2a99ff;
   }
 }
+
+.err-info{
+  max-height: 180px;
+  overflow-y: auto;
+  & > div{
+    padding: 5px;
+    margin: 2px 0;
+    width: 220px;
+    text-align: left;
+    border-radius: 3px;
+    background: rgb(242 242 242);
+  }
+  i{
+    margin: 0 5px;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+  background-color: white;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 16px;
+  background-color: #e8e8e8;
+}
+
 </style>

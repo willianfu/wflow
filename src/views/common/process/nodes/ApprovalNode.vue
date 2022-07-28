@@ -70,37 +70,51 @@ export default {
       return this.$store.state.design.formItems.find(item => item.id === id)
     },
     //校验数据配置的合法性
-    validate(){
+    validate(err){
       try {
-        return this.showError = !this[`validate_${this.config.assignedType}`]()
+        return this.showError = !this[`validate_${this.config.props.assignedType}`](err)
       } catch (e) {
         return true;
       }
     },
-    validate_ASSIGN_USER(){
-      return true;
-      if(this.config.assignedUser && this.config.assignedUser.length > 0){
+    validate_ASSIGN_USER(err){
+      if(this.config.props.assignedUser.length > 0){
         return true;
       }else {
-        //this.$message.warning("请设置审批人")
+        this.errorInfo = '请指定审批人员'
+        err.push(`${this.config.name} 未指定审批人员`)
+        return false
       }
     },
-    validate_SELF_SELECT(){
+    validate_SELF_SELECT(err){
       return true;
     },
-    validate_LEADER_TOP(){
+    validate_LEADER_TOP(err){
       return true;
     },
-    validate_LEADER(){
+    validate_LEADER(err){
       return true;
     },
-    validate_ROLE(){
+    validate_ROLE(err){
+      if (this.config.props.role.length <= 0){
+        this.errorInfo = '请指定负责审批的系统角色'
+        err.push(`${this.config.name} 未指定审批角色`)
+        return false
+      }
       return true;
     },
-    validate_SELF(){
+    validate_SELF(err){
       return true;
     },
-    validate_REFUSE(){
+    validate_FORM_USER(err){
+     if (this.config.props.formUser === ''){
+       this.errorInfo = '请指定表单中的人员组件'
+       err.push(`${this.config.name} 审批人为表单中人员，但未指定`)
+       return false
+     }
+      return true;
+    },
+    validate_REFUSE(err){
       return true;
     },
   }

@@ -37,16 +37,16 @@ export default {
   },
   methods: {
     //校验数据配置的合法性
-    validate(){
+    validate(err){
       this.showError = false
       try {
-        if (this.config.type === "AUTO") {
-          if ((this.config.datetime || "") === ""){
+        if (this.config.props.type === "AUTO") {
+          if ((this.config.props.dateTime || "") === ""){
             this.showError = true
             this.errorInfo = "请选择时间点"
           }
         } else {
-          if (this.config.time <= 0) {
+          if (this.config.props.time <= 0) {
             this.showError = true
             this.errorInfo = "请设置延时时长"
           }
@@ -54,6 +54,9 @@ export default {
       } catch (e) {
         this.showError = true
         this.errorInfo = "配置出现问题"
+      }
+      if (this.showError){
+        err.push(`${this.config.name} 未设置延时规则`)
       }
       return !this.showError
     },

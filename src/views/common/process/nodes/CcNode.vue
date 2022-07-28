@@ -26,7 +26,9 @@ export default {
   },
   computed:{
     content() {
-      if (this.config.props.assignedUser.length > 0) {
+      if (this.config.props.shouldAdd){
+        return '由发起人指定'
+      }else if (this.config.props.assignedUser.length > 0) {
         let texts = []
         this.config.props.assignedUser.forEach(org => texts.push(org.name))
         return String(texts).replaceAll(',', '、')
@@ -37,13 +39,16 @@ export default {
   },
   methods: {
     //校验数据配置的合法性
-    validate(){
+    validate(err){
       this.showError = false
-      if(this.config.assignedUser && this.config.assignedUser.length > 0){
+      if(this.config.props.shouldAdd){
         this.showError = false
-      }else {
+      }else if(this.config.props.assignedUser.length === 0){
         this.showError = true
         this.errorInfo = '请选择需要抄送的人员'
+      }
+      if (this.showError){
+        err.push(`抄送节点 ${this.config.name} 未设置抄送人`)
       }
       return !this.showError
     }

@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     validate(){
-      this.$refs["process-tree"].validateProcess()
+      return this.$refs["process-tree"].validateProcess()
     },
     nodeSelected(node){
       console.log('配置节点', node)

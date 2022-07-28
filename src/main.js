@@ -26,10 +26,6 @@ Vue.prototype.$isNotEmpty = function(obj){
   return (obj !== undefined && obj !== null && obj !== '' && obj !== 'null')
 }
 
-Vue.prototype.$isEmpty = val => {
-  return !val || val === '' || val === 'undefined' || val === 'null'
-}
-
 Vue.prototype.$getDefalut = function(obj, key, df){
   return (obj === undefined || key === undefined || !this.$isNotEmpty(obj[key])) ? df : obj[key];
 }

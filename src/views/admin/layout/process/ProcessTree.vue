@@ -341,14 +341,13 @@ export default {
     },
     validateProcess(){
       this.valid = true
-      this.validate(this.dom)
-      if (!this.valid){
-        this.$message.warning("请根据提示完成流程节点设置😅")
-      }
+      let err = []
+      this.validate(err, this.dom)
+      return err
     },
-    validateNode(node){
+    validateNode(err, node){
       if (this.$refs[node.id].validate){
-        this.valid = this.$refs[node.id].validate()
+        this.valid = this.$refs[node.id].validate(err)
       }
     },
     //更新指定节点的dom
@@ -370,21 +369,21 @@ export default {
       }
     },
     //校验所有节点设置
-    validate(node){
+    validate(err, node){
       if (this.isPrimaryNode(node)){
-        this.validateNode(node)
-        this.validate(node.children)
+        this.validateNode(err, node)
+        this.validate(err, node.children)
       }else if (this.isBranchNode(node)){
         //校验每个分支
         node.branchs.map(branchNode => {
           //校验条件节点
-          this.validateNode(branchNode)
+          this.validateNode(err, branchNode)
           //校验条件节点后面的节点
-          this.validate(branchNode.children)
+          this.validate(err, branchNode.children)
         })
-        this.validate(node.children)
+        this.validate(err, node.children)
       }else if (this.isEmptyNode(node)){
-        this.validate(node.children)
+        this.validate(err, node.children)
       }
 
     }

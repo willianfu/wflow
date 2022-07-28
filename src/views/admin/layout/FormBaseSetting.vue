@@ -151,13 +151,7 @@ export default {
         }).catch(err => this.$message.error(err.response.data))
       }
     },
-    closeSelect() {
-      this.showUserSelect = false
-      //this.nowUserSelect = null
-    },
     selected(select) {
-      console.log(select)
-      this.showUserSelect = false
       this.$set(this.setup.settings, this.nowUserSelect, select)
       //this.setup[this.nowUserSelect] = select
     },
@@ -168,7 +162,17 @@ export default {
     },
     validate(){
       this.$refs.baseSetting.validate()
-      return ''
+      let err = []
+      if (!this.$isNotEmpty(this.setup.formName)){
+        err.push('表单名称未设置')
+      }
+      if (!this.$isNotEmpty(this.setup.groupId)){
+        err.push('表单分组未设置')
+      }
+      if (this.setup.settings.notify.types.length === 0){
+        err.push('审批消息通知方式未设置')
+      }
+      return err
     }
   }
 }

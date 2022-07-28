@@ -40,7 +40,7 @@
 <script>
 import InsertButton from '@/views/common/InsertButton.vue'
 import {ValueType} from '@/views/common/form/ComponentsConfigExport'
-
+const groupNames = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 export default {
   name: "ConditionNode",
   components: {InsertButton},
@@ -65,6 +65,7 @@ export default {
   data() {
     return {
       ValueType,
+      groupNames,
       placeholder: '请设置条件',
       errorInfo: '',
       showError: false
@@ -125,12 +126,34 @@ export default {
       }
     },
     //校验数据配置的合法性
-    validate() {
-      if (this.config.assignedUser && this.config.assignedUser.length > 0) {
-        this.showError = false
-      } else {
+    validate(err) {
+      const props = this.config.props
+      if (props.groups.length <= 0){
         this.showError = true
-        this.errorInfo = '请选择需要抄送的人员'
+        this.errorInfo = '请设置分支条件'
+        err.push(`${this.config.name} 未设置条件`)
+      }else {
+        for (let i = 0; i < props.groups.length; i++) {
+          if (props.groups[i].cids.length === 0){
+            this.showError = true
+            this.errorInfo = `请设置条件组${this.groupNames[i]}内的条件`
+            err.push(`条件 ${this.config.name} 条件组${this.groupNames[i]}内未设置条件`)
+            break
+          }else {
+            let conditions = props.groups[i].conditions
+            for (let ci = 0; ci < conditions.length; ci++) {
+              let subc = conditions[ci]
+              if (subc.value.length === 0){
+                this.showError = true
+              }
+              if (this.showError){
+                this.errorInfo = `请完善条件组${this.groupNames[i]}内的${subc.title}条件`
+                err.push(`条件 ${this.config.name} 条件组${this.groupNames[i]}内${subc.title}条件未完善`)
+                return false
+              }
+            }
+          }
+        }
       }
       return !this.showError
     }

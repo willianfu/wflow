@@ -186,7 +186,7 @@ export default {
           group.conditions.push(condition)
         }
       })
-      for (const i in group.conditions) {
+      for (let i = 0; i < group.conditions.length; i++) {
         //去除没有选中的
         if (group.cids.indexOf(group.conditions[i].id) < 0){
           group.conditions.splice(i, 1)
