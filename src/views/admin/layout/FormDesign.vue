@@ -231,10 +231,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "@/assets/theme";
+
 
 .choose {
-  border: 1px dashed @primary !important;
+  border: 1px dashed @theme-primary !important;
 }
 
 .process-form{
@@ -255,7 +255,7 @@ export default {
   background-color: #fff;
 
   .selected {
-    color: @primary;
+    color: @theme-primary;
   }
 
   .border {
@@ -274,7 +274,7 @@ export default {
     cursor: pointer;
 
     &:hover {
-      color: @primary;
+      color: @theme-primary;
     }
   }
 }
@@ -309,8 +309,8 @@ export default {
       background-color: #fff;
 
       &:hover {
-        border: 1px solid @primary;
-        color: @primary;
+        border: 1px solid @theme-primary;
+        color: @theme-primary;
       }
 
       i {
@@ -450,7 +450,7 @@ export default {
       z-index: 9999;
 
       &:hover {
-        border: 1px dashed @primary;
+        border: 1px dashed @theme-primary;
       }
     }
   }

@@ -66,7 +66,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "@/assets/theme";
+
 
 .node{
   padding: 30px 55px 0;
@@ -91,7 +91,7 @@ export default {
           display: inline-block !important;
         }
       }
-      box-shadow: 0px 0px 3px 0px @primary;
+      box-shadow: 0px 0px 3px 0px @theme-primary;
     }
     .node-body-left, .node-body-right{
       display: flex;

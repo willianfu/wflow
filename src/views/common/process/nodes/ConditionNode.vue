@@ -162,7 +162,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "@/assets/theme";
+
 
 .node-error-state {
   .node-body {
@@ -200,7 +200,7 @@ export default {
         }
       }
 
-      box-shadow: 0px 0px 3px 0px @primary;
+      box-shadow: 0px 0px 3px 0px @theme-primary;
     }
 
     .node-body-left, .node-body-right {

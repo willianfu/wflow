@@ -154,10 +154,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "@/assets/theme";
+
 
 .choose {
-  border: 1px dashed @primary !important;
+  border: 1px dashed @theme-primary !important;
 }
 .l-drag-from {
   min-height: 50px;
@@ -203,7 +203,7 @@ export default {
       padding: 5px;
 
       &:hover {
-        color: @primary;
+        color: @theme-primary;
       }
     }
   }

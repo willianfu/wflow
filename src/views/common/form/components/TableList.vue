@@ -22,10 +22,10 @@
       <div v-if="rowLayout">
         <el-table size="medium" :header-cell-style="{background:'#f5f7fa', padding:'3px 0'}" :border="showBorder" :data="_value" style="width: 100%">
           <el-table-column fixed type="index" label="序号" width="50"></el-table-column>
-          <el-table-column v-for="(column, index) in _columns" :prop="column.id" :label="column.title">
+          <el-table-column min-width="150" v-for="(column, index) in _columns" :prop="column.id" :label="column.title">
             <form-design-render v-model="column.value" :mode="mode" :config="column"/>
           </el-table-column>
-          <el-table-column fixed="right" label="操作">
+          <el-table-column fixed="right" min-width="90" label="操作">
             <template slot-scope="scope">
               <el-button size="mini" type="text" @click="copyData(scope.$index, scope.row)">复制</el-button>
               <el-button size="mini" type="text" @click="delRow(scope.$index, scope.row)">删除</el-button>
@@ -35,7 +35,15 @@
         <el-button size="small" icon="el-icon-plus" @click="addRow">{{placeholder}}</el-button>
       </div>
       <div v-else>
-
+        <el-form class="table-column" v-for="(row, i) in _value" :key="i">
+          <div class="table-column-action">
+            <i class="el-icon-close" @click="delRow(i, row)"></i>
+          </div>
+          <el-form-item v-for="(column, index) in _columns" :prop="column.id" :label="column.title">
+            <form-design-render v-model="column.value" :mode="mode" :config="column"/>
+          </el-form-item>
+        </el-form>
+        <el-button size="small" icon="el-icon-plus" @click="addRow">{{placeholder}}</el-button>
       </div>
     </div>
 
@@ -55,7 +63,7 @@ export default {
   props: {
     placeholder: {
       type: String,
-      default: '+ 添加数据'
+      default: '添加数据'
     },
     columns: {
       type: Array,
@@ -148,10 +156,30 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "@/assets/theme";
+
 
 .choose {
-  border: 1px dashed @primary !important;
+  border: 1px dashed @theme-primary !important;
+}
+
+.table-column {
+  padding: 5px;
+  margin-bottom: 10px;
+  border-left: 3px solid #409eff;
+  border-radius: 5px;
+  background: #fafafa;
+  .table-column-action{
+    float: right;
+    i{
+      color: #afafaf;
+      padding: 5px;
+      font-size: large;
+      cursor: pointer;
+      &:hover{
+        color: #666666;
+      }
+    }
+  }
 }
 
 .l-drag-from {
@@ -198,7 +226,7 @@ export default {
       padding: 5px;
 
       &:hover {
-        color: @primary;
+        color: @theme-primary;
       }
     }
   }

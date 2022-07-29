@@ -302,7 +302,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "@/assets/theme";
 
 @containWidth: 278px;
 
@@ -335,7 +334,7 @@ export default {
     }
     .next-dept {
       float: right;
-      color: @primary;
+      color: @theme-primary;
       cursor: pointer;
     }
 
@@ -398,7 +397,7 @@ export default {
         width: 35px;
         text-align: center;
         line-height: 35px;
-        background: @primary;
+        background: @theme-primary;
         color: white;
         border-radius: 50%;
       }

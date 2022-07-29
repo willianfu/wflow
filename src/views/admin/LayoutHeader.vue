@@ -110,7 +110,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import "@/assets/global";
 
 /deep/ .header {
   min-width: 980px;

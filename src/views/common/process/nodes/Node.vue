@@ -91,7 +91,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "@/assets/theme";
+
 .root{
   &:before{
     display: none !important;
@@ -127,7 +127,7 @@ export default {
     background-color: white;
     box-shadow: 0px 0px 5px 0px #d8d8d8;
     &:hover{
-      box-shadow: 0px 0px 3px 0px @primary;
+      box-shadow: 0px 0px 3px 0px @theme-primary;
       .node-body-header {
         .el-icon-close {
           display: inline;

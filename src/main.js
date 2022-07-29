@@ -13,10 +13,12 @@ import "@/assets/iconfont/iconfont.css"
 
 import Ellipsis from '@/components/common/Ellipsis'
 import WDialog from '@/components/common/WDialog'
+import Tip from '@/components/common/Tip'
 
 Vue.use(ElementUI);
 Vue.use(Ellipsis);
 Vue.use(WDialog);
+Vue.use(Tip);
 
 Vue.config.productionTip = false
 
