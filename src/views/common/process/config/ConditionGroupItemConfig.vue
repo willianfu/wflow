@@ -27,19 +27,24 @@
         <div v-else>
           <el-form ref="condition-form" label-width="100px">
             <!--构建表达式-->
-            <el-form-item :label="condition.title" v-for="(condition, cindex) in group.conditions" :key="condition.id + '_' + cindex" >
+            <el-form-item  v-for="(condition, cindex) in group.conditions" :key="condition.id + '_' + cindex" >
+              <ellipsis slot="label" hover-tip :content="condition.title"/>
                <span v-if="condition.valueType === ValueType.string">
-                <el-select size="small" placeholder="判断符" style="width: 120px;" v-model="condition.compare">
+                <el-select size="small" placeholder="判断符" style="width: 120px;" v-model="condition.compare" @change="condition.value = []">
                   <el-option label="等于" value="="></el-option>
                   <el-option label="包含在" value="IN"></el-option>
                 </el-select>
-                 <span style="margin-left: 10px">
-                   <span v-if="condition.compare === '='">
-                     <el-input style="width: 280px;" placeholder="输入比较值" size="small" v-model="condition.value[0]"/>
-                   </span>
-                   <span v-else>
-                    <el-select style="width: 280px;" multiple filterable allow-create size="small" v-model="condition.value" placeholder="输入可能包含的值"></el-select>
-                   </span>
+                 <span v-if="isSelect(condition.id)" style="margin-left: 10px">
+                   <el-select v-if="condition.compare === 'IN'" style="width: 280px;" clearable multiple size="small" v-model="condition.value" placeholder="选择值">
+                     <el-option v-for="(option, oi) in getOptions(condition.id)" :key="oi" :label="option" :value="option"></el-option>
+                   </el-select>
+                   <el-select v-else style="width: 280px;" clearable size="small" v-model="condition.value[0]" placeholder="选择值">
+                     <el-option v-for="(option, oi) in getOptions(condition.id)" :key="oi" :label="option" :value="option"></el-option>
+                   </el-select>
+                 </span>
+                 <span v-else style="margin-left: 10px">
+                   <el-input v-if="condition.compare === '='" style="width: 280px;" placeholder="输入比较值" size="small" v-model="condition.value[0]"/>
+                   <el-select v-else style="width: 280px;" multiple clearable filterable allow-create size="small" v-model="condition.value" placeholder="输入可能包含的值"></el-select>
                  </span>
               </span>
               <span v-else-if="condition.valueType === ValueType.number">
@@ -52,7 +57,7 @@
                   <span v-else>
                     <el-input style="width: 130px;" size="small" type="number" placeholder="输入比较值" v-model="condition.value[0]"/>
                     <span> ~
-                      <el-input size="small" style="width: 130px;" type="number"placeholder="输入比较值" v-model="condition.value[1]"/>
+                      <el-input size="small" style="width: 130px;" type="number" placeholder="输入比较值" v-model="condition.value[1]"/>
                     </span>
                   </span>
                 </span>
@@ -60,26 +65,15 @@
               <span v-else-if="condition.valueType === ValueType.user">
                 <span class="item-desc" style="margin-right: 20px">属于某部门 / 为某些人其中之一</span>
                 <el-button size="mini" icon="el-icon-plus" type="primary" @click="selectUser(condition.value, 'user')" round>选择人员/部门</el-button>
-                <div style="margin: 10px">
-                  <el-tag class="org-item" style="margin: 5px" :type="org.type === 'dept'?'':'info'"
-                          v-for="(org, index) in condition.value" :key="index + '_org'"
-                          closable size="mini" @close="removeOrgItem(condition.value, index)">
-                    {{org.name}}
-                  </el-tag>
-                </div>
+                <org-items v-model="condition.value"/>
               </span>
               <span v-else-if="condition.valueType === ValueType.dept">
                 <span class="item-desc" style="margin-right: 20px">为某部门 / 某部门下的部门</span>
                 <el-button size="mini" icon="el-icon-plus" type="primary" @click="selectUser(condition.value, 'dept')" round>选择部门</el-button>
-                <div style="margin: 10px">
-                  <el-tag class="org-item" style="margin: 5px" :type="org.type === 'dept'?'':'info'"
-                          v-for="(org, index) in condition.value" :key="index + '_org'"
-                          closable size="mini" @close="removeOrgItem(condition.value, index)">
-                    {{org.name}}
-                  </el-tag>
-                </div>
+                <org-items v-model="condition.value"/>
               </span>
               <span v-else-if="condition.valueType === ValueType.date"></span>
+              <i class="el-icon-delete" @click="rmSubCondition(group, cindex)"></i>
             </el-form-item>
           </el-form>
         </div>
@@ -91,11 +85,12 @@
 
 <script>
 import OrgPicker from "@/components/common/OrgPicker";
+import OrgItems from '../OrgItems'
 import {ValueType} from '@/views/common/form/ComponentsConfigExport'
 
 export default {
   name: "ConditionGroupItemConfig",
-  components: {OrgPicker},
+  components: {OrgPicker, OrgItems},
   data() {
     return {
       ValueType,
@@ -129,6 +124,11 @@ export default {
     formItems(){
       return this.$store.state.design.formItems
     },
+    formMap(){
+      const map = new Map();
+      this.formItems.forEach(item => this.itemToMap(map, item))
+      return map
+    },
     conditionList() {
       //构造可用条件选项
       const conditionItems = []
@@ -140,6 +140,22 @@ export default {
     }
   },
   methods: {
+    itemToMap(map, item){
+      map.set(item.id, item)
+      if (item.name === 'SpanLayout'){
+        item.props.items.forEach(sub => this.itemToMap(map, sub))
+      }
+    },
+    isSelect(formId){
+      let form = this.formMap.get(formId)
+      if (form && (form.name === 'SelectInput' || form.name === 'MultipleSelect')){
+        return true
+      }
+      return false
+    },
+    getOptions(formId){
+      return this.formMap.get(formId).props.options || []
+    },
     conditionValType(type){
       switch (type){
         case '=':
@@ -168,11 +184,12 @@ export default {
       this.users.length = 0
       select.forEach(u => this.users.push(u))
     },
-    removeOrgItem(values, index) {
-      values.splice(index, 1)
-    },
     delGroup(index) {
       this.selectedNode.props.groups.splice(index, 1)
+    },
+    rmSubCondition(group, index){
+      group.cids.splice(index, 1)
+      group.conditions.splice(index, 1)
     },
     conditionChange(index, group) {
       //判断新增的
@@ -243,10 +260,16 @@ export default {
   }
 
   .group-content{
-    padding: 10px 10px;
+    padding: 10px 5px;
     p{
       text-align: center;
       font-size: small;
+    }
+    .el-icon-delete{
+      position: absolute;
+      cursor: pointer;
+      top: 12px;
+      right: 0;
     }
   }
 

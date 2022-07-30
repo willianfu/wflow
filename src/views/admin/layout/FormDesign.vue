@@ -175,6 +175,9 @@ export default {
         //搜寻权限，进行移除
         if (node.type === 'ROOT' || node.type === 'APPROVAL' || node.type === 'CC'){
           node.props.formPerms.removeByKey('id', item.id)
+          if (node.props.formUser === item.id){
+            node.props.formUser = ''
+          }
         }
       })
     },

@@ -85,10 +85,8 @@ export default {
               subConditionStr = `${subCondition.title}属于[${String(subCondition.value.map(u => u.name)).replaceAll(',', '. ')}]之一`
               break;
             case ValueType.number:
-              subConditionStr = this.getNumberConditionContent(subCondition)
-              break;
             case ValueType.string:
-              subConditionStr = `${subCondition.title}为${subCondition.value[0]}`
+              subConditionStr = this.getOrdinaryConditionContent(subCondition)
               break;
           }
           subConditions.push(subConditionStr)
@@ -105,10 +103,13 @@ export default {
     }
   },
   methods: {
-    getNumberConditionContent(subCondition) {
+    getDefault(val, df) {
+      return val && val !== '' ? val : df;
+    },
+    getOrdinaryConditionContent(subCondition) {
       switch (subCondition.compare) {
         case 'IN':
-          return `${subCondition.title}为[${String(subCondition.value)}]中之一`
+          return `${subCondition.title}为[${String(subCondition.value).replaceAll(',', '、')}]中之一`
         case 'B':
           return `${subCondition.value[0]} < ${subCondition.title} < ${subCondition.value[1]}`
         case 'AB':
@@ -118,11 +119,11 @@ export default {
         case 'ABA':
           return `${subCondition.value[0]} ≤ ${subCondition.title} ≤ ${subCondition.value[1]}`
         case '<=':
-          return `${subCondition.title} ≤ ${subCondition.value[0]}`
+          return `${subCondition.title} ≤ ${this.getDefault(subCondition.value[0], ' ?')}`
         case '>=':
-          return `${subCondition.title} ≥ ${subCondition.value[0]}`
+          return `${subCondition.title} ≥ ${this.getDefault(subCondition.value[0], ' ?')}`
         default:
-          return `${subCondition.title}${subCondition.compare}${subCondition.value[0]}`
+          return `${subCondition.title}${subCondition.compare}${this.getDefault(subCondition.value[0], ' ?')}`
       }
     },
     //校验数据配置的合法性
@@ -145,6 +146,8 @@ export default {
               let subc = conditions[ci]
               if (subc.value.length === 0){
                 this.showError = true
+              }else {
+                this.showError = false
               }
               if (this.showError){
                 this.errorInfo = `请完善条件组${this.groupNames[i]}内的${subc.title}条件`

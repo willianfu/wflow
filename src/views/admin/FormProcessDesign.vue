@@ -68,7 +68,7 @@ export default {
       if (this.validResult.finished && !this.validResult.success){
         return this.validResult.title + ` (${this.validResult.errs.length}项错误) 😥`
       }
-      return this.validResult.title + ' 😥'
+      return this.validResult.title
     },
     validIcon() {
       if (!this.validResult.finished) {
@@ -236,7 +236,7 @@ export default {
           process: JSON.stringify(this.setup.process),
           remark: this.setup.remark
         }
-        if (this.isNew || this.$isEmpty(this.setup.formId)) {
+        if (this.isNew || !this.$isNotEmpty(this.setup.formId)) {
           createForm(template).then(rsp => {
             this.$message.success("创建表单成功")
             this.$router.push("/formsPanel")
