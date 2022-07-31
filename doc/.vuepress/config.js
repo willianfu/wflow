@@ -36,7 +36,8 @@ module.exports = {
           '/dev/project',
           '/dev/form',
           '/dev/process',
-          '/dev/server'
+          '/dev/server',
+          '/dev/update'
         ]
       },
       {

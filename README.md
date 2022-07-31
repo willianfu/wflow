@@ -14,13 +14,15 @@
 
 > 区别于传统Bpmn自带流程设计器，传统设计器晦涩难懂，对于普通企业用户使用门槛偏高，没有经过专业培训根本无从下手，需要相关专业人员辅助来创建流程。而本设计器界面简单，符合普通大众的思维逻辑，易于理解和上手使用。
 
+**注意： ** 这是前端设计器部分，配套的工作流后端目前还没有正式开发，个人精力有限慢慢肝，大家可以持续关注下😅
 
+👩‍👦‍👦感兴趣的同学可扫码加入交流群， 如果二维码失效了，可以加我微信 `willianfu_` 备注`wflow` 拉你入群
 
-👩‍👦‍👦大家感兴趣的话可扫码加入交流群， 如果二维码失效了，可以加我微信 `willianfu_` 备注`wflow` 拉你入群
 <p style="text-align: left">
-<img src="https://pic.rmb.bdstatic.com/bjh/4fc44115a4e25e8e968a72fd53f38973.png" width="200px" >
+<img src="https://pic.rmb.bdstatic.com/bjh/97bc3e87a714b783cd3b6cad936e5607.png" width="200px" >
 </p> 
 
+开源不易，用爱发电，觉得不错的话可以给个 ⭐ star 鼓励一下
 
  😋  [github地址](https://github.com/willianfu/wflow)  |   [码云gitee](https://gitee.com/willianfu/jw-workflow-engine)
 
@@ -108,7 +110,9 @@
 
 ![image-20220711111911427](https://pic.rmb.bdstatic.com/bjh/02cd8936e081bdd053bfa695826817ba.png)
 
+**自动校验设置项，列出所有错误提示**
 
+<img src="https://pic.rmb.bdstatic.com/bjh/ddd20cd54d9502f8eec59565864dfb2a.png" alt="image-20220731215022817" style="zoom:50%;" />
 
 **条件节点优先级动态拖拽，实时刷新**
 

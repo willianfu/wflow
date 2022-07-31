@@ -37,3 +37,26 @@
 
 
 
+## 集成到现有前端项目
+
+### vue项目
+
+#### 仅使用流程设计器
+
+流程设计器入口文件为 `src\views\admin\layout\ProcessDesign.vue` ，与之相关的所有文件都要引入，主要文件在下图所示，或者也可以参考`master-precessDesign`分支（不一定最新）
+
+<img src="https://pic.rmb.bdstatic.com/bjh/185556f44bdd7c99c427cfde4039b578.png" alt="image-20220731221004670" style="zoom:33%;" />
+
+
+
+#### 使用整个表单流程设计器
+
+表单流程设计器入口在 `src\views\admin\FormProcessDesign.vue`，可以直接引入
+
+如果你也需要那个表单列表，文件为 ``src\views\adminFormsPanel.vue` 
+
+
+
+### 其他框架
+
+如果是其他不兼容的框架/版本，可以单独部署成一个独立的前端项目，再使用 `<iframe> ` 进行引入

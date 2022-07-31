@@ -16,13 +16,25 @@ wflow工作流是一个简单易用，面向普通用户的工作流系统，用
 
 👩‍👦‍👦大家可扫码加入交流群， 如果二维码失效了，可以加我微信 `willianfu_` 备注`wflow` 拉你入群
 
-<img src="https://pic.rmb.bdstatic.com/bjh/4fc44115a4e25e8e968a72fd53f38973.png" alt="image-20220724230831144" style="zoom: 50%;" />       <img src="https://pic.rmb.bdstatic.com/bjh/ed2fd88694486bc83c56e08b83d44205.png" alt="image-20220724230928104" style="zoom:20%;" />
+<img src="https://pic.rmb.bdstatic.com/bjh/97bc3e87a714b783cd3b6cad936e5607.png" alt="image-20220724230831144" style="zoom: 20%;" />       <img src="https://pic.rmb.bdstatic.com/bjh/ed2fd88694486bc83c56e08b83d44205.png" alt="image-20220724230928104" style="zoom:20%;" />
+
+
+
+**未完成/待完善的功能**
+
+- 表单明细表组件数据绑定，校验
+- 分栏布局组件内表单数据绑定、校验
+- 提交表单部分，分栏、明细表及其他组件回显校验
+- 提交表单时根据人员设置限制表单权限
+- 提交时根据审批流程设计渲染已确定的执行流程步骤及指定人员
 
 
 
 ## 起步
 
 ### 下载并启动项目
+
+**注意：**作者的开发环境是 `node14.18.0` 、`vuecli 4.1.1`、`edge浏览器` 
 
 ```bash
 #克隆源码
@@ -37,10 +49,12 @@ Vue.prototype.BASE_URL = 'http://' + (process.env.NODE_ENV === 'development-' ? 
 #安装依赖
 npm install
 #启动
-npm run dev
+npm run serve
 ```
 
 📢 如果启动报错请检查错误信息看看是否是依赖版本和当前所安装的 node 版本不兼容，自行安装兼容版本的依赖
+
+
 
 👍 启动成功后访问 http://localhost:88 即可打开页面
 
