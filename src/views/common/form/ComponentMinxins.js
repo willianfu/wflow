@@ -1,9 +1,6 @@
 //混入组件数据
 export default{
   props:{
-    value: {
-      default: undefined
-    },
     mode:{
       type: String,
       default: 'DESIGN'

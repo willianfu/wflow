@@ -46,8 +46,13 @@ export default {
       }
     },
   },
+  computed:{
+
+  },
   data() {
-    return {}
+    return {
+      checks:[]
+    }
   },
   methods: {}
 }

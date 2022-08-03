@@ -1,5 +1,5 @@
 <template>
-  <component :is="config.name" :mode="mode" v-model="_value" v-bind="config.props"/>
+  <component ref="form" :is="config.name" :mode="mode" v-model="_value" v-bind="config.props"/>
 </template>
 <script>
 
@@ -36,7 +36,11 @@ export default {
   data() {
     return {}
   },
-  methods: {}
+  methods: {
+    validate(call){
+      this.$refs.form.validate(call)
+    }
+  }
 }
 </script>
 

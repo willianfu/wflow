@@ -17,6 +17,10 @@ export default {
   name: "NumberInput",
   components: {},
   props:{
+    value:{
+      type: Number,
+      default: null
+    },
     placeholder:{
       type: String,
       default: '请输入数值'

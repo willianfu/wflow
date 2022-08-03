@@ -3,8 +3,6 @@
     <el-aside>
       <div class="components-nav">
         <span @click="libSelect = 0">组件库</span>
-<!--        <span :class="{'border': true, 'selected': libSelect === 1}" @click="libSelect = 1">扩展组件</span>
-        <span :class="{'selected': libSelect === 2}" @click="libSelect = 2">关联组件</span>-->
       </div>
       <div>
         <div class="components" v-for="(group, i) in baseComponents" :key="i">
@@ -86,29 +84,25 @@
         <form-component-config />
       </div>
     </el-aside>
-    <w-dialog clickClose closeFree :showFooter="false" :border="false" title="表单预览" v-model="viewFormVisible">
-      <el-form class="process-form" label-position="top">
-        <el-form-item v-if="item.name !== 'SpanLayout'" :label="item.title" v-for="(item, index) in forms" :key="item.name + index">
-          <form-design-render v-model="previewValue[item.name]" mode="PC" :config="item"/>
-        </el-form-item>
-        <form-design-render v-else v-model="previewValue[item.name]" mode="PC" :config="item"/>
-      </el-form>
+    <w-dialog clickClose closeFree width="800px" :showFooter="false" :border="false" title="表单预览" v-model="viewFormVisible">
+      <form-render ref="form" :forms="forms" v-model="formData"/>
     </w-dialog>
   </el-container>
 </template>
 
 <script>
 import draggable from "vuedraggable";
+import FormRender from '@/views/common/form/FormRender'
 import FormDesignRender from '@/views/admin/layout/form/FormDesignRender'
 import FormComponentConfig from '@/views/common/form/FormComponentConfig'
 import {baseComponents} from '@/views/common/form/ComponentsConfigExport'
 
 export default {
   name: "FormDesign",
-  components: {draggable, FormComponentConfig, FormDesignRender},
+  components: {draggable, FormComponentConfig, FormDesignRender, FormRender},
   data() {
     return {
-      previewValue:{},
+      formData:{},
       libSelect: 0,
       viewFormVisible: false,
       isStart: false,

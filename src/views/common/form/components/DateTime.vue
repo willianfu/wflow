@@ -17,6 +17,9 @@ export default {
   name: "DateTime",
   components: {},
   props:{
+    value: {
+      default: null
+    },
     format:{
       type: String,
       default: 'yyyy-MM-dd HH:mm'

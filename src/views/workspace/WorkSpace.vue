@@ -20,7 +20,7 @@
               <div v-for="(item, index) in group.items" :key="index" class="form-item" @click="enterItem(item)">
                 <i :class="item.logo.icon" :style="'background: '+item.logo.background"></i>
                 <div>
-                  <span>{{ item.formName }}</span>
+                  <ellipsis hover-tip :content="item.formName"/>
                   <span>发起审批</span>
                 </div>
               </div>
@@ -160,6 +160,7 @@ export default {
     border-radius: 5px;
     float: left;
     margin: 5px 10px;
+    height: 37px;
 
     &:hover {
       border: 1px solid #448ed7;
@@ -176,17 +177,21 @@ export default {
       font-size: 20px;
       color: #ffffff;
       background: #38adff;
+      height: 20px;
+      line-height: 20px;
     }
 
     div {
       height: 35px;
       line-height: 35px;
 
-      span:nth-child(1) {
+      div{
+        display: inline-block;
         margin-left: 10px;
+        width: 100px;
       }
 
-      span:nth-child(2) {
+      span {
         display: none;
         float: right;
         color: #38adff;

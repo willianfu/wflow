@@ -26,6 +26,12 @@ export default {
       type: String,
       default: '请选择附件'
     },
+    value:{
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
     maxSize: {
       type: Number,
       default: 5

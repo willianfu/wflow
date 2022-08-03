@@ -31,7 +31,6 @@
 <script>
 import ProcessTree from './process/ProcessTree.vue'
 import NodeConfig from '../../common/process/config/NodeConfig'
-//import ProcessTree from '@/views/common/process/FormComponentConfig.vue'
 
 export default {
   name: "ProcessDesign",

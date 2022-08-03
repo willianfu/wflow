@@ -26,6 +26,9 @@ export default {
   name: "AmountInput",
   components: {},
   props: {
+    value: {
+      default: null
+    },
     placeholder: {
       type: String,
       default: '请输入金额'

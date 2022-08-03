@@ -1,11 +1,11 @@
 <template>
   <div style="max-width: 350px">
     <div v-if="mode === 'DESIGN'">
-      <el-button disabled icon="el-icon-coin" type="primary" size="mini" round>选择部门</el-button>
+      <el-button disabled icon="iconfont icon-map-site" type="primary" size="mini" round> 选择部门</el-button>
       <span class="placeholder"> {{placeholder}}</span>
     </div>
     <div v-else>
-      <el-button icon="el-icon-coin" type="primary" size="mini" round @click="$refs.orgPicker.show()">选择部门</el-button>
+      <el-button icon="iconfont icon-map-site" type="primary" size="mini" round @click="$refs.orgPicker.show()"> 选择部门</el-button>
       <org-picker type="dept" :multiple="multiple" ref="orgPicker" :selected="_value" @ok="selected"/>
       <span class="placeholder"> {{placeholder}}</span>
       <div style="margin-top: 5px">
@@ -24,6 +24,12 @@ export default {
   name: "DeptPicker",
   components: {OrgPicker},
   props: {
+    value:{
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
     placeholder: {
       type: String,
       default: '请选择部门'

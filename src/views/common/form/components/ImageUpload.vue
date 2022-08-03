@@ -38,6 +38,12 @@ export default {
   name: "ImageUpload",
   components: {},
   props: {
+    value:{
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
     placeholder: {
       type: String,
       default: '请选择图片'

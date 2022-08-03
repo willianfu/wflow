@@ -1,13 +1,8 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div>
       <!--渲染表单-->
-      <el-form class="process-form" label-position="top" ref="form" :rules="formConfig.rules" :model="formConfig.data">
-        <el-form-item :prop="item.id" :label="item.title" v-for="(item, index) in form.formItems"
-                      :key="item.name + index">
-          <form-design-render v-model="formConfig.data[item.id]" mode="PC" :config="item"/>
-        </el-form-item>
-      </el-form>
+      <form-render class="process-form" ref="form" :forms="forms" v-model="formData"/>
     </div>
     <el-divider>审批流程</el-divider>
     <div>
@@ -22,13 +17,13 @@
 </template>
 
 <script>
+import FormRender from '@/views/common/form/FormRender'
 import FormDesignRender from '@/views/admin/layout/form/FormDesignRender'
 import {getFormDetail} from '@/api/design'
-import fromProcessUtil from '@/utils/FromProcessUtil'
 
 export default {
   name: "InitiateProcess",
-  components: {FormDesignRender},
+  components: {FormDesignRender, FormRender},
   props: {
     code: {
       type: String,
@@ -37,12 +32,8 @@ export default {
   },
   data() {
     return {
-      formConfig: {
-        //数据字段
-        data: {},
-        //校验规则
-        rules: {}
-      },
+      loading: false,
+      formData: {},
       form: {
         formId: '',
         formName: "",
@@ -63,7 +54,9 @@ export default {
   },
   methods: {
     loadFormInfo(formId) {
+      this.loading = true
       getFormDetail(formId).then(rsp => {
+        this.loading = false
         console.log(rsp.data)
         let form = rsp.data;
         form.logo = JSON.parse(form.logo)
@@ -72,15 +65,11 @@ export default {
         form.process = JSON.parse(form.process)
         this.form = form
         //构建表单及校验规则
-        this.loadFormConf(form.formItems)
+        this.$store.state.design = form
       }).catch(err => {
+        this.loading = false
         this.$message.error(err)
       })
-    },
-    loadFormConf(formItems) {
-      const formConf = fromProcessUtil.loadFormConf(formItems)
-      this.$set(this.formConfig, 'data', formConf.data)
-      this.$set(this.formConfig, 'rules', formConf.rules)
     },
     validate(call) {
       this.$refs.form.validate(call);

@@ -5,7 +5,7 @@
       <span class="placeholder"> {{placeholder}}</span>
     </div>
     <div v-else>
-      <el-button icon="el-icon-coin" type="primary" size="mini" round @click="$refs.orgPicker.show()">选择部门</el-button>
+      <el-button icon="el-icon-user" type="primary" size="mini" round @click="$refs.orgPicker.show()">选择人员</el-button>
       <org-picker type="user" :multiple="multiple" ref="orgPicker" :selected="_value" @ok="selected"/>
       <span class="placeholder"> {{placeholder}}</span>
       <div style="margin-top: 5px">
@@ -24,6 +24,12 @@ export default {
   name: "DeptPicker",
   components: {OrgPicker},
   props: {
+    value:{
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
     placeholder: {
       type: String,
       default: '请选择人员'

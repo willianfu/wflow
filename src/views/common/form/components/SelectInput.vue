@@ -25,6 +25,10 @@ export default {
   name: "SelectInput",
   components: {},
   props:{
+    value:{
+      type: String,
+      default: null
+    },
     placeholder:{
       type: String,
       default: '请选择选项'

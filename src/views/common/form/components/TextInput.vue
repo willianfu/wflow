@@ -17,6 +17,10 @@ export default {
   name: "TextInput",
   components: {},
   props: {
+    value: {
+      type: String,
+      default: null
+    },
     placeholder: {
       type: String,
       default: '请输入内容'
