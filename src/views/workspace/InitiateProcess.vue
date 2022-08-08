@@ -1,6 +1,6 @@
 <template>
   <div v-loading="loading">
-    <div>
+    <div v-if="!loading">
       <!--渲染表单-->
       <form-render class="process-form" ref="form" :forms="forms" v-model="formData"/>
     </div>
