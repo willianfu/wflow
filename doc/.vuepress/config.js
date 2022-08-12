@@ -17,8 +17,8 @@ module.exports = {
     nav: [
       {text: '指南', link: '/'},
       {text: '码云gitee', link: 'https://gitee.com/willianfu/jw-workflow-engine'},
-      {text: '访问 wflow在线演示', link: 'http:/47.100.202.245:83'},
-      {text: 'wflow-pro', link: '/pro'},
+      {text: '💰订阅 pro 版', link: '/pro/index'},
+      {text: 'wflow在线演示', link: 'http:/47.100.202.245:83'},
     ],
     lastUpdated: '最近更新',
     sidebar: [

@@ -37,7 +37,7 @@ export default {
       this.$refs.orgPicker.show()
     },
     selected(select) {
-      console.log(select)
+      this.select.length = 0
       select.forEach(val => this.select.push(val))
     },
     removeOrgItem(index){
