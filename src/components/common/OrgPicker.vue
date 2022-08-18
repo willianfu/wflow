@@ -293,6 +293,7 @@ export default {
     init() {
       this.checkAll = false;
       this.nowDeptId = null;
+      this.deptStack = [];
       this.nodes = []
       this.select = Object.assign([], this.selected)
       this.selectToLeft()
