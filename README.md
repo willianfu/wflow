@@ -73,8 +73,9 @@
 ![image-20220813004203129](https://pic.rmb.bdstatic.com/bjh/2c429241d6e5cabc18c9f9eac7df5024.png)
 
 
-预览审批进度
-<img src="https://dd-static.jd.com/ddimg/jfs/t1/203603/40/17791/103536/63251827E59c92972/180ee188a9525c74.png" alt="image-20220917084317320" style="zoom:33%;" />
+ **预览审批进度** 
+
+![image-20220917085045176](https://dd-static.jd.com/ddimg/jfs/t1/112699/19/29490/422145/632519e9Ee06ee0b0/dfe1943c51fc447a.png)
 
 ------
 
