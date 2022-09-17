@@ -62,6 +62,11 @@
 
 ![image-20220813002851111](https://pic.rmb.bdstatic.com/bjh/75bb79771bf78d273917df9495bf35b7.png)
 
+ **流程管理** 
+
+![image-20220917085336806](https://dd-static.jd.com/ddimg/jfs/t1/88709/15/33072/150832/63251a92E5e6fda69/47495b56b1080b9e.png)
+
+
 发起审批，左侧表单，右侧显示执行流程步骤
 
 ![image-20220813002940384](https://pic.rmb.bdstatic.com/bjh/c2bd3d47d665c98330a2a08e8bf719e5.png)
