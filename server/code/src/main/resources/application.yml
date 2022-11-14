@@ -1,0 +1,42 @@
+#配置内置Tomcat端口
+server:
+  port: 1000
+spring:
+  application:
+    name: wflow
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+  #配置数据源
+  datasource:
+    #url: jdbc:mysql://localhost:3306/workflow?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://localhost:3306/wflow?useUnicode=true&characterEncoding=utf8
+    driverClassName: com.mysql.jdbc.Driver
+    username: wflow
+    password: wflow@2022.
+
+  jackson:
+    #字段为null时不返回该字段
+    default-property-inclusion: non_null
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+#日志配置
+logging:
+  level:
+    root: info
+
+#mybatis配置
+mybatis-plus:
+  global-config:
+    banner: false
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  type-aliases-package: com.wflow
+  configuration:
+    map-underscore-to-camel-case: true
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+
