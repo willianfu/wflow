@@ -20,7 +20,7 @@
 
 ### 👩‍👦‍👦加入交流群
 
-
+![image.png](https://yzf.qq.com/fsna/kf-file/kf_pic/20221117/KFPIC_kfh5221fa29cfc019f_h5cded9881fc7d6fdfece5fb364b_WXIMAGE_16d2465b4d194b808fd7f51defbff3e5.png)
 
 
 |                         微信                         |       QQ       |
