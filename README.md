@@ -19,14 +19,10 @@
 
 
 ### 👩‍👦‍👦加入交流群
-
-![image.png](https://yzf.qq.com/fsna/kf-file/kf_pic/20221117/KFPIC_kfh5221fa29cfc019f_h5cded9881fc7d6fdfece5fb364b_WXIMAGE_16d2465b4d194b808fd7f51defbff3e5.png)
-
-
+![image.png](https://ldbbs.ldmnq.com/bbs/topic/attachment/2023-1/7d6a4553-ed3a-4ffc-94f8-2361c577ea4c.png)
 |                             微信                             |       QQ       |
 | :----------------------------------------------------------: | :------------: |
 |     扫码或搜索 `willianfu_` 加我微信，备注 `wflow`拉入群     | 加群 156972829 |
-| <img src="https://ldbbs.ldmnq.com/bbs/topic/attachment/2023-1/7aa19335-d45b-4a1d-a676-8b86afd7baa8.jpg" alt="53e38a0918b4300f4cb2fbb9e1df554.jpg" style="zoom: 20%;" /> |                |
 
 
 
