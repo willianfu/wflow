@@ -7,6 +7,8 @@
     <el-divider>审批流程</el-divider>
     <div>
       <!--渲染流程执行过程-->
+      <el-alert type="warning" description="开源版后台只是为了演示流程设计功能，后台无法处理流程发起的后续步骤，如需要完整的工作流功能请移步 👉 pro 版本"></el-alert>
+      <el-link href="http://106.13.16.28:83">访问pro👉 </el-link>
       <el-timeline :reverse="false">
         <!--<el-timeline-item v-for="(activity, index) in activities" :key="index">
 
